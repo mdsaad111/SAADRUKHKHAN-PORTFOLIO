@@ -3,18 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRK — Visual Artist</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23020202'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial Black, sans-serif' font-weight='900' font-size='13' font-style='italic' fill='%23dc2626'%3ESRK%3C/text%3E%3C/svg%3E">
-    <meta name="description" content="Saad Rukh Khan — Web3 enthusiast and visual artist specializing in 2D concepts and 3D motion. Explore the archive.">
-    <meta name="author" content="Saad Rukh Khan">
-    <meta property="og:title" content="Saad Rukh Khan — 2D & 3D Visual Artist">
-    <meta property="og:description" content="Web3 enthusiast and visual artist specializing in 2D concepts and 3D motion.">
-    <meta property="og:image" content="https://pbs.twimg.com/media/HA2semUaQAAViNO?format=jpg&name=large">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Saad Rukh Khan — Visual Artist">
-    <meta name="twitter:description" content="Web3 enthusiast. 2D concepts & 3D motion artist.">
-    <meta name="twitter:image" content="https://pbs.twimg.com/media/HA2semUaQAAViNO?format=jpg&name=large">
+    <title>Saad Rukh Khan - Portfolio</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -37,8 +26,16 @@
             0% { transform: translateX(-100%); }
             100% { transform: translateX(0); }
         }
-        .animate-marquee { animation: marquee 75s linear infinite; }
-        .animate-marquee-reverse { animation: marquee-reverse 75s linear infinite; }
+        .animate-marquee { animation: marquee 180s linear infinite; }
+        .animate-marquee-reverse { animation: marquee-reverse 200s linear infinite; }
+
+        @keyframes cardReveal {
+            from { opacity: 0; transform: scale(0.95) translateY(16px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .card-reveal {
+            animation: cardReveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
         
         @keyframes shine {
             100% { left: 125%; }
@@ -84,7 +81,7 @@
             </div>
 
             <!-- Loading content hidden until click -->
-            <div id="loading-content" class="flex-col items-center justify-center gap-10 w-full" style="display:none;">
+            <div id="loading-content" class="hidden flex-col items-center justify-center gap-10 w-full">
                 <div id="loading-status" class="text-red-600/70 text-[10px] md:text-xs font-black tracking-[0.5em] uppercase h-4 animate-pulse">
                     > INITIATING...
                 </div>
@@ -113,23 +110,14 @@
         <div class="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
         <div class="fixed inset-0 pointer-events-none z-[0] opacity-[0.015] bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:100px_100px]"></div>
 
-        <nav id="navbar" class="fixed top-0 left-0 right-0 z-[60] transition-all duration-700 -translate-y-10 opacity-0">
-            <!-- Compact sticky bar (shown on scroll) -->
-            <div id="sticky-bar" class="w-full flex items-center justify-between px-8 md:px-12 py-0 max-h-0 overflow-hidden opacity-0 transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-white/0 bg-[#020202]/0 backdrop-blur-none">
-                <span class="text-white font-black italic text-lg md:text-xl tracking-tighter uppercase">SAAD RUKH KHAN</span>
-                <div class="flex gap-6 items-center">
-                    <button onclick="openModal('experience-modal')" class="interactive hover:text-red-600 transition-all text-[10px] font-black tracking-[0.4em] uppercase">EXPERIENCE</button>
-                    <button onclick="openModal('contact-modal')" class="interactive bg-white text-black px-6 py-2 rounded-full font-black hover:bg-red-600 hover:text-white transition-all text-[9px] hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">CONTACT</button>
-                </div>
-            </div>
-            <!-- Original top-right buttons (shown before scroll) -->
-            <div id="top-buttons" class="flex gap-10 justify-end px-8 md:px-12 py-8 md:py-12 transition-all duration-500">
-                <button onclick="openModal('experience-modal')" class="interactive hover:text-red-600 transition-all text-[10px] font-black tracking-[0.4em] uppercase">EXPERIENCE</button>
-                <button onclick="openModal('contact-modal')" class="interactive bg-white text-black px-8 py-2.5 rounded-full font-black hover:bg-red-600 hover:text-white transition-all text-[9px] hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">CONTACT</button>
-            </div>
+        <!-- Added items-center here for alignment -->
+        <nav id="navbar" class="fixed top-0 right-0 p-8 md:p-12 flex items-center gap-10 z-[60] text-[10px] font-black tracking-[0.4em] uppercase transition-all duration-1000 -translate-y-10 opacity-0">
+            <button onclick="openModal('experience-modal')" class="interactive hover:text-red-600 transition-all">EXPERIENCE</button>
+            <a href="gallery.html" class="interactive hover:text-red-600 transition-all">GALLERY</a>
+            <button onclick="openModal('contact-modal')" class="interactive bg-white text-black px-8 py-2.5 rounded-full font-black hover:bg-red-600 hover:text-white transition-all text-[9px] hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">CONTACT</button>
         </nav>
 
-        <header id="hero" class="flex flex-col items-center justify-center text-center px-4 pt-24 pb-10 relative">
+        <header id="hero" class="min-h-[50vh] flex flex-col items-center justify-center text-center px-4 pt-20 relative">
             <div class="absolute top-1/2 -translate-y-1/2 w-full overflow-hidden pointer-events-none opacity-[0.02] flex select-none z-0">
                 <div class="flex shrink-0 animate-marquee whitespace-nowrap text-[15vw] font-black italic uppercase">
                     3D MOTION ARTIST • WEB3 CREATOR • VISUAL DESIGNER •&nbsp;
@@ -140,8 +128,7 @@
             </div>
 
             <div class="relative z-10 transition-all duration-1000 delay-300 scale-110 opacity-0 blur-3xl" id="hero-content">
-                <div class="absolute inset-0 -z-10 blur-[120px] opacity-20 bg-red-600 rounded-full scale-75 pointer-events-none"></div>
-                <h1 class="text-6xl md:text-[11vw] font-black leading-none tracking-tighter uppercase italic text-white mb-6 drop-shadow-[0_0_80px_rgba(220,38,38,0.3)]">
+                <h1 class="text-6xl md:text-[11vw] font-black leading-none tracking-tighter uppercase italic text-white mb-6 drop-shadow-[0_0_50px_rgba(255,255,255,0.05)]">
                     SAAD RUKH KHAN
                 </h1>
                 <div class="flex items-center justify-center gap-8">
@@ -151,23 +138,8 @@
                     </p>
                     <div class="h-px w-16 md:w-32 bg-gradient-to-l from-transparent via-red-600 to-transparent"></div>
                 </div>
-                <p class="mt-8 max-w-xl mx-auto text-center text-zinc-400 text-sm md:text-base leading-relaxed font-medium tracking-wide">
-                    Web3 native. Visual obsessive. I craft 2D concepts and 3D motion art that live at the intersection of the digital and the surreal building worlds one frame at a time.
-                </p>
-                <div class="mt-6 flex items-center justify-center gap-3 text-zinc-600 text-[10px] font-black tracking-[0.4em] uppercase">
-                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse shadow-[0_0_8px_rgba(220,38,38,0.8)]"></span>
-                    AVAILABLE FOR COMMISSIONS
-                </div>
-                <!-- Scroll indicator -->
-                <div class="mt-12 flex flex-col items-center gap-2 text-zinc-700 text-[9px] font-black tracking-[0.4em] uppercase animate-bounce">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-                    SCROLL
-                </div>
             </div>
         </header>
-
-        <!-- Gradient fade transition into marquee -->
-        <div class="w-full h-16 bg-gradient-to-b from-transparent via-red-600/5 to-transparent pointer-events-none relative z-10"></div>
 
         <!-- INFINITE MARQUEE SECTION -->
         <main class="pb-40 space-y-12 py-10 select-none overflow-hidden relative z-10" style="-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
@@ -183,6 +155,12 @@
                 <div id="row2-container-1" class="flex shrink-0 animate-marquee-reverse items-center group-hover:[animation-play-state:paused]"></div>
                 <div id="row2-container-2" class="flex shrink-0 animate-marquee-reverse items-center group-hover:[animation-play-state:paused]"></div>
             </div>
+
+            <!-- ROW 3 (Right to Left) -->
+            <div class="relative flex group py-4 flex-nowrap">
+                <div id="row3-container-1" class="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"></div>
+                <div id="row3-container-2" class="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"></div>
+            </div>
         </main>
 
         <footer class="p-24 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-12 bg-zinc-950/20 relative z-10">
@@ -191,7 +169,7 @@
                 <p class="text-zinc-700 text-[10px] font-black tracking-[0.5em] uppercase">VISUAL ARCHIVE © 2026</p>
             </div>
             <div class="flex gap-14 items-center">
-                <a href="https://x.com/itwwasntmee" target="_blank" rel="noopener noreferrer" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-150">
+                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-150">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
                 </a>
                 <button onclick="openModal('contact-modal')" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-150">
@@ -214,13 +192,6 @@
             <div id="artwork-media-container" class="w-auto bg-black rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-red-600/20 shadow-[0_0_80px_rgba(220,38,38,0.25)] flex items-center justify-center">
                 <!-- Media yahan inject hoga -->
             </div>
-            
-            <div class="flex items-center gap-4 mt-2">
-                <a id="artwork-tweet-link" href="#" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="interactive px-8 md:px-12 py-4 bg-white text-black font-black uppercase tracking-[0.2em] text-[10px] md:text-xs rounded-full hover:bg-red-600 hover:text-white transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.3)] flex items-center gap-3">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg> 
-                    VIEW FULL ON TWITTER
-                </a>
-            </div>
         </div>
     </div>
 
@@ -236,18 +207,15 @@
                 <ul class="border-l-2 border-red-600 pl-6 ml-2 space-y-6">
                     <li class="relative">
                         <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
-                        <p class="text-zinc-500 text-[10px] font-black tracking-[0.2em] uppercase mb-1">2023 — Present</p>
-                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Freelance Visual Designer creating 2D & 3D artwork for clients across the Web3 space.</p>
+                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Worked as a Designer for an Indian company.</p>
                     </li>
                     <li class="relative">
                         <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
-                        <p class="text-zinc-500 text-[10px] font-black tracking-[0.2em] uppercase mb-1">2022 — 2023</p>
-                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Motion Animator at an early-stage startup responsible for all visual and animation deliverables.</p>
+                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Worked as an Animator for a Start up.</p>
                     </li>
                     <li class="relative">
                         <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
-                        <p class="text-zinc-500 text-[10px] font-black tracking-[0.2em] uppercase mb-1">2021 — 2022</p>
-                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Community Moderator across multiple Web3 NFT projects built and managed engaged digital communities.</p>
+                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Worked as a moderator in Many web 3 projects.</p>
                     </li>
                 </ul>
 
@@ -273,9 +241,9 @@
             </button>
             <h2 class="text-5xl font-black mb-12 text-white italic uppercase tracking-tighter">CONNECT</h2>
             <div class="space-y-6">
-                <a href="https://x.com/itwwasntmee" target="_blank" rel="noopener noreferrer" class="interactive block p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
+                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive block p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg> 
-                    <p class="font-black text-xl italic tracking-tighter uppercase group-hover:scale-105 transition-transform">@itwwasntmee</p>
+                    <p class="font-black text-xl italic tracking-tighter uppercase group-hover:scale-105 transition-transform">@SaadRukhKhan_</p>
                 </a>
                 <div onclick="copyDiscord()" title="Click to copy Discord ID" class="interactive w-full p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="group-hover:scale-110 transition-transform"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" /></svg>
@@ -287,7 +255,26 @@
 
     <!-- JS Logic -->
     <script>
-        // Web Audio API Sound Generation (No external files needed)
+        // Check session storage on load to skip intro
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('hasEnteredApp') === 'true') {
+                const loadingScreen = document.getElementById('loading-screen');
+                const mainApp = document.getElementById('main-app');
+                const navbar = document.getElementById('navbar');
+                const heroContent = document.getElementById('hero-content');
+
+                loadingScreen.style.display = 'none';
+                mainApp.classList.remove('opacity-0');
+                
+                // Trigger animations immediately
+                setTimeout(() => {
+                    navbar.classList.remove('-translate-y-10', 'opacity-0');
+                    heroContent.classList.remove('scale-110', 'opacity-0', 'blur-3xl');
+                }, 100);
+            }
+        });
+
+        // Web Audio API Sound Generation
         let audioCtx;
         function initAudio() {
             if (!audioCtx) {
@@ -354,34 +341,22 @@
             }
         }
 
-        // Data arrays
-        const row1 = [
-            { id: 1, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/2021461459667124250", imageUrl: "https://pbs.twimg.com/media/HA2semUaQAAViNO?format=jpg&name=large" },
-            { id: 2, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/2021259899519250774/photo/1", imageUrl: "https://pbs.twimg.com/media/HAz1KNEaAAI-X0B?format=jpg&name=large" },
-            { id: 3, type: "3D RENDER", tweetUrl: "https://x.com/itwwasntmee/status/2013356687013400863/photo/1", imageUrl: "https://pbs.twimg.com/media/G_DhDzbXoAEJ20h?format=jpg&name=large" },
-            { id: 4, type: "3D MOTION", tweetUrl: "https://x.com/itwwasntmee/status/2016202153858367547/photo/1", imageUrl: "https://pbs.twimg.com/media/G_r8esYbsAAeBwb?format=jpg&name=large" },
-            { id: 5, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/2005584497358844304/photo/1", imageUrl: "https://pbs.twimg.com/media/G9VEd2RbYAAyO39?format=jpg&name=large" },
-            { id: 11, type: "3D RENDER", tweetUrl: "https://x.com/itwwasntmee/status/2014061404286840844/photo/1", imageUrl: "https://pbs.twimg.com/media/G_NhuH6XUAASR6q?format=jpg&name=large" },
-            { id: 12, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1974098322379231614/photo/1", imageUrl: "https://pbs.twimg.com/media/G2Vn3rAWsAAvWf1?format=jpg&name=large" },
-            { id: 13, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1973675841344446753/photo/1", imageUrl: "https://pbs.twimg.com/media/G2Pnko-WUAAOXZL?format=jpg&name=large" },
-            { id: 14, type: "3D MOTION", tweetUrl: "https://x.com/itwwasntmee/status/1973152414829256831/photo/1", imageUrl: "https://pbs.twimg.com/media/G2ILqJ-WIAAon8-?format=jpg&name=large" },
-            { id: 15, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1967514212982481030/photo/1", imageUrl: "https://pbs.twimg.com/media/G04DvgDbgAAvVXR?format=jpg&name=large" },
-            { id: 16, type: "3D RENDER", tweetUrl: "https://x.com/itwwasntmee/status/1965778678278955089/photo/1", imageUrl: "https://pbs.twimg.com/media/G0fZNOSXMAA2wVy?format=jpg&name=large" }
-        ];
-
-        const row2 = [
-            { id: 6, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1982126492457763311/photo/1", imageUrl: "https://pbs.twimg.com/media/G4HtiOSXMAAEmK6?format=jpg&name=large" },
-            { id: 7, type: "3D RENDER", tweetUrl: "https://x.com/itwwasntmee/status/1972732561748312330/photo/1", imageUrl: "https://pbs.twimg.com/media/G2CNnGMWsAAK1tF?format=jpg&name=large" },
-            { id: 8, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1968006063518794190/photo/1", imageUrl: "https://pbs.twimg.com/media/G0_C79qWwAA-Dzl?format=jpg&name=large" },
-            { id: 9, type: "3D MOTION", tweetUrl: "https://x.com/itwwasntmee/status/1964333115171619226/photo/1", imageUrl: "https://pbs.twimg.com/media/G0K2T2RW8AAimBn?format=jpg&name=large" },
-            { id: 10, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1963223817465024673/photo/1", imageUrl: "https://pbs.twimg.com/media/Gz7FcqNWsAAK8wI?format=jpg&name=large" },
-            { id: 17, type: "3D RENDER", tweetUrl: "https://x.com/itwwasntmee/status/1965417612126683644/photo/1", imageUrl: "https://pbs.twimg.com/media/G0aQw76XEAAbLq9?format=jpg&name=large" },
-            { id: 18, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1952390876992340220/photo/1", imageUrl: "https://pbs.twimg.com/media/GxhJI3-WQAA86CJ?format=jpg&name=large" },
-            { id: 19, type: "3D MOTION", tweetUrl: "https://x.com/itwwasntmee/status/1951064224387764571/photo/1", imageUrl: "https://pbs.twimg.com/media/GxOScRLWcAMkd5c?format=jpg&name=large" },
-            { id: 20, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1924690752044781586/photo/1", imageUrl: "https://pbs.twimg.com/media/GrXgCIebEAALURB?format=jpg&name=large" },
-            { id: 21, type: "3D RENDER", tweetUrl: "https://x.com/itwwasntmee/status/1873504170441101433/photo/1", imageUrl: "https://pbs.twimg.com/media/GgAGDTnaYAAAu48?format=jpg&name=large" },
-            { id: 22, type: "2D CONCEPT", tweetUrl: "https://x.com/itwwasntmee/status/1856351356107534352/photo/1", imageUrl: "https://pbs.twimg.com/media/GcMVtoCasAIKZRg?format=jpg&name=large" }
-        ];
+        // Async format resolver
+        function resolveImageSrc(id) {
+            const formats = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'];
+            return new Promise((resolve) => {
+                let i = 0;
+                function tryNext() {
+                    if (i >= formats.length) { resolve(null); return; }
+                    const img = new Image();
+                    const src = `${id}.${formats[i]}`;
+                    img.onload  = () => resolve(src);
+                    img.onerror = () => { i++; tryNext(); };
+                    img.src = src;
+                }
+                tryNext();
+            });
+        }
 
         // Custom Cursor Logic
         const cursorDot = document.getElementById('cursor-dot');
@@ -396,7 +371,7 @@
             const interactiveEls = document.querySelectorAll('.interactive');
             interactiveEls.forEach(el => {
                 el.addEventListener('mouseenter', () => {
-                    playTechSound('hover'); // Play sound on hover
+                    playTechSound('hover');
                     cursorDot.classList.replace('w-3', 'w-2');
                     cursorDot.classList.replace('h-3', 'h-2');
                     cursorRing.classList.replace('w-8', 'w-16');
@@ -429,22 +404,21 @@
         const loadingContent = document.getElementById('loading-content');
 
         function startSequence() {
-            if (hasStartedSequence) return; // Prevent multiple triggers
+            if (hasStartedSequence) return;
             hasStartedSequence = true;
             
             initAudio();
-            playTechSound('hover'); // Feedback on click
+            playTechSound('hover');
 
-            // Hide prompt, show actual loading content
-            initPrompt.style.display = 'none';
-            loadingContent.style.display = 'flex';
+            initPrompt.classList.add('hidden');
+            loadingContent.classList.remove('hidden');
+            loadingContent.classList.add('flex');
             loadingScreen.classList.remove('cursor-pointer');
             loadingScreen.classList.add('cursor-wait');
 
-            // Start the decode animation
             const timer = setInterval(() => {
                 frame++;
-                playTechSound('tick'); // Play typing sound on every frame
+                playTechSound('tick'); 
 
                 let currentText = "";
                 for (let i = 0; i < targetText.length; i++) {
@@ -465,29 +439,30 @@
                 if (frame >= totalFrames) {
                     clearInterval(timer);
                     statusEl.innerText = "> ACCESS_GRANTED";
-                    playTechSound('ready'); // Success chime
+                    playTechSound('ready');
 
                     scrambleEl.classList.add('hidden');
                     readyEl.classList.remove('hidden');
                     enterBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
                     enterBtn.classList.add('opacity-100', 'translate-y-0');
                     loadingScreen.classList.remove('cursor-wait');
-                    loadingScreen.classList.add('cursor-pointer'); // Allow clicking again to enter
+                    loadingScreen.classList.add('cursor-pointer'); 
                 }
             }, 60);
         }
 
         function enterExperience(event) {
-            // Stop event bubbling so it doesn't trigger the parent loadingScreen's startSequence
             if(event) event.stopPropagation(); 
             
-            playTechSound('enter'); // Swoosh sound
+            // Set flag so returning from gallery bypasses intro
+            sessionStorage.setItem('hasEnteredApp', 'true');
+            
+            playTechSound('enter'); 
             loadingScreen.classList.add('scale-110', 'opacity-0', 'blur-2xl');
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
                 document.getElementById('main-app').classList.remove('opacity-0');
                 
-                // Trigger hero and nav animations
                 setTimeout(() => {
                     document.getElementById('navbar').classList.remove('-translate-y-10', 'opacity-0');
                     document.getElementById('hero-content').classList.remove('scale-110', 'opacity-0', 'blur-3xl');
@@ -495,95 +470,86 @@
             }, 1000);
         }
 
-        // Sticky header scroll logic
-        const stickyBar = document.getElementById('sticky-bar');
-        const topButtons = document.getElementById('top-buttons');
-
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY > 80;
-            if (scrolled) {
-                stickyBar.classList.remove('max-h-0', 'opacity-0', 'py-0');
-                stickyBar.classList.add('max-h-20', 'opacity-100', 'py-4', 'border-white/5', 'bg-[#020202]/80', 'backdrop-blur-xl');
-                topButtons.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
-            } else {
-                stickyBar.classList.add('max-h-0', 'opacity-0', 'py-0');
-                stickyBar.classList.remove('max-h-20', 'opacity-100', 'py-4', 'border-white/5', 'bg-[#020202]/80', 'backdrop-blur-xl');
-                topButtons.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
-            }
-        });
-
-        // Render Marquee Cards
-        function generateCardsHTML(arr) {
-            return arr.map(item => {
-                const mediaHTML = `<img src="${item.imageUrl}" alt="Saad Rukh Khan Art" class="h-full w-auto object-cover transition-transform duration-1000 group-hover:scale-[1.15]" />`;
-
-                return `
-                <div class="interactive inline-block mx-4 h-[350px] md:h-[450px] relative rounded-[2rem] overflow-hidden border border-white/10 bg-zinc-950 group transition-all duration-500 hover:border-red-600/50 hover:scale-[1.03] shadow-[0_0_30px_rgba(0,0,0,0.5)] flex-shrink-0 cursor-none" 
-                     onclick="openArtworkModal('${item.imageUrl}', '${item.tweetUrl}')">
-                    ${mediaHTML}
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"></div>
-                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-6 group-hover:translate-y-0">
-                        <div class="bg-red-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full flex items-center gap-2 shadow-[0_0_30px_rgba(220,38,38,0.6)] whitespace-nowrap">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="animate-pulse"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> VIEW PROJECT
-                        </div>
+        function createCardHTML(id, src, index) {
+            if (!src) return '';
+            const delay = (index % 12) * 0.07;
+            return `
+            <div class="interactive card-reveal inline-block mx-4 h-[350px] md:h-[450px] relative rounded-[2rem] overflow-hidden border border-white/10 bg-zinc-950 group transition-all duration-700 hover:border-red-600/50 hover:scale-[1.03] shadow-[0_0_30px_rgba(0,0,0,0.5)] flex-shrink-0 cursor-none"
+                 style="animation-delay:${delay}s"
+                 onclick="openArtworkModal('${src}')">
+                <img src="${src}" alt="Saad Rukh Khan Art"
+                     class="h-full w-auto object-cover transition-transform duration-[1.6s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.1]" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"></div>
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-6 group-hover:translate-y-0">
+                    <div class="bg-red-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full flex items-center gap-2 shadow-[0_0_30px_rgba(220,38,38,0.6)] whitespace-nowrap">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="animate-pulse"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> VIEW PROJECT
                     </div>
-                </div>`;
-            }).join('');
+                </div>
+            </div>`;
         }
 
-        const r1Html = generateCardsHTML(row1);
-        const r2Html = generateCardsHTML(row2);
+        async function renderRows() {
+            const ids = Array.from({ length: 110 }, (_, i) => i + 1);
+            const srcs = await Promise.all(ids.map(id => resolveImageSrc(id)));
 
-        // FIX: Double identical block wrapping for seamless translation at -100%
-        document.getElementById('row1-container-1').innerHTML = r1Html;
-        document.getElementById('row1-container-2').innerHTML = r1Html;
-        
-        document.getElementById('row2-container-1').innerHTML = r2Html;
-        document.getElementById('row2-container-2').innerHTML = r2Html;
+            const row1ids = ids.slice(0, 37);
+            const row2ids = ids.slice(37, 74);
+            const row3ids = ids.slice(74, 110);
+
+            const r1Html = row1ids.map((id, i) => createCardHTML(id, srcs[id - 1], i)).join('');
+            const r2Html = row2ids.map((id, i) => createCardHTML(id, srcs[id - 1], i)).join('');
+            const r3Html = row3ids.map((id, i) => createCardHTML(id, srcs[id - 1], i)).join('');
+
+            document.getElementById('row1-container-1').innerHTML = r1Html;
+            document.getElementById('row1-container-2').innerHTML = r1Html;
+
+            document.getElementById('row2-container-1').innerHTML = r2Html;
+            document.getElementById('row2-container-2').innerHTML = r2Html;
+
+            document.getElementById('row3-container-1').innerHTML = r3Html;
+            document.getElementById('row3-container-2').innerHTML = r3Html;
+
+            setupCursorHoverEvents();
+        }
+
+        renderRows();
 
         // Modal Logic
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            playTechSound('hover'); // Play tick sound when opening modal
+            playTechSound('hover');
         }
 
         function closeModal(id) {
             const modal = document.getElementById(id);
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            playTechSound('hover'); // Play tick sound when closing modal
+            playTechSound('hover');
             
-            // Agar artwork modal close kiya hai toh media saaf kar do taaki background me play na ho
             if(id === 'artwork-modal') {
                 document.getElementById('artwork-media-container').innerHTML = '';
             }
         }
 
-        function openArtworkModal(imgUrl, tweetUrl) {
+        function openArtworkModal(imgUrl) {
             const mediaContainer = document.getElementById('artwork-media-container');
-            
             mediaContainer.innerHTML = `<img src="${imgUrl}" alt="Artwork Focus" class="max-h-[70vh] w-auto object-contain" />`;
-
-            document.getElementById('artwork-tweet-link').href = tweetUrl;
             openModal('artwork-modal');
         }
 
         function copyDiscord() {
-            navigator.clipboard.writeText('mdsaad111').catch(() => {
-                const el = document.createElement('textarea');
-                el.value = 'mdsaad111';
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
-            });
+            const el = document.createElement('textarea');
+            el.value = 'mdsaad111';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
             
-            playTechSound('ready'); // Success sound on copy
+            playTechSound('ready');
 
-            // Visual feedback
             const textEl = document.getElementById('discord-id');
             const originalText = textEl.innerText;
             textEl.innerText = "COPIED!";
@@ -591,9 +557,6 @@
                 textEl.innerText = originalText;
             }, 1500);
         }
-
-        // Initialize cursor events after injecting HTML
-        setupCursorHoverEvents();
 
     </script>
 </body>
