@@ -67,21 +67,21 @@
         <div id="cursor-ring" class="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-red-600 transition-all duration-500 ease-out w-8 h-8"></div>
     </div>
 
-    <!-- LOADING SCREEN (Click to Start logic added) -->
+    <!-- LOADING SCREEN -->
     <div id="loading-screen" class="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.76,0,0.24,1)] scale-100 opacity-100 blur-0 cursor-pointer" onclick="startSequence()">
         <div class="absolute inset-0 pointer-events-none opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
         <div class="absolute top-0 left-0 w-full h-[2px] bg-red-600/50 shadow-[0_0_30px_rgba(220,38,38,1)] animate-scan opacity-50"></div>
 
         <div class="relative z-10 flex flex-col items-center justify-center gap-10 w-full px-4">
             
-            <!-- Initial Prompt to unlock audio -->
-            <div id="init-prompt" class="text-white/80 text-[10px] md:text-xs font-black tracking-[0.5em] uppercase animate-pulse flex items-center gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <!-- Initial Prompt -->
+            <div id="init-prompt" class="text-white/80 text-[10px] md:text-xs font-black tracking-[0.5em] uppercase animate-pulse flex items-center gap-3 text-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden sm:block"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 CLICK ANYWHERE TO INITIALIZE
             </div>
 
-            <!-- Loading content hidden until click -->
-            <div id="loading-content" class="hidden flex-col items-center justify-center gap-10 w-full">
+            <!-- Loading content -->
+            <div id="loading-content" class="hidden flex-col items-center justify-center gap-8 md:gap-10 w-full">
                 <div id="loading-status" class="text-red-600/70 text-[10px] md:text-xs font-black tracking-[0.5em] uppercase h-4 animate-pulse">
                     > INITIATING...
                 </div>
@@ -90,10 +90,10 @@
                     <span id="ready-text" class="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all duration-1000 hidden">SAAD RUKH KHAN</span>
                 </div>
                 <div id="enter-btn-container" class="transition-all duration-1000 opacity-0 translate-y-10 pointer-events-none">
-                    <div onclick="enterExperience(event)" class="interactive group relative px-10 py-4 border border-white/20 overflow-hidden rounded-full hover:border-red-600 transition-colors shadow-2xl">
+                    <div onclick="enterExperience(event)" class="interactive group relative px-6 md:px-10 py-3 md:py-4 border border-white/20 overflow-hidden rounded-full hover:border-red-600 transition-colors shadow-2xl">
                         <div class="absolute inset-0 bg-red-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"></div>
-                        <span class="relative z-10 text-[10px] font-black tracking-[0.6em] text-white transition-colors uppercase flex items-center gap-3">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="group-hover:animate-bounce"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> 
+                        <span class="relative z-10 text-[8px] md:text-[10px] font-black tracking-[0.6em] text-white transition-colors uppercase flex items-center gap-2 md:gap-3">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="group-hover:animate-bounce md:w-[14px] md:h-[14px]"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> 
                             ENTER_EXPERIENCE
                         </span>
                     </div>
@@ -110,14 +110,14 @@
         <div class="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
         <div class="fixed inset-0 pointer-events-none z-[0] opacity-[0.015] bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:100px_100px]"></div>
 
-        <!-- Added items-center here for alignment -->
-        <nav id="navbar" class="fixed top-0 right-0 p-8 md:p-12 flex items-center gap-10 z-[60] text-[10px] font-black tracking-[0.4em] uppercase transition-all duration-1000 -translate-y-10 opacity-0">
+        <!-- Navbar: Centered on mobile, Right aligned on Desktop -->
+        <nav id="navbar" class="fixed top-0 left-0 right-0 md:left-auto p-4 pt-6 md:p-12 flex justify-center md:justify-end items-center gap-4 sm:gap-6 md:gap-10 z-[60] text-[8px] md:text-[10px] font-black tracking-[0.3em] sm:tracking-[0.4em] uppercase transition-all duration-1000 -translate-y-10 opacity-0 mix-blend-difference">
             <button onclick="openModal('experience-modal')" class="interactive hover:text-red-600 transition-all">EXPERIENCE</button>
             <a href="gallery.html" class="interactive hover:text-red-600 transition-all">GALLERY</a>
-            <button onclick="openModal('contact-modal')" class="interactive bg-white text-black px-8 py-2.5 rounded-full font-black hover:bg-red-600 hover:text-white transition-all text-[9px] hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">CONTACT</button>
+            <button onclick="openModal('contact-modal')" class="interactive bg-white text-black px-4 sm:px-6 md:px-8 py-2 md:py-2.5 rounded-full font-black hover:bg-red-600 hover:text-white transition-all text-[7px] md:text-[9px] hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">CONTACT</button>
         </nav>
 
-        <header id="hero" class="min-h-[50vh] flex flex-col items-center justify-center text-center px-4 pt-20 relative">
+        <header id="hero" class="min-h-[50vh] flex flex-col items-center justify-center text-center px-4 pt-24 md:pt-20 relative">
             <div class="absolute top-1/2 -translate-y-1/2 w-full overflow-hidden pointer-events-none opacity-[0.02] flex select-none z-0">
                 <div class="flex shrink-0 animate-marquee whitespace-nowrap text-[15vw] font-black italic uppercase">
                     3D MOTION ARTIST • WEB3 CREATOR • VISUAL DESIGNER •&nbsp;
@@ -127,52 +127,49 @@
                 </div>
             </div>
 
-            <div class="relative z-10 transition-all duration-1000 delay-300 scale-110 opacity-0 blur-3xl" id="hero-content">
-                <h1 class="text-6xl md:text-[11vw] font-black leading-none tracking-tighter uppercase italic text-white mb-6 drop-shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+            <div class="relative z-10 transition-all duration-1000 delay-300 scale-110 opacity-0 blur-3xl w-full" id="hero-content">
+                <h1 class="text-[12vw] sm:text-6xl md:text-[11vw] font-black leading-none tracking-tighter uppercase italic text-white mb-4 md:mb-6 drop-shadow-[0_0_50px_rgba(255,255,255,0.05)] break-words">
                     SAAD RUKH KHAN
                 </h1>
-                <div class="flex items-center justify-center gap-8">
-                    <div class="h-px w-16 md:w-32 bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
-                    <p class="text-[10px] md:text-xl font-black uppercase tracking-[0.8em] text-red-600 italic">
+                <div class="flex items-center justify-center gap-4 md:gap-8">
+                    <div class="h-px w-8 sm:w-16 md:w-32 bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
+                    <p class="text-[8px] sm:text-[10px] md:text-xl font-black uppercase tracking-[0.6em] md:tracking-[0.8em] text-red-600 italic text-center">
                         2D CONCEPTS • 3D MOTION
                     </p>
-                    <div class="h-px w-16 md:w-32 bg-gradient-to-l from-transparent via-red-600 to-transparent"></div>
+                    <div class="h-px w-8 sm:w-16 md:w-32 bg-gradient-to-l from-transparent via-red-600 to-transparent"></div>
                 </div>
             </div>
         </header>
 
         <!-- INFINITE MARQUEE SECTION -->
-        <main class="pb-40 space-y-12 py-10 select-none overflow-hidden relative z-10" style="-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
+        <main class="pb-20 md:pb-40 space-y-6 md:space-y-12 py-6 md:py-10 select-none overflow-hidden relative z-10" style="-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
             
-            <!-- ROW 1 (Right to Left) -->
-            <div class="relative flex group py-4 flex-nowrap">
+            <div class="relative flex group py-2 md:py-4 flex-nowrap">
                 <div id="row1-container-1" class="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"></div>
                 <div id="row1-container-2" class="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"></div>
             </div>
 
-            <!-- ROW 2 (Left to Right) -->
-            <div class="relative flex group py-4 flex-nowrap">
+            <div class="relative flex group py-2 md:py-4 flex-nowrap">
                 <div id="row2-container-1" class="flex shrink-0 animate-marquee-reverse items-center group-hover:[animation-play-state:paused]"></div>
                 <div id="row2-container-2" class="flex shrink-0 animate-marquee-reverse items-center group-hover:[animation-play-state:paused]"></div>
             </div>
 
-            <!-- ROW 3 (Right to Left) -->
-            <div class="relative flex group py-4 flex-nowrap">
+            <div class="relative flex group py-2 md:py-4 flex-nowrap">
                 <div id="row3-container-1" class="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"></div>
                 <div id="row3-container-2" class="flex shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]"></div>
             </div>
         </main>
 
-        <footer class="p-24 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-12 bg-zinc-950/20 relative z-10">
+        <footer class="p-8 py-16 md:p-24 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12 bg-zinc-950/20 relative z-10 text-center md:text-left">
             <div class="flex flex-col items-center md:items-start gap-2">
-                <p class="text-white font-black italic text-4xl tracking-tighter">SAAD RUKH KHAN</p>
-                <p class="text-zinc-700 text-[10px] font-black tracking-[0.5em] uppercase">VISUAL ARCHIVE © 2026</p>
+                <p class="text-white font-black italic text-3xl md:text-4xl tracking-tighter">SAAD RUKH KHAN</p>
+                <p class="text-zinc-700 text-[9px] md:text-[10px] font-black tracking-[0.5em] uppercase">VISUAL ARCHIVE © 2026</p>
             </div>
-            <div class="flex gap-14 items-center">
-                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-150">
+            <div class="flex gap-10 md:gap-14 items-center">
+                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-125 md:hover:scale-150">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
                 </a>
-                <button onclick="openModal('contact-modal')" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-150">
+                <button onclick="openModal('contact-modal')" class="interactive text-zinc-600 hover:text-white transition-all transform hover:scale-125 md:hover:scale-150">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" /></svg>
                 </button>
             </div>
@@ -180,8 +177,8 @@
 
         <!-- Global Glow Effects -->
         <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
-            <div class="absolute top-[30%] right-[-10%] w-[50%] h-[50%] bg-red-600/5 blur-[200px] rounded-full animate-pulse"></div>
-            <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-zinc-900/20 blur-[200px] rounded-full"></div>
+            <div class="absolute top-[30%] right-[-10%] w-[80%] md:w-[50%] h-[50%] bg-red-600/5 blur-[150px] md:blur-[200px] rounded-full animate-pulse"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[80%] md:w-[50%] h-[50%] bg-zinc-900/20 blur-[150px] md:blur-[200px] rounded-full"></div>
         </div>
 
     </div> <!-- End Main App -->
@@ -189,44 +186,44 @@
     <!-- ARTWORK MODAL -->
     <div id="artwork-modal" class="fixed inset-0 bg-black/90 z-[200] flex-col items-center justify-center p-4 md:p-10 backdrop-blur-2xl cursor-pointer hidden" onclick="closeModal('artwork-modal')">
         <div class="relative max-w-5xl w-full flex flex-col items-center gap-6 animate-in zoom-in-95 duration-500">
-            <div id="artwork-media-container" class="w-auto bg-black rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-red-600/20 shadow-[0_0_80px_rgba(220,38,38,0.25)] flex items-center justify-center">
-                <!-- Media yahan inject hoga -->
+            <div id="artwork-media-container" class="w-full md:w-auto bg-black rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-red-600/20 shadow-[0_0_80px_rgba(220,38,38,0.25)] flex items-center justify-center">
+                <!-- Media injected via JS -->
             </div>
         </div>
     </div>
 
     <!-- EXPERIENCE MODAL -->
     <div id="experience-modal" class="fixed inset-0 bg-black/95 z-[100] items-center justify-center p-4 backdrop-blur-3xl hidden" onclick="closeModal('experience-modal')">
-        <div class="bg-zinc-900/60 border border-red-600/20 p-10 md:p-14 rounded-[3.5rem] max-w-lg w-full relative shadow-[0_0_100px_rgba(220,38,38,0.15)] cursor-default" onclick="event.stopPropagation()">
-            <button onclick="closeModal('experience-modal')" class="interactive absolute top-8 right-8 text-white/50 hover:text-red-600 transition-colors hover:rotate-90">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <div class="bg-zinc-900/60 border border-red-600/20 p-8 md:p-14 rounded-[2.5rem] md:rounded-[3.5rem] max-w-lg w-full relative shadow-[0_0_100px_rgba(220,38,38,0.15)] cursor-default" onclick="event.stopPropagation()">
+            <button onclick="closeModal('experience-modal')" class="interactive absolute top-6 right-6 md:top-8 md:right-8 text-white/50 hover:text-red-600 transition-colors hover:rotate-90 p-2 md:p-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="md:w-6 md:h-6"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <h2 class="text-5xl font-black text-white italic uppercase mb-10 tracking-tighter">EXPERIENCE</h2>
+            <h2 class="text-3xl md:text-5xl font-black text-white italic uppercase mb-8 md:mb-10 tracking-tighter">EXPERIENCE</h2>
             
-            <div class="space-y-10">
-                <ul class="border-l-2 border-red-600 pl-6 ml-2 space-y-6">
+            <div class="space-y-8 md:space-y-10">
+                <ul class="border-l-2 border-red-600 pl-4 md:pl-6 ml-2 space-y-4 md:space-y-6">
                     <li class="relative">
-                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
-                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Worked as a Designer for an Indian company.</p>
+                        <div class="absolute -left-[23px] md:-left-[31px] top-1.5 w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
+                        <p class="text-zinc-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">Worked as a Designer for an Indian company.</p>
                     </li>
                     <li class="relative">
-                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
-                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Worked as an Animator for a Start up.</p>
+                        <div class="absolute -left-[23px] md:-left-[31px] top-1.5 w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
+                        <p class="text-zinc-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">Worked as an Animator for a Start up.</p>
                     </li>
                     <li class="relative">
-                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
-                        <p class="text-zinc-300 text-sm md:text-base leading-relaxed font-medium">Worked as a moderator in Many web 3 projects.</p>
+                        <div class="absolute -left-[23px] md:-left-[31px] top-1.5 w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
+                        <p class="text-zinc-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">Worked as a moderator in Many web 3 projects.</p>
                     </li>
                 </ul>
 
-                <div class="bg-white/5 rounded-[2rem] p-8 border border-white/5 space-y-6 hover:border-red-600/30 transition-colors duration-500 hover:shadow-[0_0_30px_rgba(220,38,38,0.1)]">
+                <div class="bg-white/5 rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-8 border border-white/5 space-y-4 md:space-y-6 hover:border-red-600/30 transition-colors duration-500 hover:shadow-[0_0_30px_rgba(220,38,38,0.1)]">
                     <div>
-                        <h4 class="text-red-600 font-black uppercase text-[10px] tracking-[0.2em] mb-2 italic">Mastery</h4>
-                        <p class="text-white font-bold text-xl uppercase italic tracking-tighter">Photoshop / After Effects</p>
+                        <h4 class="text-red-600 font-black uppercase text-[9px] md:text-[10px] tracking-[0.2em] mb-1 md:mb-2 italic">Mastery</h4>
+                        <p class="text-white font-bold text-base sm:text-lg md:text-xl uppercase italic tracking-tighter">Photoshop / After Effects</p>
                     </div>
                     <div>
-                        <h4 class="text-zinc-500 font-black uppercase text-[10px] tracking-[0.2em] mb-2 italic">Expanding</h4>
-                        <p class="text-white font-bold text-xl uppercase italic tracking-tighter">Blender & Web Development</p>
+                        <h4 class="text-zinc-500 font-black uppercase text-[9px] md:text-[10px] tracking-[0.2em] mb-1 md:mb-2 italic">Expanding</h4>
+                        <p class="text-white font-bold text-base sm:text-lg md:text-xl uppercase italic tracking-tighter">Blender & Web Development</p>
                     </div>
                 </div>
             </div>
@@ -235,19 +232,19 @@
 
     <!-- CONTACT MODAL -->
     <div id="contact-modal" class="fixed inset-0 bg-black/95 z-[100] items-center justify-center p-4 backdrop-blur-3xl hidden" onclick="closeModal('contact-modal')">
-        <div class="bg-zinc-900/60 border border-red-600/20 p-14 rounded-[3.5rem] max-w-md w-full text-center relative shadow-[0_0_100px_rgba(220,38,38,0.15)] cursor-default" onclick="event.stopPropagation()">
-            <button onclick="closeModal('contact-modal')" class="interactive absolute top-8 right-8 text-white/50 hover:text-red-600 transition-colors hover:rotate-90">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <div class="bg-zinc-900/60 border border-red-600/20 p-8 md:p-14 rounded-[2.5rem] md:rounded-[3.5rem] max-w-md w-full text-center relative shadow-[0_0_100px_rgba(220,38,38,0.15)] cursor-default" onclick="event.stopPropagation()">
+            <button onclick="closeModal('contact-modal')" class="interactive absolute top-6 right-6 md:top-8 md:right-8 text-white/50 hover:text-red-600 transition-colors hover:rotate-90 p-2 md:p-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="md:w-6 md:h-6"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <h2 class="text-5xl font-black mb-12 text-white italic uppercase tracking-tighter">CONNECT</h2>
-            <div class="space-y-6">
-                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive block p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg> 
-                    <p class="font-black text-xl italic tracking-tighter uppercase group-hover:scale-105 transition-transform">@SaadRukhKhan_</p>
+            <h2 class="text-3xl md:text-5xl font-black mb-8 md:mb-12 text-white italic uppercase tracking-tighter">CONNECT</h2>
+            <div class="space-y-4 md:space-y-6">
+                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive block p-5 md:p-8 bg-white/5 border border-white/5 rounded-[1.5rem] md:rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-3 md:gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="md:w-6 md:h-6 group-hover:scale-110 transition-transform"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg> 
+                    <p class="font-black text-sm md:text-xl italic tracking-tighter uppercase group-hover:scale-105 transition-transform">@SaadRukhKhan_</p>
                 </a>
-                <div onclick="copyDiscord()" title="Click to copy Discord ID" class="interactive w-full p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="group-hover:scale-110 transition-transform"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" /></svg>
-                    <p class="font-black text-xl italic tracking-tighter uppercase group-hover:scale-105 transition-transform" id="discord-id">mdsaad111</p>
+                <div onclick="copyDiscord()" title="Click to copy Discord ID" class="interactive w-full p-5 md:p-8 bg-white/5 border border-white/5 rounded-[1.5rem] md:rounded-[2.5rem] hover:bg-red-600 group transition-all flex items-center justify-center gap-3 md:gap-4 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="md:w-6 md:h-6 group-hover:scale-110 transition-transform"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" /></svg>
+                    <p class="font-black text-sm md:text-xl italic tracking-tighter uppercase group-hover:scale-105 transition-transform" id="discord-id">mdsaad111</p>
                 </div>
             </div>
         </div>
@@ -294,7 +291,6 @@
                 gainNode.connect(audioCtx.destination);
 
                 if (type === 'tick') {
-                    // Typing / Scrambling tick
                     osc.type = 'square';
                     osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
                     gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
@@ -302,7 +298,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.05);
                 } else if (type === 'beep') {
-                    // Status update beep
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
                     gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
@@ -310,7 +305,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.1);
                 } else if (type === 'ready') {
-                    // Access granted chime
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(1600, audioCtx.currentTime + 0.2);
@@ -319,7 +313,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.3);
                 } else if (type === 'enter') {
-                    // Deep sci-fi bass drop swoosh
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(400, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.8);
@@ -328,7 +321,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.8);
                 } else if (type === 'hover') {
-                    // Subtle hover tick
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(2000, audioCtx.currentTime);
                     gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
@@ -474,16 +466,16 @@
             if (!src) return '';
             const delay = (index % 12) * 0.07;
             return `
-            <div class="interactive card-reveal inline-block mx-4 h-[350px] md:h-[450px] relative rounded-[2rem] overflow-hidden border border-white/10 bg-zinc-950 group transition-all duration-700 hover:border-red-600/50 hover:scale-[1.03] shadow-[0_0_30px_rgba(0,0,0,0.5)] flex-shrink-0 cursor-none"
+            <div class="interactive card-reveal inline-block mx-2 md:mx-4 h-[250px] sm:h-[350px] md:h-[450px] relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/10 bg-zinc-950 group transition-all duration-700 hover:border-red-600/50 hover:scale-[1.03] shadow-[0_0_30px_rgba(0,0,0,0.5)] flex-shrink-0 cursor-none"
                  style="animation-delay:${delay}s"
                  onclick="openArtworkModal('${src}')">
                 <img src="${src}" alt="Saad Rukh Khan Art"
                      class="h-full w-auto object-cover transition-transform duration-[1.6s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.1]" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"></div>
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-6 group-hover:translate-y-0">
-                    <div class="bg-red-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full flex items-center gap-2 shadow-[0_0_30px_rgba(220,38,38,0.6)] whitespace-nowrap">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="animate-pulse"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> VIEW PROJECT
+                <div class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-6 group-hover:translate-y-0">
+                    <div class="bg-red-600 text-white text-[8px] md:text-[9px] font-black uppercase tracking-widest px-4 md:px-6 py-2 md:py-2.5 rounded-full flex items-center gap-2 shadow-[0_0_30px_rgba(220,38,38,0.6)] whitespace-nowrap">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="animate-pulse md:w-3 md:h-3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> VIEW PROJECT
                     </div>
                 </div>
             </div>`;
@@ -536,7 +528,7 @@
 
         function openArtworkModal(imgUrl) {
             const mediaContainer = document.getElementById('artwork-media-container');
-            mediaContainer.innerHTML = `<img src="${imgUrl}" alt="Artwork Focus" class="max-h-[70vh] w-auto object-contain" />`;
+            mediaContainer.innerHTML = `<img src="${imgUrl}" alt="Artwork Focus" class="max-h-[70vh] w-full object-contain md:w-auto" />`;
             openModal('artwork-modal');
         }
 
