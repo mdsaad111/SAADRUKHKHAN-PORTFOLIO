@@ -3361,7 +3361,7 @@
                 const cardHtml = `
                     <div class="marquee-card" onclick="window.openModal(${i})">
                         <img src="${i}.jpg" alt="Artwork ${i}" onerror="window.handleImgFallback(this, ${i})">
-                        <span class="marquee-card-badge">${tag} // #${String(i).padStart(3, '0')}</span>
+                        <span class="marquee-card-badge">${tag} // #${i}</span>
                     </div>
                 `;
                 htmlRow1 += cardHtml;
@@ -3372,7 +3372,7 @@
                 const cardHtml = `
                     <div class="marquee-card" onclick="window.openModal(${i})">
                         <img src="${i}.jpg" alt="Artwork ${i}" onerror="window.handleImgFallback(this, ${i})">
-                        <span class="marquee-card-badge">${tag} // #${String(i).padStart(3, '0')}</span>
+                        <span class="marquee-card-badge">${tag} // #${i}</span>
                     </div>
                 `;
                 htmlRow2 += cardHtml;
@@ -3391,16 +3391,7 @@
         let displayedCount = 24;
         let activeFilter = 'all';
 
-        const titlesPool = [
-            "Cybernetic Sentinel", "Dystopian Megastructure", "Orbital Dreadnought",
-            "Void Strider Protocol", "Chrono Core Alpha", "Subterranean Forge",
-            "Neural Interface V", "Helios Citadel", "Mecha Ronin Mk. II",
-            "Exo-Atmosphere Scout", "Abyssal Leviathan", "Vector Drift 09",
-            "Hyperion Reactor", "Neon Shinjuku 2088", "Spectral Vanguard",
-            "Titan Bastion", "Quantum Monolith", "Kinetics Protocol X",
-            "Zero-G Horizon", "Aether Architect", "Apex Interceptor",
-            "Black Hole Singularity", "Synthetic Rebirth", "Dark Matter Relic"
-        ];
+        // Titles removed — cards show #number only
 
         const categoriesMap = ['2d', '3d', 'web3', 'mecha'];
         const categoryLabels = {
@@ -3443,7 +3434,7 @@
                     
                     <!-- Tech Overlays -->
                     <text x="30" y="50" font-family="'Space Grotesk', monospace" font-size="12" fill="#71717a" letter-spacing="3">// ARTIFACT ARCHIVE</text>
-                    <text x="30" y="380" font-family="'Space Grotesk', monospace" font-size="28" font-weight="bold" fill="#ffffff">#${String(index).padStart(3, '0')}</text>
+                    <text x="30" y="380" font-family="'Space Grotesk', monospace" font-size="28" font-weight="bold" fill="#ffffff">#${index}</text>
                     <text x="570" y="380" font-family="'Space Grotesk', monospace" font-size="12" fill="#dc2626" text-anchor="end" letter-spacing="2">4K UHD</text>
                 </svg>
             `;
@@ -3452,11 +3443,10 @@
 
         function getArtworkData(index) {
             const cat = categoriesMap[(index - 1) % categoriesMap.length];
-            const title = titlesPool[(index - 1) % titlesPool.length] + (index > 24 ? ` #${index}` : '');
             const tools = toolsPool[(index - 1) % toolsPool.length];
             return {
                 id: index,
-                title: title,
+                title: `#${index}`,
                 categoryKey: cat,
                 categoryName: categoryLabels[cat],
                 tools: tools,
@@ -3498,7 +3488,7 @@
                             <!-- Overlay Info -->
                             <div class="art-card-overlay">
                                 <div class="card-meta-row">
-                                    <span class="card-id-tag">#${String(data.id).padStart(3, '0')}</span>
+                                    <span class="card-id-tag">#${data.id}</span>
                                     <span class="card-category-pill">${data.categoryName}</span>
                                 </div>
                                 <h4 class="card-title">${data.title}</h4>
@@ -3619,7 +3609,7 @@
             currentModalId = id;
             const data = getArtworkData(id);
 
-            modalId.innerText = `ARTIFACT_#${String(data.id).padStart(3, '0')}`;
+            modalId.innerText = `ARTIFACT_#${data.id}`;
             modalTitle.innerText = data.title;
             modalCategory.innerText = data.categoryName;
             modalTools.innerText = data.tools;
