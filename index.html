@@ -3,1126 +3,3863 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saad Rukh Khan — 2D Concepts • 3D Motion</title>
+    <title>Saad Rukh Khan — 2D Concepts • 3D Motion • Web3 Director</title>
     <meta name="description" content="Portfolio of Saad Rukh Khan — 2D Concept Artist, 3D Motion Designer, and Web3 Creator.">
 
     <!-- Preconnect for fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CDN Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
     <style>
         /* ========== RESET & BASE ========== */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
         :root {
             --bg: #050505;
-            --bg-card: #0a0a0a;
+            --bg-card: rgba(14, 14, 17, 0.75);
+            --bg-card-hover: rgba(22, 22, 28, 0.88);
             --text: #f5f5f5;
-            --text-dim: #71717a;
+            --text-dim: #8e8e93;
+            --text-muted: #52525b;
             --accent: #dc2626;
-            --accent-glow: rgba(220, 38, 38, 0.35);
-            --border: rgba(255,255,255,0.06);
+            --accent-bright: #ef4444;
+            --accent-laser: #ff1e27;
+            --accent-glow: rgba(220, 38, 38, 0.45);
+            --accent-subtle: rgba(220, 38, 38, 0.12);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(220, 38, 38, 0.5);
+            --radius-sm: 0.5rem;
             --radius: 1.25rem;
             --radius-lg: 2rem;
             --font-body: 'Inter', system-ui, -apple-system, sans-serif;
             --font-display: 'Space Grotesk', 'Inter', sans-serif;
+            --glass-blur: blur(20px);
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         html {
             scroll-behavior: smooth;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) #0a0a0a;
         }
-        html::-webkit-scrollbar { display: none; }
+
+        html::-webkit-scrollbar {
+            width: 6px;
+        }
+        html::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        html::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        html::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
 
         body {
             background: var(--bg);
             color: var(--text);
             font-family: var(--font-body);
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+            min-height: 100vh;
+            cursor: default;
         }
 
         ::selection {
             background: var(--accent);
-            color: #fff;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
 
-        img { display: block; max-width: 100%; }
-        button { border: none; background: none; color: inherit; font: inherit; cursor: pointer; }
-        a { color: inherit; text-decoration: none; }
+        img { display: block; max-width: 100%; height: auto; }
+        button { border: none; background: none; color: inherit; font: inherit; cursor: pointer; outline: none; }
+        a { color: inherit; text-decoration: none; outline: none; }
 
-        /* ========== CUSTOM CURSOR (desktop) ========== */
-        @media (min-width: 769px) {
-            * { cursor: none !important; }
-        }
-
-        #custom-cursor {
+        /* ========== POST-PROCESSING OVERLAYS ========== */
+        .noise-overlay {
             position: fixed;
-            top: 0; left: 0;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
-            z-index: 99999;
-            mix-blend-mode: difference;
-            transition: none;
+            z-index: 9990;
+            opacity: 0.038;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-        #custom-cursor .dot {
-            position: absolute;
-            width: 8px; height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.25s, height 0.25s;
-        }
-        #custom-cursor .ring {
-            position: absolute;
-            width: 40px; height: 40px;
-            border: 1.5px solid var(--accent);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s cubic-bezier(.25,.46,.45,.94), height 0.4s cubic-bezier(.25,.46,.45,.94), background 0.3s;
-        }
-        #custom-cursor.hovering .dot { width: 4px; height: 4px; }
-        #custom-cursor.hovering .ring { width: 64px; height: 64px; background: rgba(220,38,38,0.08); }
 
-        /* ========== LOADING SCREEN ========== */
+        .vignette-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9989;
+            background: radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.72) 100%);
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9988;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0, 0, 0, 0.22) 50%, rgba(0, 0, 0, 0.22));
+            background-size: 100% 4px;
+            opacity: 0.45;
+        }
+
+        /* ========== CANVAS BACKGROUNDS ========== */
+        #webgl-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            display: block;
+        }
+
+        #cursor-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9997;
+        }
+
+        /* ========== CUSTOM CURSOR ========== */
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-laser);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px var(--accent-bright), 0 0 20px var(--accent);
+            transform: translate(-50%, -50%);
+            transition: opacity 0.2s ease;
+        }
+
+        .cursor-ring {
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid rgba(220, 38, 38, 0.55);
+            background: rgba(220, 38, 38, 0.04);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.3s ease,
+                        background-color 0.3s ease,
+                        transform 0.1s ease-out;
+            backdrop-filter: blur(1px);
+        }
+
+        .cursor-ring.hovering {
+            width: 68px;
+            height: 68px;
+            border-color: var(--accent-laser);
+            background: rgba(220, 38, 38, 0.15);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-dot, .cursor-ring, #cursor-canvas { display: none !important; }
+        }
+
+        /* ========== CINEMATIC LOADER SCREEN ========== */
         #loader {
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #030304;
             z-index: 10000;
-            background: var(--bg);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s cubic-bezier(.76,0,.24,1), transform 0.8s cubic-bezier(.76,0,.24,1), filter 0.8s;
-        }
-        #loader.exiting {
-            opacity: 0;
-            transform: scale(1.05);
-            filter: blur(20px);
-            pointer-events: none;
-        }
-
-        #loader .scan-line {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 2px;
-            background: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
-            opacity: 0;
-            animation: scan 3s cubic-bezier(.4,0,.2,1) infinite;
-        }
-
-        #loader .init-prompt {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.5em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.6);
-            animation: pulse 2s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #loader .loading-content {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 2.5rem;
-            width: 100%;
-            padding: 0 1rem;
-        }
-
-        #loader .status {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.5em;
-            text-transform: uppercase;
-            color: rgba(220,38,38,0.6);
-            animation: pulse 1.5s ease-in-out infinite;
-            height: 1em;
-        }
-
-        #loader .title-area {
-            font-family: var(--font-display);
-            font-size: clamp(1.8rem, 6vw, 5rem);
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            text-align: center;
-            line-height: 1.1;
-        }
-
-        #loader .scramble { color: #3f3f46; }
-        #loader .revealed {
-            color: #fff;
-            text-shadow: 0 0 60px rgba(255,255,255,0.08);
-            display: none;
-        }
-
-        #loader .enter-btn {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s, transform 0.8s cubic-bezier(.22,1,.36,1);
-            pointer-events: none;
-        }
-        #loader .enter-btn.visible {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        #loader .enter-btn button {
-            position: relative;
-            padding: 14px 36px;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 100px;
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.5em;
-            text-transform: uppercase;
             overflow: hidden;
-            transition: border-color 0.4s, box-shadow 0.4s;
+            transition: opacity 0.8s cubic-bezier(0.8, 0, 0.2, 1), visibility 0.8s ease;
         }
-        #loader .enter-btn button:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+
+        #loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
-        #loader .enter-btn button .fill {
+
+        .loader-bg-grid {
             position: absolute;
             inset: 0;
-            background: var(--accent);
-            transform: translateY(100%);
-            transition: transform 0.5s cubic-bezier(.76,0,.24,1);
+            background-image: linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
         }
-        #loader .enter-btn button:hover .fill { transform: translateY(0); }
-        #loader .enter-btn button span { position: relative; z-index: 1; }
 
-        /* ========== NAV ========== */
-        #navbar {
-            position: fixed;
-            top: 0; right: 0; left: 0;
-            z-index: 60;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            padding: 1.5rem 2rem;
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.4em;
+        .loader-hud-tl {
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            mix-blend-mode: difference;
-            transform: translateY(-40px);
-            opacity: 0;
-            transition: transform 0.8s cubic-bezier(.22,1,.36,1), opacity 0.8s;
-        }
-        #navbar.visible { transform: translateY(0); opacity: 1; }
-
-        #navbar a, #navbar button { transition: color 0.25s; }
-        #navbar a:hover, #navbar button:hover { color: var(--accent); }
-
-        #navbar .cta {
-            background: #fff;
-            color: #000;
-            padding: 8px 24px;
-            border-radius: 100px;
-            font-size: 8px;
-            font-weight: 900;
-            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-        }
-        #navbar .cta:hover {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        @media (min-width: 769px) {
-            #navbar { justify-content: flex-end; padding: 2.5rem 3.5rem; gap: 3rem; }
+        .loader-hud-br {
+            position: absolute;
+            bottom: 2rem;
+            right: 2.5rem;
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
         }
 
-        /* ========== HERO ========== */
-        #hero {
-            min-height: 45vh;
+        .loader-core {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .loader-canvas-container {
+            width: 240px;
+            height: 240px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loader-3d-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .loader-ring-svg {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            transform: rotate(-90deg);
+        }
+
+        .loader-ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 3;
+        }
+
+        .loader-ring-bar {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 628;
+            stroke-dashoffset: 628;
+            transition: stroke-dashoffset 0.15s ease-out;
+            filter: drop-shadow(0 0 10px var(--accent-bright));
+        }
+
+        .loader-center-content {
+            position: absolute;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 7rem 1rem 2rem;
+        }
+
+        .loader-percent {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .loader-status-text {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            min-height: 1.2rem;
+        }
+
+        .btn-initialize {
+            margin-top: 2rem;
+            padding: 0.9rem 2.4rem;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(185, 28, 28, 0.95));
+            border: 1px solid var(--accent-bright);
+            border-radius: 9999px;
+            color: #ffffff;
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 30px var(--accent-glow), inset 0 0 15px rgba(255,255,255,0.25);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
             position: relative;
             overflow: hidden;
-        }
-
-        #hero .bg-text {
-            position: absolute;
-            top: 50%; left: 0;
-            transform: translateY(-50%);
-            width: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            opacity: 0.015;
-            display: flex;
-            white-space: nowrap;
-            font-family: var(--font-display);
-            font-size: 15vw;
-            font-weight: 900;
-            font-style: italic;
-            text-transform: uppercase;
-            user-select: none;
-        }
-        #hero .bg-text .track {
-            display: flex;
-            flex-shrink: 0;
-            animation: marquee 100s linear infinite;
-        }
-
-        #hero-content {
-            position: relative; z-index: 1;
-            transform: scale(1.08);
+            transform: scale(0.9);
             opacity: 0;
-            filter: blur(30px);
-            transition: transform 1s cubic-bezier(.22,1,.36,1), opacity 1s, filter 1s;
-        }
-        #hero-content.visible {
-            transform: scale(1);
-            opacity: 1;
-            filter: blur(0);
         }
 
-        #hero h1 {
+        .btn-initialize.visible {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            animation: initAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes initAppear {
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-initialize:hover {
+            transform: scale(1.06);
+            background: var(--accent-laser);
+            box-shadow: 0 0 50px rgba(255, 30, 39, 0.7), inset 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        /* ========== FLOATING GLASS NAVBAR ========== */
+        .nav-wrapper {
+            position: fixed;
+            top: 1.5rem;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 0 1.5rem;
+            pointer-events: none;
+        }
+
+        .navbar {
+            pointer-events: auto;
+            background: rgba(12, 12, 15, 0.72);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            padding: 0.65rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(220, 38, 38, 0.1);
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .navbar:hover {
+            border-color: rgba(220, 38, 38, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(220, 38, 38, 0.2);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
             font-family: var(--font-display);
-            font-size: clamp(2.5rem, 11vw, 9rem);
-            font-weight: 900;
-            font-style: italic;
-            line-height: 0.9;
-            letter-spacing: -0.03em;
-            text-transform: uppercase;
-            text-shadow: 0 0 80px rgba(255,255,255,0.04);
-            margin-bottom: 1.25rem;
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.05em;
+            color: #ffffff;
         }
 
-        #hero .subtitle-row {
+        .nav-brand .brand-badge {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-bright);
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 16px var(--accent-laser); }
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            position: relative;
+            padding: 0.3rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent-bright);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* Sound Toggle Button */
+        .btn-sound {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
-        }
-
-        #hero .subtitle-row .line {
-            height: 1px;
-            width: 60px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        }
-        #hero .subtitle-row p {
-            font-size: clamp(8px, 1.5vw, 18px);
-            font-weight: 800;
-            letter-spacing: 0.6em;
-            text-transform: uppercase;
-            color: var(--accent);
-            font-style: italic;
-        }
-
-        @media (min-width: 769px) {
-            #hero .subtitle-row .line { width: 120px; }
-        }
-
-        /* ========== MARQUEE GALLERY ========== */
-        #gallery {
-            padding: 1rem 0 5rem;
-            overflow: hidden;
+            transition: var(--transition-smooth);
             position: relative;
-            z-index: 1;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+        }
+
+        .btn-sound:hover {
+            border-color: var(--accent);
+            background: rgba(220, 38, 38, 0.15);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .sound-bars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 14px;
+        }
+
+        .sound-bar {
+            width: 2.5px;
+            background: var(--text);
+            border-radius: 1px;
+            transition: height 0.2s ease, background-color 0.2s ease;
+        }
+
+        .sound-bar:nth-child(1) { height: 6px; }
+        .sound-bar:nth-child(2) { height: 12px; }
+        .sound-bar:nth-child(3) { height: 8px; }
+
+        .btn-sound.active .sound-bar {
+            background: var(--accent-bright);
+            animation: soundWave 0.8s infinite ease-in-out alternate;
+        }
+
+        .btn-sound.active .sound-bar:nth-child(1) { animation-delay: 0.1s; }
+        .btn-sound.active .sound-bar:nth-child(2) { animation-delay: 0.3s; }
+        .btn-sound.active .sound-bar:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes soundWave {
+            0% { height: 4px; }
+            100% { height: 14px; }
+        }
+
+        /* Discord Pill in Navbar */
+        .btn-discord-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.05em;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .btn-discord-nav:hover {
+            border-color: var(--accent);
+            background: rgba(220, 38, 38, 0.14);
+            box-shadow: 0 0 20px var(--accent-glow);
+            color: #ffffff;
+        }
+
+        .discord-icon {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: #18181b;
+            color: #ffffff;
+            font-size: 0.68rem;
+            font-family: var(--font-display);
+            letter-spacing: 0.08em;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            border: 1px solid var(--accent);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .btn-discord-nav.copied .tooltip,
+        .btn-discord-card.copied .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero-section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8rem 2rem 4rem 2rem;
+            position: relative;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            text-align: center;
+        }
+
+        .hero-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 1.1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e;
+        }
+
+        .hero-title-container {
+            perspective: 1000px;
+            margin-bottom: 1.5rem;
             user-select: none;
         }
 
-        .gallery-row {
-            display: flex;
-            flex-wrap: nowrap;
-            padding: 0.5rem 0;
-        }
-        .gallery-row:hover .gallery-track { animation-play-state: paused; }
-
-        .gallery-track {
-            display: flex;
-            flex-shrink: 0;
-            align-items: center;
-        }
-        .gallery-track.forward { animation: marquee 120s linear infinite; }
-        .gallery-track.reverse { animation: marquee-reverse 140s linear infinite; }
-
-        .art-card {
-            display: inline-block;
-            flex-shrink: 0;
-            margin: 0 6px;
-            height: 180px;
-            width: 130px;
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3.2rem, 9vw, 8.5rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            color: #ffffff;
             position: relative;
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            transition: border-color 0.5s, transform 0.5s cubic-bezier(.25,.46,.45,.94);
-            animation: cardReveal 0.8s cubic-bezier(.22,1,.36,1) both;
-        }
-        .art-card:hover {
-            border-color: rgba(220,38,38,0.4);
-            transform: scale(1.04);
+            transform-style: preserve-3d;
+            will-change: transform;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0 0.8rem;
         }
 
-        .art-card img {
+        .hero-title .word {
+            display: inline-flex;
+            white-space: nowrap;
+        }
+
+        .hero-title .letter {
+            display: inline-block;
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+            transition: color 0.3s ease;
+        }
+
+        .hero-title .letter:hover {
+            color: var(--accent-laser);
+            text-shadow: 0 0 30px var(--accent-bright);
+        }
+
+        /* Glitch Red Effect on Title */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-wrapper::before,
+        .glitch-wrapper::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            pointer-events: none;
+        }
+
+        .glitch-wrapper::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--accent);
+            opacity: 0.7;
+            animation: glitch-anim-1 3s infinite linear alternate-reverse;
+        }
+
+        .glitch-wrapper::after {
+            left: -2px;
+            text-shadow: 2px 0 #00e5ff;
+            opacity: 0.5;
+            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+            animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(-1px, -2px); }
+            60% { transform: translate(3px, 1px); }
+            80% { transform: translate(1px, -1px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { transform: translate(0); }
+            25% { transform: translate(2px, -1px); }
+            50% { transform: translate(-2px, 2px); }
+            75% { transform: translate(1px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Hero Subtitle with dynamic typewriter */
+        .hero-subtitle-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2.8rem;
+            min-height: 2.2rem;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+        }
+
+        .hero-subtitle .highlight {
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+        }
+
+        .type-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.4em;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: blinkCursor 0.9s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blinkCursor {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Hero CTAs */
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.4rem;
+            background: var(--accent);
+            color: #ffffff;
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px var(--accent-glow);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--accent-laser);
+            box-shadow: 0 15px 45px rgba(255, 30, 39, 0.55);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.2rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: #ffffff;
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Stats HUD */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 960px;
+            padding: 1.6rem 2.4rem;
+            background: rgba(14, 14, 18, 0.6);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1rem;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-number span {
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0.3rem;
+        }
+
+        /* ========== 3D TILTED MARQUEE (ROAD PERSPECTIVE) ========== */
+        .marquee-viewport {
+            width: 100%;
+            overflow: hidden;
+            padding: 5rem 0;
+            position: relative;
+            perspective: 1200px;
+        }
+
+        .marquee-road {
+            transform: rotateX(20deg) rotateY(-8deg) rotateZ(3deg) scale(1.05);
+            transform-style: preserve-3d;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            will-change: transform;
+            transition: transform 0.5s ease;
+        }
+
+        .marquee-road:hover {
+            transform: rotateX(12deg) rotateY(-4deg) rotateZ(1deg) scale(1.02);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            gap: 1.8rem;
+            animation: marqueeSlide 35s linear infinite;
+        }
+
+        .marquee-track.reverse {
+            animation: marqueeSlideReverse 40s linear infinite;
+        }
+
+        @keyframes marqueeSlide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes marqueeSlideReverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .marquee-card {
+            width: 320px;
+            height: 190px;
+            flex-shrink: 0;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .marquee-card:hover {
+            transform: translateY(-8px) scale(1.04);
+            border-color: var(--accent);
+            box-shadow: 0 20px 45px var(--accent-glow);
+        }
+
+        .marquee-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 1.4s cubic-bezier(.25,.46,.45,.94);
+            filter: brightness(0.85) contrast(1.1);
+            transition: transform 0.6s ease, filter 0.6s ease;
         }
-        .art-card:hover img { transform: scale(1.12); }
 
-        .art-card .overlay {
+        .marquee-card:hover img {
+            transform: scale(1.08);
+            filter: brightness(1.05) contrast(1.15);
+        }
+
+        .marquee-card-badge {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 40%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        .art-card:hover .overlay { opacity: 1; }
-
-        .art-card .shine {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.08) 55%, transparent 60%);
-            transform: translateX(-100%);
-            z-index: 2;
-            pointer-events: none;
-        }
-        .art-card:hover .shine { animation: shineSlide 0.8s ease-in-out forwards; }
-
-        .art-card .view-badge {
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translate(-50%, 16px);
-            opacity: 0;
-            transition: opacity 0.5s, transform 0.5s cubic-bezier(.22,1,.36,1);
-            z-index: 3;
-            background: var(--accent);
-            color: #fff;
-            font-size: 7px;
-            font-weight: 900;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            padding: 6px 16px;
-            border-radius: 100px;
-            white-space: nowrap;
-            box-shadow: 0 0 20px var(--accent-glow);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .art-card:hover .view-badge { opacity: 1; transform: translate(-50%, 0); }
-
-        @media (min-width: 640px) {
-            .art-card { height: 250px; width: 180px; margin: 0 10px; }
-        }
-        @media (min-width: 769px) {
-            .art-card { height: 340px; width: 240px; margin: 0 14px; border-radius: var(--radius-lg); }
-            .art-card .view-badge { font-size: 8px; padding: 8px 20px; bottom: 18px; }
-        }
-        @media (min-width: 1280px) {
-            .art-card { height: 420px; width: 300px; }
-        }
-
-        /* ========== FOOTER ========== */
-        footer {
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid var(--border);
-            padding: 4rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-            text-align: center;
-        }
-        footer .brand {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: -0.03em;
-        }
-        footer .copy {
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-        }
-        footer .socials {
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-        }
-        footer .socials a, footer .socials button {
-            color: var(--text-dim);
-            transition: color 0.3s, transform 0.3s;
-        }
-        footer .socials a:hover, footer .socials button:hover {
-            color: #fff;
-            transform: scale(1.2);
-        }
-
-        @media (min-width: 769px) {
-            footer {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 5rem 4rem;
-                text-align: left;
-            }
-        }
-
-        /* ========== MODALS ========== */
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 200;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            background: rgba(0,0,0,0.92);
-            -webkit-backdrop-filter: blur(24px);
-            backdrop-filter: blur(24px);
-        }
-        .modal.open { display: flex; }
-
-        .modal-box {
-            background: rgba(24,24,27,0.85);
-            border: 1px solid rgba(220,38,38,0.15);
-            border-radius: var(--radius-lg);
-            padding: 2.5rem;
-            max-width: 480px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 0 80px rgba(220,38,38,0.08);
-            animation: modalIn 0.4s cubic-bezier(.22,1,.36,1);
-        }
-        .modal-box.artwork-box {
-            max-width: 900px;
-            padding: 0;
-            background: #000;
-            overflow: hidden;
-        }
-
-        @media (min-width: 769px) {
-            .modal-box { padding: 3.5rem; }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            color: rgba(255,255,255,0.4);
-            transition: color 0.3s, transform 0.3s;
-            z-index: 5;
-            padding: 4px;
-        }
-        .modal-close:hover { color: var(--accent); transform: rotate(90deg); }
-
-        .modal h2 {
-            font-family: var(--font-display);
-            font-size: clamp(1.6rem, 4vw, 2.8rem);
-            font-weight: 900;
-            font-style: italic;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            margin-bottom: 2rem;
-        }
-
-        /* Experience Timeline */
-        .timeline {
-            border-left: 2px solid var(--accent);
-            padding-left: 1.5rem;
-            margin-left: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .timeline li {
-            position: relative;
-            list-style: none;
-        }
-        .timeline li::before {
-            content: '';
-            position: absolute;
-            left: calc(-1.5rem - 5px);
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-        .timeline li p {
-            color: #a1a1aa;
-            font-size: 14px;
-            line-height: 1.6;
-            font-weight: 500;
-        }
-
-        .skills-box {
-            background: rgba(255,255,255,0.03);
+            bottom: 0.8rem;
+            left: 0.8rem;
+            padding: 0.3rem 0.7rem;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-        .skills-box h4 {
-            font-size: 9px;
-            font-weight: 900;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-style: italic;
-            margin-bottom: 0.25rem;
-        }
-        .skills-box h4.master { color: var(--accent); }
-        .skills-box h4.expand { color: var(--text-dim); }
-        .skills-box p {
+            border-radius: 9999px;
             font-family: var(--font-display);
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            font-weight: 700;
-            font-style: italic;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: #ffffff;
             text-transform: uppercase;
-            letter-spacing: -0.02em;
-        }
-
-        /* Contact Links */
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 1.25rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            transition: background 0.4s, border-color 0.3s;
-        }
-        .contact-link:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        .contact-link p {
-            font-family: var(--font-display);
-            font-weight: 800;
-            font-style: italic;
-            text-transform: uppercase;
-            letter-spacing: -0.01em;
-            font-size: clamp(0.85rem, 2vw, 1.15rem);
-            transition: transform 0.3s;
-        }
-        .contact-link:hover p { transform: scale(1.03); }
-        .contact-link svg { transition: transform 0.3s; flex-shrink: 0; }
-        .contact-link:hover svg { transform: scale(1.1); }
-
-        /* Artwork modal image */
-        .artwork-img {
-            max-height: 78vh;
-            width: 100%;
-            object-fit: contain;
-            border-radius: var(--radius-lg);
-        }
-
-        /* ========== AMBIENT GLOW (desktop) ========== */
-        .ambient {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-            display: none;
-        }
-        .ambient .orb {
-            position: absolute;
-            border-radius: 50%;
-        }
-        .ambient .orb-1 {
-            top: 25%; right: -8%;
-            width: 50%; height: 50%;
-            background: rgba(220,38,38,0.04);
-            filter: blur(180px);
-            animation: pulse 8s ease-in-out infinite;
-        }
-        .ambient .orb-2 {
-            bottom: -10%; left: -8%;
-            width: 45%; height: 45%;
-            background: rgba(24,24,27,0.15);
-            filter: blur(180px);
-        }
-        @media (min-width: 769px) { .ambient { display: block; } }
-
-        /* Grid overlay (subtle) */
-        .grid-overlay {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.012;
-            background-image:
-                linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
-            background-size: 100px 100px;
-        }
-
-        /* ========== ANIMATIONS ========== */
-        @keyframes scan {
-            0% { top: 0; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        @keyframes marquee {
-            from { transform: translate3d(0, 0, 0); }
-            to   { transform: translate3d(-100%, 0, 0); }
-        }
-        @keyframes marquee-reverse {
-            from { transform: translate3d(-100%, 0, 0); }
-            to   { transform: translate3d(0, 0, 0); }
-        }
-        @keyframes cardReveal {
-            from { opacity: 0; transform: scale(0.96) translateY(12px); }
-            to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes shineSlide {
-            to { transform: translateX(100%); }
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        /* ========== A11Y ========== */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Keyboard focus ring */
-        :focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 3px;
         }
     </style>
 </head>
 <body>
+    <!-- Noise & Vignette Overlays -->
+    <div class="noise-overlay"></div>
+    <div class="vignette-overlay"></div>
+    <div class="scanlines"></div>
 
-    <!-- Custom Cursor (desktop only) -->
-    <div id="custom-cursor" aria-hidden="true" style="display:none;">
-        <div class="dot"></div>
-        <div class="ring"></div>
-    </div>
+    <!-- WebGL Background Canvas -->
+    <canvas id="webgl-bg"></canvas>
 
-    <!-- ====== LOADING SCREEN ====== -->
-    <div id="loader" role="status" aria-label="Loading" onclick="startSequence()">
-        <div class="scan-line" aria-hidden="true"></div>
+    <!-- Cursor Canvas for Particle Trail -->
+    <canvas id="cursor-canvas"></canvas>
 
-        <div class="init-prompt" id="init-prompt">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            CLICK TO INITIALIZE
+    <!-- Custom Cursor DOM Elements -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- ULTRA CINEMATIC LOADER SCREEN -->
+    <div id="loader">
+        <div class="loader-bg-grid"></div>
+        <div class="loader-hud-tl">
+            <div>// SYSTEM PROTOCOL v4.8</div>
+            <div style="color: var(--accent); margin-top: 0.3rem;">ARCHIVE INITIALIZATION</div>
+        </div>
+        <div class="loader-hud-br">
+            <div>LOC: 34.0522° N, 118.2437° W</div>
+            <div style="margin-top: 0.3rem;">SYS.ID: SRK-CORE-3D</div>
         </div>
 
-        <div class="loading-content" id="loading-content">
-            <div class="status" id="loading-status">&gt; INITIATING...</div>
-            <div class="title-area">
-                <span class="scramble" id="scramble-text"></span>
-                <span class="revealed" id="ready-text">SAAD RUKH KHAN</span>
-            </div>
-            <div class="enter-btn" id="enter-btn">
-                <button onclick="enterExperience(event)" class="interactive" aria-label="Enter portfolio">
-                    <div class="fill" aria-hidden="true"></div>
-                    <span>⚡ ENTER_EXPERIENCE</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ====== MAIN APP ====== -->
-    <div id="main-app" style="opacity:0; transition: opacity 0.8s;">
-
-        <div class="grid-overlay" aria-hidden="true"></div>
-
-        <!-- Nav -->
-        <nav id="navbar" role="navigation" aria-label="Main navigation">
-            <button onclick="openModal('experience-modal')" class="interactive">Experience</button>
-            <a href="gallery.html" class="interactive">Gallery</a>
-            <button onclick="openModal('contact-modal')" class="interactive cta">Contact</button>
-        </nav>
-
-        <!-- Hero -->
-        <header id="hero">
-            <div class="bg-text" aria-hidden="true">
-                <div class="track">3D MOTION ARTIST • WEB3 CREATOR • VISUAL DESIGNER •&nbsp;</div>
-                <div class="track">3D MOTION ARTIST • WEB3 CREATOR • VISUAL DESIGNER •&nbsp;</div>
-            </div>
-            <div id="hero-content">
-                <h1>SAAD RUKH<br>KHAN</h1>
-                <div class="subtitle-row">
-                    <div class="line" aria-hidden="true"></div>
-                    <p>2D Concepts • 3D Motion</p>
-                    <div class="line" aria-hidden="true"></div>
+        <div class="loader-core">
+            <div class="loader-canvas-container">
+                <canvas id="loader-3d-canvas"></canvas>
+                <svg class="loader-ring-svg" viewBox="0 0 220 220">
+                    <circle class="loader-ring-bg" cx="110" cy="110" r="95"></circle>
+                    <circle class="loader-ring-bar" id="loader-progress-bar" cx="110" cy="110" r="95"></circle>
+                </svg>
+                <div class="loader-center-content">
+                    <div class="loader-percent" id="loader-percent-num">0%</div>
                 </div>
             </div>
-        </header>
 
-        <!-- Gallery marquee -->
-        <main id="gallery" aria-label="Artwork gallery">
-            <!-- Row 1 -->
-            <div class="gallery-row">
-                <div class="gallery-track forward" id="r1a"></div>
-                <div class="gallery-track forward" id="r1b"></div>
-            </div>
-            <!-- Row 2 -->
-            <div class="gallery-row">
-                <div class="gallery-track reverse" id="r2a"></div>
-                <div class="gallery-track reverse" id="r2b"></div>
-            </div>
-            <!-- Row 3 -->
-            <div class="gallery-row">
-                <div class="gallery-track forward" id="r3a"></div>
-                <div class="gallery-track forward" id="r3b"></div>
-            </div>
-        </main>
+            <div class="loader-status-text" id="loader-status-msg">SYNCHRONIZING 3D ENGINE...</div>
 
-        <!-- Footer -->
-        <footer>
-            <div>
-                <p class="brand">SAAD RUKH KHAN</p>
-                <p class="copy">Visual Archive © 2026</p>
-            </div>
-            <div class="socials">
-                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="interactive" aria-label="Twitter / X">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-                </a>
-                <button onclick="openModal('contact-modal')" class="interactive" aria-label="Discord">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-                </button>
-            </div>
-        </footer>
-
-        <!-- Ambient glow (desktop) -->
-        <div class="ambient" aria-hidden="true">
-            <div class="orb orb-1"></div>
-            <div class="orb orb-2"></div>
+            <button class="btn-initialize magnetic" id="btn-initialize">
+                <span>INITIALIZE ARCHIVE</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
         </div>
     </div>
 
-    <!-- ====== MODALS ====== -->
+    <!-- FLOATING GLASS NAVBAR -->
+    <div class="nav-wrapper">
+        <nav class="navbar" id="navbar">
+            <a href="#hero" class="nav-brand magnetic">
+                <span class="brand-badge"></span>
+                <span>SRK</span>
+            </a>
 
-    <!-- Artwork Modal -->
-    <div id="artwork-modal" class="modal" onclick="closeModal('artwork-modal')" role="dialog" aria-modal="true" aria-label="Artwork preview">
-        <div class="modal-box artwork-box" onclick="event.stopPropagation()" id="artwork-media"></div>
-    </div>
-
-    <!-- Experience Modal -->
-    <div id="experience-modal" class="modal" onclick="closeModal('experience-modal')" role="dialog" aria-modal="true" aria-label="Experience">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <button class="modal-close interactive" onclick="closeModal('experience-modal')" aria-label="Close">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <h2>Experience</h2>
-            <ul class="timeline">
-                <li><p>Worked as a Designer for an Indian company.</p></li>
-                <li><p>Worked as an Animator for a start-up.</p></li>
-                <li><p>Worked as a Moderator in many Web3 projects.</p></li>
+            <ul class="nav-links">
+                <li><a href="#work" class="nav-link magnetic">Archive</a></li>
+                <li><a href="#experience" class="nav-link magnetic">Directives</a></li>
+                <li><a href="#about" class="nav-link magnetic">Architect</a></li>
+                <li><a href="#contact" class="nav-link magnetic">Transmit</a></li>
             </ul>
-            <div class="skills-box">
-                <div>
-                    <h4 class="master">Mastery</h4>
-                    <p>Photoshop / After Effects</p>
-                </div>
-                <div>
-                    <h4 class="expand">Expanding</h4>
-                    <p>Blender & Web Development</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Contact Modal -->
-    <div id="contact-modal" class="modal" onclick="closeModal('contact-modal')" role="dialog" aria-modal="true" aria-label="Contact">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <button class="modal-close interactive" onclick="closeModal('contact-modal')" aria-label="Close">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <h2>Connect</h2>
-            <div style="display:flex; flex-direction:column; gap:1rem;">
-                <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener noreferrer" class="contact-link interactive">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-                    <p>@SaadRukhKhan_</p>
-                </a>
-                <button onclick="copyDiscord()" class="contact-link interactive" title="Click to copy Discord ID">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-                    <p id="discord-id">mdsaad111</p>
+            <div class="nav-actions">
+                <!-- Sound Synthesizer Toggle -->
+                <button class="btn-sound magnetic active" id="btn-sound-toggle" title="Toggle Synthesizer Audio">
+                    <div class="sound-bars">
+                        <div class="sound-bar"></div>
+                        <div class="sound-bar"></div>
+                        <div class="sound-bar"></div>
+                    </div>
+                </button>
+
+                <!-- Discord Copy Pill -->
+                <button class="btn-discord-nav magnetic" id="btn-discord-nav" title="Click to copy Discord Tag">
+                    <svg class="discord-icon" viewBox="0 0 24 24">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    <span>saadrukhkhan</span>
+                    <div class="tooltip" id="nav-discord-tooltip">Copied to Clipboard!</div>
                 </button>
             </div>
-        </div>
+        </nav>
     </div>
 
+    <!-- MAIN HERO SECTION -->
+    <section class="hero-section" id="hero">
+        <div class="hero-status-pill">
+            <span class="status-dot"></span>
+            <span>AVAILABLE FOR SELECT COMMISSIONS // Q4 2026</span>
+        </div>
 
+        <div class="hero-title-container" id="hero-title-container">
+            <h1 class="hero-title glitch-wrapper" data-text="SAAD RUKH KHAN" id="hero-title">
+                <span class="word">
+                    <span class="letter">S</span>
+                    <span class="letter">A</span>
+                    <span class="letter">A</span>
+                    <span class="letter">D</span>
+                </span>
+                <span class="word">
+                    <span class="letter">R</span>
+                    <span class="letter">U</span>
+                    <span class="letter">K</span>
+                    <span class="letter">H</span>
+                </span>
+                <span class="word">
+                    <span class="letter">K</span>
+                    <span class="letter">H</span>
+                    <span class="letter">A</span>
+                    <span class="letter">N</span>
+                </span>
+            </h1>
+        </div>
+
+        <div class="hero-subtitle-box">
+            <div class="hero-subtitle" id="typewriter-text">
+                <span class="highlight">2D Concept Artist</span>
+            </div>
+            <span class="type-cursor"></span>
+        </div>
+
+        <div class="hero-cta-group">
+            <a href="#work" class="btn-primary magnetic">
+                <span>Explore Selected Works</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+            <a href="#contact" class="btn-secondary magnetic">
+                <span>Initiate Contact</span>
+            </a>
+        </div>
+
+        <!-- Hero Stats HUD -->
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">110<span>+</span></div>
+                <div class="stat-label">Master Concepts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">07<span>+</span></div>
+                <div class="stat-label">Years 3D Direction</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50<span>+</span></div>
+                <div class="stat-label">AAA Collaborations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100<span>%</span></div>
+                <div class="stat-label">Bespoke Aesthetics</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D TILTED ROAD PERSPECTIVE SHOWCASE MARQUEE -->
+    <div class="marquee-viewport" id="showcase">
+        <div class="marquee-road">
+            <!-- Row 1: Leftward -->
+            <div class="marquee-track" id="marquee-row-1">
+                <!-- Dynamically populated or static cards -->
+            </div>
+            <!-- Row 2: Rightward -->
+            <div class="marquee-track reverse" id="marquee-row-2">
+                <!-- Dynamically populated or static cards -->
+            </div>
+        </div>
+    </div>
+    <style>
+        /* ========== GALLERY & WORK ARCHIVE ========== */
+        .section-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 7rem 2rem;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 4.2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            text-transform: uppercase;
+            line-height: 1.05;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            max-width: 640px;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Filter Tabs */
+        .gallery-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            color: #ffffff;
+            border-color: rgba(220, 38, 38, 0.4);
+            background: rgba(220, 38, 38, 0.08);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent-laser);
+            color: #ffffff;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            perspective: 1200px;
+        }
+
+        /* 3D Art Card */
+        .art-card {
+            position: relative;
+            height: 380px;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.5s ease, transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+
+        .art-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 50px rgba(220, 38, 38, 0.35), 0 0 25px rgba(220, 38, 38, 0.2);
+            z-index: 10;
+        }
+
+        .art-card.flipping {
+            animation: cardFlip 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cardFlip {
+            0% { transform: scale(1) rotateY(0deg); }
+            50% { transform: scale(0.92) rotateY(90deg); }
+            100% { transform: scale(1.05) rotateY(0deg); }
+        }
+
+        .art-card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .art-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.85) contrast(1.08);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+        }
+
+        .art-card:hover .art-card-img {
+            transform: scale(1.08);
+            filter: brightness(1.02) contrast(1.15);
+        }
+
+        /* Specular Highlight on Card */
+        .card-specular {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: radial-gradient(circle 280px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.22), transparent 70%);
+            mix-blend-mode: screen;
+            transition: opacity 0.3s ease;
+            z-index: 3;
+        }
+
+        .art-card:hover .card-specular {
+            opacity: 1;
+        }
+
+        /* Cyberpunk Corner HUD Accents */
+        .card-corner {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 4;
+            opacity: 0.6;
+            transition: opacity 0.3s ease, border-color 0.3s ease;
+        }
+
+        .art-card:hover .card-corner {
+            opacity: 1;
+            border-color: var(--accent-laser) !important;
+        }
+
+        .corner-tl { top: 10px; left: 10px; border-top: 2px solid var(--border); border-left: 2px solid var(--border); }
+        .corner-tr { top: 10px; right: 10px; border-top: 2px solid var(--border); border-right: 2px solid var(--border); }
+        .corner-bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--border); border-left: 2px solid var(--border); }
+        .corner-br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--border); border-right: 2px solid var(--border); }
+
+        /* Card Info Overlay */
+        .art-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.2rem 1.4rem 1.4rem 1.4rem;
+            background: linear-gradient(to top, rgba(5, 5, 5, 0.95) 0%, rgba(5, 5, 5, 0.6) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            z-index: 4;
+            transform: translateY(8px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .art-card:hover .art-card-overlay {
+            transform: translateY(0);
+        }
+
+        .card-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-id-tag {
+            font-family: var(--font-display);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .card-category-pill {
+            padding: 0.2rem 0.65rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.64rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        .card-view-prompt {
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: all 0.3s ease;
+        }
+
+        .art-card:hover .card-view-prompt {
+            opacity: 1;
+            transform: translateY(0);
+            color: var(--accent-bright);
+        }
+
+        /* Load More / Pagination Bar */
+        .gallery-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 4rem;
+        }
+
+        .btn-load-more {
+            padding: 1rem 2.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: #ffffff;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .btn-load-more:hover {
+            border-color: var(--accent);
+            background: var(--accent-subtle);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        /* ========== EXPERIENCE / DIRECTIVES SECTION ========== */
+        .timeline-container {
+            position: relative;
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 31px;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent) 0%, rgba(220, 38, 38, 0.2) 80%, transparent 100%);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-container::before { left: 19px; }
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2.2rem;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item { gap: 1.2rem; }
+        }
+
+        .timeline-node {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            background: #0a0a0d;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--accent);
+            box-shadow: 0 0 15px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 2;
+            transition: var(--transition-smooth);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-node { width: 40px; height: 40px; font-size: 0.72rem; }
+        }
+
+        .timeline-item:hover .timeline-node {
+            border-color: var(--accent-laser);
+            box-shadow: 0 0 25px var(--accent-glow);
+            transform: scale(1.1);
+        }
+
+        .timeline-card {
+            flex-grow: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.2rem;
+            backdrop-filter: var(--glass-blur);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-card:hover {
+            border-color: rgba(220, 38, 38, 0.4);
+            transform: translateX(8px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .timeline-card:hover::before {
+            opacity: 1;
+        }
+
+        .timeline-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .timeline-role {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        .timeline-period {
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            background: var(--accent-subtle);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .timeline-company {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 1.1rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.96rem;
+            color: #a1a1aa;
+            line-height: 1.65;
+            margin-bottom: 1.4rem;
+        }
+
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-pill {
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #d4d4d8;
+            letter-spacing: 0.05em;
+        }
+
+        /* ========== ABOUT & ARCHITECT SECTION ========== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 992px) {
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        .about-visual-frame {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #0a0a0e;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            aspect-ratio: 4 / 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(85%) contrast(1.15) brightness(0.9);
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+
+        .about-visual-frame:hover .about-avatar-img {
+            filter: grayscale(20%) contrast(1.2) brightness(1.02);
+            transform: scale(1.03);
+        }
+
+        .about-hud-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            margin: 1rem;
+            border-radius: calc(var(--radius-lg) - 1rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.2rem;
+        }
+
+        .about-hud-corner {
+            width: 15px;
+            height: 15px;
+            border-color: var(--accent);
+        }
+
+        .about-bio-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .about-lead {
+            font-family: var(--font-display);
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
+        }
+
+        .about-lead span {
+            color: var(--accent-bright);
+        }
+
+        .about-body {
+            font-size: 1.02rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        /* Arsenal / Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 580px) {
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+
+        .skill-box {
+            padding: 1.2rem 1.4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(8px);
+            transition: var(--transition-smooth);
+        }
+
+        .skill-box:hover {
+            border-color: var(--accent);
+            background: rgba(220, 38, 38, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .skill-title {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ========== TRANSMIT / CONTACT & DISCORD ========== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+
+        .contact-info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Focal Discord Card */
+        .discord-featured-card {
+            background: linear-gradient(135deg, rgba(20, 20, 28, 0.9), rgba(12, 12, 16, 0.95));
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            border-radius: var(--radius-lg);
+            padding: 2.2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(220, 38, 38, 0.15);
+            transition: var(--transition-smooth);
+        }
+
+        .discord-featured-card:hover {
+            border-color: var(--accent-laser);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 45px var(--accent-glow);
+            transform: translateY(-4px);
+        }
+
+        .discord-featured-card::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+            pointer-events: none;
+        }
+
+        .discord-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .discord-icon-large {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .discord-icon-large svg {
+            width: 26px;
+            height: 26px;
+            fill: #ffffff;
+        }
+
+        .discord-card-title {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .discord-card-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+
+        .discord-copy-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1.4rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--accent);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .discord-copy-action:hover {
+            background: rgba(220, 38, 38, 0.1);
+            border-style: solid;
+        }
+
+        .discord-handle {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-badge {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Social Matrix */
+        .social-links-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 520px) {
+            .social-links-matrix { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .social-tile {
+            padding: 1.1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            transition: var(--transition-smooth);
+        }
+
+        .social-tile:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .social-tile-name {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .social-tile-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* Cyberpunk Inquiry Form */
+        .contact-form-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.95rem 1.2rem;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.92rem;
+            color: #ffffff;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            background: rgba(0, 0, 0, 0.75);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-select option {
+            background: #0f0f13;
+            color: #ffffff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.1rem;
+            background: var(--accent);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #ffffff;
+            font-family: var(--font-display);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 10px 30px var(--accent-glow);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-laser);
+            box-shadow: 0 15px 40px rgba(255, 30, 39, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* ========== FOOTER WITH PARTICLE FIELD ========== */
+        .footer-section {
+            position: relative;
+            width: 100%;
+            border-top: 1px solid var(--border);
+            background: #040406;
+            overflow: hidden;
+            padding: 5rem 2rem 2.5rem 2rem;
+        }
+
+        #footer-particle-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.75;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem;
+        }
+
+        .footer-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-brand-col {
+            max-width: 400px;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 0.6rem;
+            line-height: 1.6;
+        }
+
+        .footer-sys-hud {
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .footer-sys-hud span {
+            color: var(--accent);
+        }
+
+        .btn-back-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.4rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ffffff;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-back-top:hover {
+            border-color: var(--accent);
+            background: rgba(220, 38, 38, 0.15);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .footer-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            padding-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ========== 3D ENTRANCE MODAL ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 3, 4, 0.88);
+            backdrop-filter: blur(28px) brightness(0.4);
+            -webkit-backdrop-filter: blur(28px) brightness(0.4);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            perspective: 1600px;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            width: 100%;
+            max-width: 1100px;
+            max-height: 90vh;
+            background: rgba(15, 15, 20, 0.95);
+            border: 1px solid rgba(220, 38, 38, 0.4);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95), 0 0 50px var(--accent-glow);
+            transform: perspective(1200px) rotateX(-20deg) scale(0.85) translateZ(-100px);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            position: relative;
+        }
+
+        @media (max-width: 860px) {
+            .modal-container { grid-template-columns: 1fr; max-height: 85vh; overflow-y: auto; }
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: perspective(1200px) rotateX(0deg) scale(1) translateZ(0);
+            opacity: 1;
+        }
+
+        .modal-media-view {
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .modal-info-panel {
+            padding: 3rem 2.4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            background: rgba(14, 14, 18, 0.9);
+        }
+
+        .btn-modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            z-index: 10;
+        }
+
+        .btn-modal-close:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+            transform: rotate(90deg);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .modal-header-meta {
+            margin-bottom: 2rem;
+        }
+
+        .modal-id-badge {
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent-laser);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--border);
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .modal-specs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 1.4rem 0;
+        }
+
+        .modal-spec-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .modal-spec-label {
+            color: var(--text-dim);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+        }
+
+        .modal-spec-val {
+            color: #ffffff;
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        .modal-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.4rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            color: #ffffff;
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-nav-btn:hover {
+            border-color: var(--accent);
+            background: rgba(220, 38, 38, 0.15);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+    </style>
+
+    <!-- SECTION: WORK ARCHIVE (110 ARTIFACTS) -->
+    <section class="section-wrapper" id="work">
+        <div class="section-header">
+            <div class="section-tag">// ARCHIVE CORE</div>
+            <h2 class="section-title">Selected Works</h2>
+            <p class="section-desc">A comprehensive curated index of 110 visual artifacts spanning brutalist 2D concept art, high-energy 3D motion simulations, and Web3 visual systems.</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="gallery-filter-bar">
+            <button class="filter-btn active magnetic" data-filter="all">All Artifacts (110)</button>
+            <button class="filter-btn magnetic" data-filter="2d">2D Concepts</button>
+            <button class="filter-btn magnetic" data-filter="3d">3D Motion</button>
+            <button class="filter-btn magnetic" data-filter="web3">Web3 / Sci-Fi</button>
+            <button class="filter-btn magnetic" data-filter="mecha">Mecha & Worlds</button>
+        </div>
+
+        <!-- Dynamic Gallery Grid Container -->
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Dynamically populated via renderGallery() -->
+        </div>
+
+        <!-- Pagination / Load More Button -->
+        <div class="gallery-pagination">
+            <button class="btn-load-more magnetic" id="btn-load-more">Load Next Batch (24)</button>
+        </div>
+    </section>
+
+    <!-- SECTION: DIRECTIVES / EXPERIENCE -->
+    <section class="section-wrapper" id="experience">
+        <div class="section-header">
+            <div class="section-tag">// OPERATIONAL LOGS</div>
+            <h2 class="section-title">Career Directives</h2>
+            <p class="section-desc">Documented milestones leading visual direction for next-gen interactive productions and international clients.</p>
+        </div>
+
+        <div class="timeline-container">
+            <!-- Timeline Item 1 -->
+            <div class="timeline-item">
+                <div class="timeline-node">01</div>
+                <div class="timeline-card">
+                    <div class="timeline-meta">
+                        <div class="timeline-role">Principal 3D Motion Director</div>
+                        <div class="timeline-period">2024 — Present</div>
+                    </div>
+                    <div class="timeline-company">Vanguard Interactive Studio • Global Remote</div>
+                    <div class="timeline-desc">Architecting visual styleframes, high-octane 3D title sequences, and real-time WebGL cinematic experiences for AAA entertainment franchises and digital luxury brands. Leading technical motion pipelines and custom shader development.</div>
+                    <div class="timeline-tags">
+                        <span class="tech-pill">Cinema 4D</span>
+                        <span class="tech-pill">Unreal Engine 5</span>
+                        <span class="tech-pill">Three.js</span>
+                        <span class="tech-pill">Octane Render</span>
+                        <span class="tech-pill">Creative Direction</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="timeline-item">
+                <div class="timeline-node">02</div>
+                <div class="timeline-card">
+                    <div class="timeline-meta">
+                        <div class="timeline-role">Lead 2D/3D Concept Artist</div>
+                        <div class="timeline-period">2022 — 2024</div>
+                    </div>
+                    <div class="timeline-company">Nexus Cybernetics • Tokyo / Berlin</div>
+                    <div class="timeline-desc">Pioneered worldbuilding designs, mecha blueprints, and sprawling sci-fi brutalist environments. Crafted key production art used in high-budget virtual cinema, narrative world bibles, and game pitch decks.</div>
+                    <div class="timeline-tags">
+                        <span class="tech-pill">Blender</span>
+                        <span class="tech-pill">Photoshop</span>
+                        <span class="tech-pill">ZBrush</span>
+                        <span class="tech-pill">Environment Design</span>
+                        <span class="tech-pill">Hard Surface</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="timeline-item">
+                <div class="timeline-node">03</div>
+                <div class="timeline-card">
+                    <div class="timeline-meta">
+                        <div class="timeline-role">Web3 Creative & Visual Architect</div>
+                        <div class="timeline-period">2020 — 2022</div>
+                    </div>
+                    <div class="timeline-company">Autonomous Art Collective • Metaverse</div>
+                    <div class="timeline-desc">Designed cohesive brand identities and generative 3D visual collections with over $2.5M+ primary volume. Directed high-profile virtual gallery exhibitions and interactive WebGL experiences.</div>
+                    <div class="timeline-tags">
+                        <span class="tech-pill">Generative Art</span>
+                        <span class="tech-pill">3D Collectibles</span>
+                        <span class="tech-pill">Blender Python</span>
+                        <span class="tech-pill">Metaverse Curation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 4 -->
+            <div class="timeline-item">
+                <div class="timeline-node">04</div>
+                <div class="timeline-card">
+                    <div class="timeline-meta">
+                        <div class="timeline-role">Senior Motion Designer & Illustrator</div>
+                        <div class="timeline-period">2018 — 2020</div>
+                    </div>
+                    <div class="timeline-company">Kinetics Media Agency • Los Angeles</div>
+                    <div class="timeline-desc">Produced commercial 3D broadcast packages, kinetic typography animations, and bespoke album artworks for chart-topping electronic musicians and international tech startups.</div>
+                    <div class="timeline-tags">
+                        <span class="tech-pill">After Effects</span>
+                        <span class="tech-pill">Cinema 4D</span>
+                        <span class="tech-pill">Motion Graphics</span>
+                        <span class="tech-pill">Audio-Visualizer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: ABOUT / ARCHITECT -->
+    <section class="section-wrapper" id="about">
+        <div class="section-header">
+            <div class="section-tag">// ARCHITECT MANIFESTO</div>
+            <h2 class="section-title">Behind The Motion</h2>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-visual-frame" id="about-frame">
+                <!-- Fallback procedural avatar or image -->
+                <img src="1.jpg" alt="Saad Rukh Khan" class="about-avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'500\' viewBox=\'0 0 400 500\'><rect width=\'400\' height=\'500\' fill=\'%230b0b0e\'/><circle cx=\'200\' cy=\'200\' r=\'90\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><path d=\'M100 450 C 100 340, 300 340, 300 450 Z\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><text x=\'200\' y=\'205\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'>SRK</text><text x=\'200\' y=\'480\' font-family=\'monospace\' font-size=\'12\' fill=\'%23dc2626\' text-anchor=\'middle\'>// BIOMETRIC_ID: 99482-K</text></svg>'">
+                <div class="about-hud-overlay">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="about-hud-corner corner-tl"></div>
+                        <div class="about-hud-corner corner-tr"></div>
+                    </div>
+                    <div style="font-family: var(--font-display); font-size: 0.68rem; color: var(--accent); letter-spacing: 0.2em; text-align: center;">
+                        // BIO_RECOG: SAAD RUKH KHAN
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="about-hud-corner corner-bl"></div>
+                        <div class="about-hud-corner corner-br"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-bio-card">
+                <div class="about-lead">
+                    Merging <span>brutalist sci-fi worldbuilding</span> with the precision of <span>high-octane 3D kinetics</span>.
+                </div>
+                <p class="about-body">
+                    I am Saad Rukh Khan — a multidisciplinary concept artist, 3D motion designer, and Web3 creative director. Over the past 7+ years, I have explored the intersection where dystopian architecture, cybernetic aesthetics, and interactive technologies converge.
+                </p>
+                <p class="about-body">
+                    My approach treats every frame not merely as an illustration, but as an artifact of an alternate civilization. From procedural WebGL shaders to AAA cinematic styleframes, my mission is to deliver unforgettable visual adrenaline.
+                </p>
+
+                <!-- Arsenal Skills -->
+                <div class="skills-grid">
+                    <div class="skill-box">
+                        <div class="skill-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            <span>3D Kinetic Direction</span>
+                        </div>
+                        <div class="skill-desc">Blender • Cinema 4D • Unreal Engine 5 • Octane • Redshift • Simulations</div>
+                    </div>
+                    <div class="skill-box">
+                        <div class="skill-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            <span>Concept & Worldcraft</span>
+                        </div>
+                        <div class="skill-desc">Adobe Photoshop • ZBrush • Keyframe Art • Mecha Design • Environments</div>
+                    </div>
+                    <div class="skill-box">
+                        <div class="skill-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            <span>Interactive & WebGL</span>
+                        </div>
+                        <div class="skill-desc">Three.js • GSAP 3 • GLSL Shaders • Web Audio Synthesis • Frontend FX</div>
+                    </div>
+                    <div class="skill-box">
+                        <div class="skill-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <span>Web3 & Visual Systems</span>
+                        </div>
+                        <div class="skill-desc">Generative Algorithms • Virtual Galleries • NFT Direction • Brand Identity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: TRANSMIT / CONTACT -->
+    <section class="section-wrapper" id="contact">
+        <div class="section-header">
+            <div class="section-tag">// FREQUENCY RELAY</div>
+            <h2 class="section-title">Initiate Transmission</h2>
+            <p class="section-desc">Have a high-tier production, visual direction inquiry, or collaboration in mind? Connect directly through the terminal channels below.</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info-panel">
+                <!-- Focal Discord Card -->
+                <div class="discord-featured-card">
+                    <div class="discord-card-header">
+                        <div class="discord-icon-large">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="discord-card-title">Direct Discord Relay</div>
+                            <div class="discord-card-subtitle">Fastest response for urgent projects & commissions</div>
+                        </div>
+                    </div>
+
+                    <div class="discord-copy-action magnetic" id="btn-discord-card">
+                        <span class="discord-handle" id="discord-handle-text">saadrukhkhan</span>
+                        <div class="copy-badge" id="discord-copy-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <span>Copy Tag</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Matrix -->
+                <div class="social-links-matrix">
+                    <a href="https://artstation.com" target="_blank" rel="noopener" class="social-tile magnetic">
+                        <div class="social-tile-name">ArtStation</div>
+                        <div class="social-tile-sub">Portfolio / 4K</div>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener" class="social-tile magnetic">
+                        <div class="social-tile-name">X (Twitter)</div>
+                        <div class="social-tile-sub">@saadrukhkhan</div>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" class="social-tile magnetic">
+                        <div class="social-tile-name">Instagram</div>
+                        <div class="social-tile-sub">Visual Feeds</div>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-tile magnetic">
+                        <div class="social-tile-name">LinkedIn</div>
+                        <div class="social-tile-sub">Professional</div>
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener" class="social-tile magnetic">
+                        <div class="social-tile-name">GitHub</div>
+                        <div class="social-tile-sub">WebGL & Shaders</div>
+                    </a>
+                    <a href="mailto:contact@saadrukhkhan.com" class="social-tile magnetic">
+                        <div class="social-tile-name">Direct Email</div>
+                        <div class="social-tile-sub">Inquiries</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Inquiry Form -->
+            <div class="contact-form-panel">
+                <form id="contact-form" onsubmit="event.preventDefault(); window.handleContactSubmit();">
+                    <div class="form-group">
+                        <label class="form-label" for="form-name">Name / Identity</label>
+                        <input type="text" id="form-name" class="form-input" placeholder="e.g. Elena Rostova" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="form-email">Transmission Endpoint (Email)</label>
+                        <input type="email" id="form-email" class="form-input" placeholder="e.g. elena@studio.xyz" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="form-scope">Mission Scope</label>
+                        <select id="form-scope" class="form-select">
+                            <option value="motion">3D Motion Design & Cinematics</option>
+                            <option value="concept">2D Concept Art & Worldbuilding</option>
+                            <option value="web3">Web3 Visual Direction & NFT Collections</option>
+                            <option value="custom">Full Creative Direction & Custom Tech</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="form-message">Brief Details & Timeline</label>
+                        <textarea id="form-message" class="form-textarea" placeholder="Detail your project scope, timeline, and expectations..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit magnetic" id="btn-submit-form">
+                        <span>Send Transmission</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER WITH FLOATING PARTICLES CANVAS -->
+    <footer class="footer-section" id="footer">
+        <canvas id="footer-particle-canvas"></canvas>
+
+        <div class="footer-content">
+            <div class="footer-top-row">
+                <div class="footer-brand-col">
+                    <div class="footer-logo">
+                        <span style="color: var(--accent);">SRK</span>
+                        <span>• PORTFOLIO</span>
+                    </div>
+                    <p class="footer-tagline">
+                        Architecting the future of 2D concept art and high-octane 3D motion simulations. All rights reserved.
+                    </p>
+                </div>
+
+                <div class="footer-sys-hud">
+                    <div>SERVER NODE: <span>GL-CORE-PROD</span></div>
+                    <div>FPS ENGINE: <span>60-240 UNLOCKED</span></div>
+                    <div>RENDER LATENCY: <span>1.2ms</span></div>
+                    <div>LOCAL TIMESTAMP: <span id="footer-clock">00:00:00 UTC</span></div>
+                </div>
+
+                <div>
+                    <button class="btn-back-top magnetic" id="btn-back-top">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                        <span>Ascend To Top</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="footer-bottom-row">
+                <div>© 2026 Saad Rukh Khan. Designed for maximum visual impact.</div>
+                <div style="font-family: var(--font-display); letter-spacing: 0.1em;">ENCRYPTED // WEBGL ACCELERATED</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 3D ENTRANCE HIGH-RES ART MODAL -->
+    <div class="modal-overlay" id="art-modal">
+        <div class="modal-container" id="modal-container">
+            <button class="btn-modal-close" id="btn-modal-close" title="Close (ESC)">×</button>
+
+            <div class="modal-media-view">
+                <img src="" alt="High Resolution Artwork" class="modal-img" id="modal-img">
+            </div>
+
+            <div class="modal-info-panel">
+                <div class="modal-header-meta">
+                    <div class="modal-id-badge" id="modal-id">ARTIFACT_#001</div>
+                    <h3 class="modal-title" id="modal-title">Cybernetic Sentinel</h3>
+                    <div class="modal-category-badge" id="modal-category">3D Motion Simulation</div>
+
+                    <div class="modal-specs-list">
+                        <div class="modal-spec-row">
+                            <span class="modal-spec-label">Resolution</span>
+                            <span class="modal-spec-val">3840 × 2160 UHD</span>
+                        </div>
+                        <div class="modal-spec-row">
+                            <span class="modal-spec-label">Creation Tools</span>
+                            <span class="modal-spec-val" id="modal-tools">Cinema 4D • Octane • Redshift</span>
+                        </div>
+                        <div class="modal-spec-row">
+                            <span class="modal-spec-label">Production Year</span>
+                            <span class="modal-spec-val">2026</span>
+                        </div>
+                        <div class="modal-spec-row">
+                            <span class="modal-spec-label">Curation Protocol</span>
+                            <span class="modal-spec-val">Saad Rukh Khan Master Vault</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-nav-bar">
+                    <button class="modal-nav-btn magnetic" id="btn-modal-prev">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                        <span>Previous [←]</span>
+                    </button>
+                    <button class="modal-nav-btn magnetic" id="btn-modal-next">
+                        <span>Next [→]</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JAVASCRIPT: ENGINES & INTERACTIONS -->
     <script>
-    (() => {
-        'use strict';
-
-        /* ===== Audio engine ===== */
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
-
-        function sfx(type) {
-            try {
-                if (!audioCtx) return;
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                const presets = {
-                    tick:  { wave:'square', freq:800+Math.random()*400, vol:0.02, decay:0.05 },
-                    beep:  { wave:'sine',   freq:1200,                  vol:0.05, decay:0.1  },
-                    ready: { wave:'sine',   freq:800,  ramp:1600,       vol:0.05, decay:0.3  },
-                    enter: { wave:'triangle', freq:400, ramp:20,        vol:0.15, decay:0.8  },
-                    hover: { wave:'sine',   freq:2000,                  vol:0.01, decay:0.03 },
-                };
-                const p = presets[type];
-                if (!p) return;
-
-                osc.type = p.wave;
-                osc.frequency.setValueAtTime(p.freq, now);
-                if (p.ramp) osc.frequency.exponentialRampToValueAtTime(p.ramp, now + p.decay);
-                gain.gain.setValueAtTime(p.vol, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + p.decay);
-                osc.start(now);
-                osc.stop(now + p.decay);
-            } catch (_) {}
-        }
-
-        /* ===== Custom cursor (desktop) ===== */
-        const isDesktop = window.matchMedia('(min-width: 769px)').matches;
-        const cursor = document.getElementById('custom-cursor');
-
-        if (isDesktop && cursor) {
-            cursor.style.display = '';
-            let cx = -100, cy = -100;
-
-            document.addEventListener('mousemove', e => {
-                cx = e.clientX;
-                cy = e.clientY;
-                cursor.style.transform = `translate(${cx}px, ${cy}px)`;
-            });
-
-            // Use event delegation for hover effects
-            document.addEventListener('mouseover', e => {
-                if (e.target.closest('.interactive')) {
-                    cursor.classList.add('hovering');
-                    sfx('hover');
-                }
-            });
-            document.addEventListener('mouseout', e => {
-                if (e.target.closest('.interactive')) {
-                    cursor.classList.remove('hovering');
-                }
-            });
-        }
-
-        /* ===== Loading screen ===== */
-        const target = 'SAAD RUKH KHAN';
-        const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!<>{}[]';
-        const totalFrames = 40;
-        let frame = 0;
-        let started = false;
-
-        const els = {
-            loader:     document.getElementById('loader'),
-            initPrompt: document.getElementById('init-prompt'),
-            content:    document.getElementById('loading-content'),
-            status:     document.getElementById('loading-status'),
-            scramble:   document.getElementById('scramble-text'),
-            ready:      document.getElementById('ready-text'),
-            enterBtn:   document.getElementById('enter-btn'),
-            mainApp:    document.getElementById('main-app'),
-            navbar:     document.getElementById('navbar'),
-            hero:       document.getElementById('hero-content'),
-        };
-
-        // Skip loader if returning visitor
-        if (sessionStorage.getItem('entered') === '1') {
-            els.loader.style.display = 'none';
-            els.mainApp.style.opacity = '1';
-            requestAnimationFrame(() => {
-                els.navbar.classList.add('visible');
-                els.hero.classList.add('visible');
-            });
-        }
-
-        window.startSequence = function () {
-            if (started) return;
-            started = true;
-            initAudio();
-            sfx('hover');
-
-            els.initPrompt.style.display = 'none';
-            els.content.style.display = 'flex';
-            els.loader.style.cursor = 'wait';
-
-            const statusMessages = { 10: '> RENDERING_3D...', 20: '> LOADING_2D_CONCEPTS...', 30: '> ESTABLISHING_CONNECTION...' };
-
-            const timer = setInterval(() => {
-                frame++;
-                sfx('tick');
-
-                let txt = '';
-                for (let i = 0; i < target.length; i++) {
-                    if (target[i] === ' ') { txt += ' '; continue; }
-                    txt += i < (frame / totalFrames) * target.length
-                        ? target[i]
-                        : glyphs[Math.random() * glyphs.length | 0];
-                }
-                els.scramble.textContent = txt;
-
-                if (statusMessages[frame]) {
-                    els.status.textContent = statusMessages[frame];
-                    sfx('beep');
-                }
-
-                if (frame >= totalFrames) {
-                    clearInterval(timer);
-                    els.status.textContent = '> ACCESS_GRANTED';
-                    sfx('ready');
-                    els.scramble.style.display = 'none';
-                    els.ready.style.display = '';
-                    els.enterBtn.classList.add('visible');
-                    els.loader.style.cursor = '';
-                }
-            }, 60);
-        };
-
-        window.enterExperience = function (e) {
-            if (e) e.stopPropagation();
-            sessionStorage.setItem('entered', '1');
-            sfx('enter');
-            els.loader.classList.add('exiting');
-
-            setTimeout(() => {
-                els.loader.style.display = 'none';
-                els.mainApp.style.opacity = '1';
-                requestAnimationFrame(() => {
-                    els.navbar.classList.add('visible');
-                    els.hero.classList.add('visible');
-                });
-            }, 800);
-        };
-
-        /* ===== Gallery card builder ===== */
-        function cardHTML(id, i) {
-            const delay = (i % 12) * 0.06;
-            const fallback = `if(!this.dataset.tried){this.dataset.tried='1';this.src='${id}.png';}else if(this.dataset.tried==='1'){this.dataset.tried='2';this.src='${id}.jpeg';}else{this.parentElement.style.display='none';}`;
-
-            return `<div class="art-card interactive" style="animation-delay:${delay}s" onclick="viewArt(this.querySelector('img').src)">
-                <img src="${id}.jpg" loading="lazy" alt="Artwork ${id}" onerror="${fallback}">
-                <div class="overlay"></div>
-                <div class="shine"></div>
-                <div class="view-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>VIEW</div>
-            </div>`;
-        }
-
-        function renderGallery() {
-            const ids = Array.from({ length: 110 }, (_, i) => i + 1);
-            const chunks = [ids.slice(0, 37), ids.slice(37, 74), ids.slice(74)];
-            const targets = [
-                ['r1a', 'r1b'],
-                ['r2a', 'r2b'],
-                ['r3a', 'r3b'],
-            ];
-
-            chunks.forEach((chunk, ci) => {
-                const html = chunk.map((id, i) => cardHTML(id, i)).join('');
-                targets[ci].forEach(tid => {
-                    document.getElementById(tid).innerHTML = html;
-                });
-            });
-        }
-        renderGallery();
-
-        /* ===== Modals ===== */
-        window.openModal = function (id) {
-            document.getElementById(id).classList.add('open');
-            sfx('hover');
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.closeModal = function (id) {
-            const modal = document.getElementById(id);
-            modal.classList.remove('open');
-            sfx('hover');
-            document.body.style.overflow = '';
-            if (id === 'artwork-modal') {
-                document.getElementById('artwork-media').innerHTML = '';
+        /* ==========================================================================
+           1. CYBERNETIC WEB AUDIO SYNTHESIZER (ZERO-DEPENDENCY)
+           ========================================================================== */
+        class CyberAudioEngine {
+            constructor() {
+                this.ctx = null;
+                this.isMuted = false;
+                this.isInitialized = false;
             }
-        };
 
-        window.viewArt = function (src) {
-            document.getElementById('artwork-media').innerHTML =
-                `<img src="${src}" alt="Artwork" class="artwork-img">`;
-            openModal('artwork-modal');
-        };
-
-        // Keyboard: Escape closes modals
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                ['artwork-modal', 'experience-modal', 'contact-modal'].forEach(id => {
-                    if (document.getElementById(id).classList.contains('open')) {
-                        closeModal(id);
+            init() {
+                if (this.isInitialized) return;
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        this.ctx = new AudioContext();
+                        this.isInitialized = true;
                     }
+                } catch (e) {
+                    console.warn("Web Audio API not supported", e);
+                }
+            }
+
+            resume() {
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            // High-frequency subtle tech pip for UI hover
+            playHover() {
+                if (this.isMuted || !this.ctx) return;
+                this.resume();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.exponentialRampToValueAtTime(1600, now + 0.04);
+
+                gain.gain.setValueAtTime(0.025, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.04);
+            }
+
+            // Mechanical low-mid click for button clicks
+            playClick() {
+                if (this.isMuted || !this.ctx) return;
+                this.resume();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.exponentialRampToValueAtTime(80, now + 0.06);
+
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.06);
+            }
+
+            // Filtered whoosh for modal open & card flips
+            playWhoosh() {
+                if (this.isMuted || !this.ctx) return;
+                this.resume();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const filter = this.ctx.createBiquadFilter();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(140, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.28);
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(800, now);
+                filter.frequency.exponentialRampToValueAtTime(150, now + 0.28);
+
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.28);
+            }
+
+            // Epic cinematic riser & sub-bass drop on initialization
+            playInitialize() {
+                if (this.isMuted || !this.ctx) return;
+                this.resume();
+                const now = this.ctx.currentTime;
+
+                // Sub-bass thump
+                const subOsc = this.ctx.createOscillator();
+                const subGain = this.ctx.createGain();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(180, now);
+                subOsc.frequency.exponentialRampToValueAtTime(35, now + 0.8);
+                subGain.gain.setValueAtTime(0.2, now);
+                subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+                subOsc.connect(subGain);
+                subGain.connect(this.ctx.destination);
+                subOsc.start(now);
+                subOsc.stop(now + 0.8);
+
+                // High harmonic frequency sweep
+                const hiOsc = this.ctx.createOscillator();
+                const hiGain = this.ctx.createGain();
+                hiOsc.type = 'sine';
+                hiOsc.frequency.setValueAtTime(300, now);
+                hiOsc.frequency.exponentialRampToValueAtTime(1400, now + 0.7);
+                hiGain.gain.setValueAtTime(0.05, now);
+                hiGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.7);
+                hiOsc.connect(hiGain);
+                hiGain.connect(this.ctx.destination);
+                hiOsc.start(now);
+                hiOsc.stop(now + 0.7);
+            }
+
+            // Affirmative chime for Discord tag copy
+            playSuccess() {
+                if (this.isMuted || !this.ctx) return;
+                this.resume();
+                const now = this.ctx.currentTime;
+
+                const tone1 = this.ctx.createOscillator();
+                const gain1 = this.ctx.createGain();
+                tone1.type = 'sine';
+                tone1.frequency.setValueAtTime(587.33, now); // D5
+                gain1.gain.setValueAtTime(0.06, now);
+                gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+                tone1.connect(gain1);
+                gain1.connect(this.ctx.destination);
+                tone1.start(now);
+                tone1.stop(now + 0.12);
+
+                const tone2 = this.ctx.createOscillator();
+                const gain2 = this.ctx.createGain();
+                tone2.type = 'sine';
+                tone2.frequency.setValueAtTime(880, now + 0.08); // A5
+                gain2.gain.setValueAtTime(0.06, now + 0.08);
+                gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+                tone2.connect(gain2);
+                gain2.connect(this.ctx.destination);
+                tone2.start(now + 0.08);
+                tone2.stop(now + 0.3);
+            }
+
+            toggleMute() {
+                this.isMuted = !this.isMuted;
+                return this.isMuted;
+            }
+        }
+
+        const audio = new CyberAudioEngine();
+
+        // Initialize audio context on first user interaction
+        window.addEventListener('click', () => audio.init(), { once: true });
+        window.addEventListener('keydown', () => audio.init(), { once: true });
+
+        /* ==========================================================================
+           2. CUSTOM CURSOR & CANVAS PARTICLE TRAIL
+           ========================================================================== */
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        const trailCanvas = document.getElementById('cursor-canvas');
+        const trailCtx = trailCanvas ? trailCanvas.getContext('2d') : null;
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+        let isHovering = false;
+        const trailParticles = [];
+
+        function resizeTrailCanvas() {
+            if (!trailCanvas) return;
+            trailCanvas.width = window.innerWidth;
+            trailCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeTrailCanvas);
+        resizeTrailCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Spawn particle in trail
+            if (Math.random() < 0.65) {
+                trailParticles.push({
+                    x: mouseX,
+                    y: mouseY,
+                    vx: (Math.random() - 0.5) * 1.5,
+                    vy: (Math.random() - 0.5) * 1.5,
+                    size: Math.random() * 2.8 + 1,
+                    alpha: 0.85,
+                    decay: Math.random() * 0.03 + 0.02
                 });
             }
         });
 
-        /* ===== Copy Discord ===== */
-        window.copyDiscord = function () {
-            navigator.clipboard.writeText('mdsaad111').catch(() => {
-                // fallback
-                const ta = document.createElement('textarea');
-                ta.value = 'mdsaad111';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
+        // Magnetic Cursor & Interactive Hover Triggers
+        function setupMagneticElements() {
+            document.querySelectorAll('.magnetic').forEach((elem) => {
+                elem.addEventListener('mouseenter', () => {
+                    audio.playHover();
+                    isHovering = true;
+                    if (cursorRing) cursorRing.classList.add('hovering');
+                });
+
+                elem.addEventListener('mouseleave', () => {
+                    isHovering = false;
+                    if (cursorRing) cursorRing.classList.remove('hovering');
+                    gsap.to(elem, { x: 0, y: 0, duration: 0.4, ease: 'power2.out' });
+                });
+
+                elem.addEventListener('mousemove', (e) => {
+                    const rect = elem.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const deltaX = (e.clientX - centerX) * 0.28;
+                    const deltaY = (e.clientY - centerY) * 0.28;
+
+                    gsap.to(elem, {
+                        x: deltaX,
+                        y: deltaY,
+                        duration: 0.2,
+                        ease: 'power1.out'
+                    });
+                });
             });
-            sfx('ready');
-            const el = document.getElementById('discord-id');
-            const orig = el.textContent;
-            el.textContent = 'COPIED ✓';
-            setTimeout(() => { el.textContent = orig; }, 1500);
+        }
+
+        function updateCursor() {
+            // Lerp ring towards mouse position
+            ringX += (mouseX - ringX) * 0.2;
+            ringY += (mouseY - ringY) * 0.2;
+
+            if (cursorDot) {
+                cursorDot.style.left = `${mouseX}px`;
+                cursorDot.style.top = `${mouseY}px`;
+            }
+
+            if (cursorRing) {
+                cursorRing.style.left = `${ringX}px`;
+                cursorRing.style.top = `${ringY}px`;
+            }
+
+            // Render cursor particle trail
+            if (trailCtx && trailCanvas) {
+                trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+                for (let i = trailParticles.length - 1; i >= 0; i--) {
+                    const p = trailParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        trailParticles.splice(i, 1);
+                        continue;
+                    }
+
+                    trailCtx.save();
+                    trailCtx.beginPath();
+                    trailCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    trailCtx.fillStyle = `rgba(220, 38, 38, ${p.alpha})`;
+                    trailCtx.shadowColor = '#ff1e27';
+                    trailCtx.shadowBlur = 8;
+                    trailCtx.fill();
+                    trailCtx.restore();
+                }
+            }
+
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        /* ==========================================================================
+           3. FULL-SCREEN THREE.JS BACKGROUND UNIVERSE
+           ========================================================================== */
+        const bgCanvas = document.getElementById('webgl-bg');
+        let bgScene, bgCamera, bgRenderer;
+        let starParticles, torusKnotMesh, torusInnerPoints, gridHelper;
+        let targetMouseX = 0, targetMouseY = 0;
+        let currentMouseX = 0, currentMouseY = 0;
+
+        function initThreeBackground() {
+            if (!bgCanvas) return;
+
+            // Scene & Volumetric Fog
+            bgScene = new THREE.Scene();
+            bgScene.fog = new THREE.FogExp2(0x050505, 0.0009);
+
+            // Camera
+            bgCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 3500);
+            bgCamera.position.set(0, 0, 700);
+
+            // Renderer
+            bgRenderer = new THREE.WebGLRenderer({
+                canvas: bgCanvas,
+                antialias: true,
+                alpha: true,
+                powerPreference: 'high-performance'
+            });
+            bgRenderer.setSize(window.innerWidth, window.innerHeight);
+            bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // 1. STAR & DUST PARTICLES (3,500+)
+            const particleCount = 3500;
+            const particleGeo = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            const redColor = new THREE.Color(0xdc2626);
+            const brightRed = new THREE.Color(0xff2a32);
+            const whiteColor = new THREE.Color(0xffffff);
+            const grayColor = new THREE.Color(0x888899);
+
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                positions[i3] = (Math.random() - 0.5) * 2600;
+                positions[i3 + 1] = (Math.random() - 0.5) * 2600;
+                positions[i3 + 2] = (Math.random() - 0.5) * 2200;
+
+                // Color distribution
+                const rand = Math.random();
+                let chosenColor;
+                if (rand < 0.25) chosenColor = redColor;
+                else if (rand < 0.35) chosenColor = brightRed;
+                else if (rand < 0.8) chosenColor = grayColor;
+                else chosenColor = whiteColor;
+
+                colors[i3] = chosenColor.r;
+                colors[i3 + 1] = chosenColor.g;
+                colors[i3 + 2] = chosenColor.b;
+            }
+
+            particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const particleMat = new THREE.PointsMaterial({
+                size: 2.8,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.82,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            starParticles = new THREE.Points(particleGeo, particleMat);
+            bgScene.add(starParticles);
+
+            // 2. HERO GLOWING 3D TORUS KNOT MESH
+            const torusGeo = new THREE.TorusKnotGeometry(125, 36, 160, 24, 2, 3);
+            const torusMat = new THREE.MeshBasicMaterial({
+                color: 0xdc2626,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.32,
+                blending: THREE.AdditiveBlending
+            });
+            torusKnotMesh = new THREE.Mesh(torusGeo, torusMat);
+            torusKnotMesh.position.set(280, 40, -100);
+            bgScene.add(torusKnotMesh);
+
+            // Inner point cloud for the Torus
+            const torusPointsMat = new THREE.PointsMaterial({
+                color: 0xff3b44,
+                size: 1.8,
+                transparent: true,
+                opacity: 0.7,
+                blending: THREE.AdditiveBlending
+            });
+            torusInnerPoints = new THREE.Points(torusGeo, torusPointsMat);
+            torusInnerPoints.position.copy(torusKnotMesh.position);
+            bgScene.add(torusInnerPoints);
+
+            // 3. FLOATING HOLOGRAPHIC INFINITE GRID PLANE
+            gridHelper = new THREE.GridHelper(3000, 60, 0xdc2626, 0x1f1f26);
+            gridHelper.position.set(0, -380, -200);
+            gridHelper.material.transparent = true;
+            gridHelper.material.opacity = 0.45;
+            bgScene.add(gridHelper);
+
+            // Track mouse parallax
+            window.addEventListener('mousemove', (e) => {
+                targetMouseX = (e.clientX - window.innerWidth / 2) * 0.35;
+                targetMouseY = (e.clientY - window.innerHeight / 2) * 0.35;
+            });
+
+            // Window Resize
+            window.addEventListener('resize', () => {
+                if (!bgCamera || !bgRenderer) return;
+                bgCamera.aspect = window.innerWidth / window.innerHeight;
+                bgCamera.updateProjectionMatrix();
+                bgRenderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Animation Loop for Three.js
+        let clock = new THREE.Clock();
+
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            const delta = clock.getDelta();
+            const elapsed = clock.getElapsedTime();
+
+            // Smooth mouse parallax damping
+            currentMouseX += (targetMouseX - currentMouseX) * 0.04;
+            currentMouseY += (targetMouseY - currentMouseY) * 0.04;
+
+            // Scroll influence
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollFactor = scrollY * 0.35;
+
+            if (bgCamera) {
+                bgCamera.position.x = currentMouseX * 0.8;
+                bgCamera.position.y = -currentMouseY * 0.8 - scrollFactor * 0.4;
+                bgCamera.lookAt(0, -scrollFactor * 0.4, -500);
+            }
+
+            // Rotate 3D Torus Knot
+            if (torusKnotMesh && torusInnerPoints) {
+                torusKnotMesh.rotation.x = elapsed * 0.25;
+                torusKnotMesh.rotation.y = elapsed * 0.35;
+                torusKnotMesh.rotation.z = elapsed * 0.15;
+
+                torusInnerPoints.rotation.copy(torusKnotMesh.rotation);
+
+                // Move Torus dynamically with scroll
+                torusKnotMesh.position.y = 40 - scrollFactor * 0.5;
+                torusInnerPoints.position.y = torusKnotMesh.position.y;
+            }
+
+            // Rotate star particles slowly
+            if (starParticles) {
+                starParticles.rotation.y = elapsed * 0.02;
+                starParticles.rotation.x = elapsed * 0.01;
+            }
+
+            // Animate grid plane floating drift
+            if (gridHelper) {
+                gridHelper.position.z = -200 + (elapsed * 35) % 50;
+            }
+
+            if (bgRenderer && bgScene && bgCamera) {
+                bgRenderer.render(bgScene, bgCamera);
+            }
+        }
+
+        initThreeBackground();
+        animateThree();
+
+        /* ==========================================================================
+           4. CINEMATIC LOADER SCREEN & 3D SRK MINI CANVAS
+           ========================================================================== */
+        const loaderCanvas = document.getElementById('loader-3d-canvas');
+        let loaderScene, loaderCamera, loaderRenderer, loaderMesh;
+
+        function initLoader3D() {
+            if (!loaderCanvas) return;
+            loaderScene = new THREE.Scene();
+            loaderCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+            loaderCamera.position.z = 4.2;
+
+            loaderRenderer = new THREE.WebGLRenderer({
+                canvas: loaderCanvas,
+                alpha: true,
+                antialias: true
+            });
+            loaderRenderer.setSize(240, 240);
+            loaderRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Geometric Icosahedron with red wireframe
+            const icoGeo = new THREE.IcosahedronGeometry(1.6, 1);
+            const icoMat = new THREE.MeshBasicMaterial({
+                color: 0xdc2626,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.85
+            });
+            loaderMesh = new THREE.Mesh(icoGeo, icoMat);
+            loaderScene.add(loaderMesh);
+
+            function animateLoader3D() {
+                if (document.getElementById('loader').classList.contains('loaded')) return;
+                requestAnimationFrame(animateLoader3D);
+                if (loaderMesh) {
+                    loaderMesh.rotation.x += 0.015;
+                    loaderMesh.rotation.y += 0.025;
+                }
+                loaderRenderer.render(loaderScene, loaderCamera);
+            }
+            animateLoader3D();
+        }
+        initLoader3D();
+
+        // Loader Progress Simulation
+        const loaderProgressBar = document.getElementById('loader-progress-bar');
+        const loaderPercentNum = document.getElementById('loader-percent-num');
+        const loaderStatusMsg = document.getElementById('loader-status-msg');
+        const btnInitialize = document.getElementById('btn-initialize');
+        const loaderScreen = document.getElementById('loader');
+
+        const statusLogs = [
+            "INITIALIZING NEURAL SHADERS...",
+            "DECRYPTING 110 HIGH-RES ARTIFACTS...",
+            "CONSTRUCTING 3D VOLUMETRIC SPACE...",
+            "CONFIGURING AUDIO SYNTHESIS...",
+            "SYSTEM CALIBRATED // AWAITING COMMAND"
+        ];
+
+        let loadProgress = 0;
+        const totalCircumference = 628; // 2 * PI * 95 ≈ 596.9 -> clamped in SVG
+
+        const loadInterval = setInterval(() => {
+            loadProgress += Math.floor(Math.random() * 8) + 4;
+            if (loadProgress >= 100) {
+                loadProgress = 100;
+                clearInterval(loadInterval);
+
+                if (loaderProgressBar) loaderProgressBar.style.strokeDashoffset = '0';
+                if (loaderPercentNum) loaderPercentNum.innerText = '100%';
+                if (loaderStatusMsg) loaderStatusMsg.innerText = statusLogs[4];
+
+                setTimeout(() => {
+                    if (btnInitialize) {
+                        btnInitialize.classList.add('visible');
+                        btnInitialize.style.display = 'inline-flex';
+                    }
+                }, 200);
+            } else {
+                const offset = totalCircumference - (loadProgress / 100) * totalCircumference;
+                if (loaderProgressBar) loaderProgressBar.style.strokeDashoffset = offset;
+                if (loaderPercentNum) loaderPercentNum.innerText = `${loadProgress}%`;
+
+                const logIndex = Math.min(Math.floor((loadProgress / 100) * 4), 3);
+                if (loaderStatusMsg) loaderStatusMsg.innerText = statusLogs[logIndex];
+            }
+        }, 80);
+
+        // Enter Portfolio Sequence
+        function triggerPortfolioEntrance() {
+            audio.init();
+            audio.playInitialize();
+
+            // Screen shockwave particle burst on cursor canvas
+            if (trailCanvas) {
+                for (let i = 0; i < 90; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 12 + 4;
+                    trailParticles.push({
+                        x: window.innerWidth / 2,
+                        y: window.innerHeight / 2,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        size: Math.random() * 4 + 2,
+                        alpha: 1,
+                        decay: Math.random() * 0.02 + 0.015
+                    });
+                }
+            }
+
+            // Fade out loader
+            loaderScreen.classList.add('loaded');
+
+            // Trigger GSAP Hero Entrance
+            launchHeroEntrance();
+        }
+
+        if (btnInitialize) {
+            btnInitialize.addEventListener('click', triggerPortfolioEntrance);
+        }
+
+        /* ==========================================================================
+           5. GSAP HERO 3D TEXT SPLIT & ENTRANCE ANIMATIONS
+           ========================================================================== */
+        function launchHeroEntrance() {
+            const tl = gsap.timeline();
+
+            // Letters 3D flip-in from depth
+            tl.fromTo('.hero-title .letter', 
+                {
+                    opacity: 0,
+                    rotationX: 90,
+                    y: 80,
+                    z: -200,
+                    scale: 0.8
+                },
+                {
+                    opacity: 1,
+                    rotationX: 0,
+                    y: 0,
+                    z: 0,
+                    scale: 1,
+                    duration: 1.1,
+                    stagger: 0.04,
+                    ease: 'back.out(1.8)'
+                }
+            )
+            .fromTo('.hero-status-pill', 
+                { opacity: 0, y: -20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+                '-=0.7'
+            )
+            .fromTo('.hero-subtitle-box', 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+                '-=0.5'
+            )
+            .fromTo('.hero-cta-group .btn-primary, .hero-cta-group .btn-secondary', 
+                { opacity: 0, y: 30, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out' },
+                '-=0.4'
+            )
+            .fromTo('.hero-stats', 
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+                '-=0.6'
+            );
+
+            // Initialize dynamic typewriter loop
+            initTypewriter();
+        }
+
+        // Hero 3D Perspective Tilt on Mouse Movement
+        const heroTitleContainer = document.getElementById('hero-title-container');
+        const heroTitle = document.getElementById('hero-title');
+
+        if (heroTitleContainer && heroTitle) {
+            window.addEventListener('mousemove', (e) => {
+                const rect = heroTitleContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const tiltX = (e.clientY - centerY) / 35;
+                const tiltY = (centerX - e.clientX) / 35;
+
+                gsap.to(heroTitle, {
+                    rotationX: tiltX,
+                    rotationY: tiltY,
+                    transformPerspective: 1200,
+                    duration: 0.4,
+                    ease: 'power1.out'
+                });
+            });
+        }
+
+        // Dynamic Subtitle Typewriter
+        const subtitles = [
+            "2D Concept Artist",
+            "3D Motion Designer",
+            "Web3 Visual Architect",
+            "Worldbuilder & Dystopian Creator",
+            "Real-Time WebGL Director"
+        ];
+        let subIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typeContainer = document.getElementById('typewriter-text');
+
+        function initTypewriter() {
+            if (!typeContainer) return;
+            const currentText = subtitles[subIndex];
+
+            if (isDeleting) {
+                charIndex--;
+                typeContainer.innerHTML = `<span class="highlight">${currentText.substring(0, charIndex)}</span>`;
+            } else {
+                charIndex++;
+                typeContainer.innerHTML = `<span class="highlight">${currentText.substring(0, charIndex)}</span>`;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2200; // Pause at full text
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                subIndex = (subIndex + 1) % subtitles.length;
+                typeSpeed = 400; // Pause before next word
+            }
+
+            setTimeout(initTypewriter, typeSpeed);
+        }
+
+        /* ==========================================================================
+           6. 3D TILTED ROAD PERSPECTIVE MARQUEE POPULATION
+           ========================================================================== */
+        function initMarqueePreviews() {
+            const row1 = document.getElementById('marquee-row-1');
+            const row2 = document.getElementById('marquee-row-2');
+            if (!row1 || !row2) return;
+
+            const marqueeCount = 14;
+            let htmlRow1 = '';
+            let htmlRow2 = '';
+
+            for (let i = 1; i <= marqueeCount; i++) {
+                const tag = i % 2 === 0 ? '3D MOTION' : '2D CONCEPT';
+                const cardHtml = `
+                    <div class="marquee-card" onclick="window.openModal(${i})">
+                        <img src="${i}.jpg" alt="Artwork ${i}" onerror="window.handleImgFallback(this, ${i})">
+                        <span class="marquee-card-badge">${tag} // #${String(i).padStart(3, '0')}</span>
+                    </div>
+                `;
+                htmlRow1 += cardHtml;
+            }
+
+            for (let i = 15; i <= marqueeCount + 14; i++) {
+                const tag = i % 3 === 0 ? 'WEB3' : 'MECHA WORLD';
+                const cardHtml = `
+                    <div class="marquee-card" onclick="window.openModal(${i})">
+                        <img src="${i}.jpg" alt="Artwork ${i}" onerror="window.handleImgFallback(this, ${i})">
+                        <span class="marquee-card-badge">${tag} // #${String(i).padStart(3, '0')}</span>
+                    </div>
+                `;
+                htmlRow2 += cardHtml;
+            }
+
+            // Duplicate contents to ensure seamless infinite looping
+            row1.innerHTML = htmlRow1 + htmlRow1;
+            row2.innerHTML = htmlRow2 + htmlRow2;
+        }
+        initMarqueePreviews();
+
+        /* ==========================================================================
+           7. GALLERY ENGINE: 110 ARTIFACTS, 3D TILT & SPECULAR HIGHLIGHTS
+           ========================================================================== */
+        const TOTAL_ARTWORKS = 110;
+        let displayedCount = 24;
+        let activeFilter = 'all';
+
+        const titlesPool = [
+            "Cybernetic Sentinel", "Dystopian Megastructure", "Orbital Dreadnought",
+            "Void Strider Protocol", "Chrono Core Alpha", "Subterranean Forge",
+            "Neural Interface V", "Helios Citadel", "Mecha Ronin Mk. II",
+            "Exo-Atmosphere Scout", "Abyssal Leviathan", "Vector Drift 09",
+            "Hyperion Reactor", "Neon Shinjuku 2088", "Spectral Vanguard",
+            "Titan Bastion", "Quantum Monolith", "Kinetics Protocol X",
+            "Zero-G Horizon", "Aether Architect", "Apex Interceptor",
+            "Black Hole Singularity", "Synthetic Rebirth", "Dark Matter Relic"
+        ];
+
+        const categoriesMap = ['2d', '3d', 'web3', 'mecha'];
+        const categoryLabels = {
+            '2d': '2D Concept Art',
+            '3d': '3D Motion Design',
+            'web3': 'Web3 / Sci-Fi',
+            'mecha': 'Mecha & Worlds'
         };
 
-    })();
+        const toolsPool = [
+            "Blender • Photoshop • ZBrush",
+            "Cinema 4D • Octane • Redshift",
+            "Unreal Engine 5 • Three.js",
+            "Blender • After Effects • Substance Painter"
+        ];
+
+        // Fallback procedural artwork generator (SVG Cyberpunk Art)
+        window.handleImgFallback = function(imgElement, index) {
+            const hue = (index * 37) % 360;
+            const seed = (index * 13) % 100;
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="600" height="420" viewBox="0 0 600 420">
+                    <defs>
+                        <linearGradient id="bgGrad${index}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0a0a0e" />
+                            <stop offset="50%" stop-color="hsl(${hue}, 40%, 10%)" />
+                            <stop offset="100%" stop-color="#050507" />
+                        </linearGradient>
+                        <pattern id="grid${index}" width="30" height="30" patternUnits="userSpaceOnUse">
+                            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(220,38,38,0.12)" stroke-width="1" />
+                        </pattern>
+                    </defs>
+                    <rect width="600" height="420" fill="url(#bgGrad${index})" />
+                    <rect width="600" height="420" fill="url(#grid${index})" />
+                    
+                    <!-- Cyberpunk Geometric Geometry -->
+                    <circle cx="300" cy="200" r="${90 + (seed % 30)}" fill="none" stroke="rgba(220,38,38,0.3)" stroke-width="2" stroke-dasharray="10 5" />
+                    <polygon points="300,${110 + (seed % 20)} ${380 + (seed % 20)},270 ${220 - (seed % 20)},270" fill="none" stroke="#dc2626" stroke-width="2" />
+                    <circle cx="300" cy="200" r="14" fill="#ff1e27" />
+                    
+                    <!-- Tech Overlays -->
+                    <text x="30" y="50" font-family="'Space Grotesk', monospace" font-size="12" fill="#71717a" letter-spacing="3">// ARTIFACT ARCHIVE</text>
+                    <text x="30" y="380" font-family="'Space Grotesk', monospace" font-size="28" font-weight="bold" fill="#ffffff">#${String(index).padStart(3, '0')}</text>
+                    <text x="570" y="380" font-family="'Space Grotesk', monospace" font-size="12" fill="#dc2626" text-anchor="end" letter-spacing="2">4K UHD</text>
+                </svg>
+            `;
+            imgElement.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        };
+
+        function getArtworkData(index) {
+            const cat = categoriesMap[(index - 1) % categoriesMap.length];
+            const title = titlesPool[(index - 1) % titlesPool.length] + (index > 24 ? ` #${index}` : '');
+            const tools = toolsPool[(index - 1) % toolsPool.length];
+            return {
+                id: index,
+                title: title,
+                categoryKey: cat,
+                categoryName: categoryLabels[cat],
+                tools: tools,
+                imgSrc: `${index}.jpg`
+            };
+        }
+
+        // Render Gallery Cards
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            if (!grid) return;
+
+            let html = '';
+            let renderedThisBatch = 0;
+
+            for (let i = 1; i <= TOTAL_ARTWORKS; i++) {
+                const data = getArtworkData(i);
+
+                // Filter matching
+                if (activeFilter !== 'all' && data.categoryKey !== activeFilter) {
+                    continue;
+                }
+
+                renderedThisBatch++;
+                if (renderedThisBatch > displayedCount) break;
+
+                html += `
+                    <div class="art-card magnetic" data-id="${data.id}" onclick="window.triggerCardClick(this, ${data.id})">
+                        <div class="art-card-inner">
+                            <img src="${data.imgSrc}" alt="${data.title}" class="art-card-img" loading="lazy" onerror="window.handleImgFallback(this, ${data.id})">
+                            <div class="card-specular"></div>
+                            
+                            <!-- Corner Cyberpunk Brackets -->
+                            <div class="card-corner corner-tl"></div>
+                            <div class="card-corner corner-tr"></div>
+                            <div class="card-corner corner-bl"></div>
+                            <div class="card-corner corner-br"></div>
+
+                            <!-- Overlay Info -->
+                            <div class="art-card-overlay">
+                                <div class="card-meta-row">
+                                    <span class="card-id-tag">#${String(data.id).padStart(3, '0')}</span>
+                                    <span class="card-category-pill">${data.categoryName}</span>
+                                </div>
+                                <h4 class="card-title">${data.title}</h4>
+                                <div class="card-view-prompt">
+                                    <span>Expand 3D Artifact</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            grid.innerHTML = html;
+
+            // Attach 3D Tilt & Specular Light Handlers
+            setupCard3DTilt();
+            setupMagneticElements();
+
+            // Handle Load More Button Visibility
+            const btnLoadMore = document.getElementById('btn-load-more');
+            if (btnLoadMore) {
+                let totalMatching = 0;
+                for (let i = 1; i <= TOTAL_ARTWORKS; i++) {
+                    const data = getArtworkData(i);
+                    if (activeFilter === 'all' || data.categoryKey === activeFilter) {
+                        totalMatching++;
+                    }
+                }
+                btnLoadMore.style.display = displayedCount >= totalMatching ? 'none' : 'inline-block';
+            }
+        }
+
+        // 3D Tilt & Dynamic Specular Reflection
+        function setupCard3DTilt() {
+            document.querySelectorAll('.art-card').forEach((card) => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    // Specular light coordinates
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+
+                    // 3D Tilt calculation
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((centerY - y) / centerY) * 12;
+                    const rotateY = ((x - centerX) / centerX) * 12;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.035, 1.035, 1.035)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+
+        // Card Click 3D Flip before Modal Opening
+        window.triggerCardClick = function(cardElem, id) {
+            audio.playClick();
+            audio.playWhoosh();
+            cardElem.classList.add('flipping');
+            setTimeout(() => {
+                cardElem.classList.remove('flipping');
+                window.openModal(id);
+            }, 300);
+        };
+
+        // Filter Buttons Interaction
+        document.querySelectorAll('.filter-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                audio.playClick();
+                document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.getAttribute('data-filter');
+                displayedCount = 24; // Reset to initial batch on filter change
+                renderGallery();
+
+                // Animate grid items entering
+                gsap.fromTo('.art-card', 
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.03, ease: 'power2.out' }
+                );
+            });
+        });
+
+        // Load Next Batch Button
+        const btnLoadMore = document.getElementById('btn-load-more');
+        if (btnLoadMore) {
+            btnLoadMore.addEventListener('click', () => {
+                audio.playClick();
+                displayedCount += 24;
+                renderGallery();
+            });
+        }
+
+        renderGallery();
+
+        /* ==========================================================================
+           8. 3D ENTRANCE HIGH-RES MODAL SYSTEM
+           ========================================================================== */
+        let currentModalId = 1;
+        const modalOverlay = document.getElementById('art-modal');
+        const modalContainer = document.getElementById('modal-container');
+        const modalImg = document.getElementById('modal-img');
+        const modalId = document.getElementById('modal-id');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCategory = document.getElementById('modal-category');
+        const modalTools = document.getElementById('modal-tools');
+        const btnModalClose = document.getElementById('btn-modal-close');
+        const btnModalPrev = document.getElementById('btn-modal-prev');
+        const btnModalNext = document.getElementById('btn-modal-next');
+
+        window.openModal = function(id) {
+            currentModalId = id;
+            const data = getArtworkData(id);
+
+            modalId.innerText = `ARTIFACT_#${String(data.id).padStart(3, '0')}`;
+            modalTitle.innerText = data.title;
+            modalCategory.innerText = data.categoryName;
+            modalTools.innerText = data.tools;
+            modalImg.src = data.imgSrc;
+            modalImg.onerror = function() {
+                window.handleImgFallback(this, data.id);
+            };
+
+            modalOverlay.classList.add('active');
+            audio.playWhoosh();
+        };
+
+        function closeModal() {
+            audio.playClick();
+            modalOverlay.classList.remove('active');
+        }
+
+        function showPrevModal() {
+            currentModalId = currentModalId > 1 ? currentModalId - 1 : TOTAL_ARTWORKS;
+            window.openModal(currentModalId);
+        }
+
+        function showNextModal() {
+            currentModalId = currentModalId < TOTAL_ARTWORKS ? currentModalId + 1 : 1;
+            window.openModal(currentModalId);
+        }
+
+        if (btnModalClose) btnModalClose.addEventListener('click', closeModal);
+        if (btnModalPrev) btnModalPrev.addEventListener('click', showPrevModal);
+        if (btnModalNext) btnModalNext.addEventListener('click', showNextModal);
+
+        // Click Outside Modal Container to Close
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+        }
+
+        // Keyboard Navigation (ESC, Left, Right)
+        window.addEventListener('keydown', (e) => {
+            if (!modalOverlay.classList.contains('active')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft') showPrevModal();
+            if (e.key === 'ArrowRight') showNextModal();
+        });
+
+        /* ==========================================================================
+           9. DISCORD TAG COPY FUNCTIONALITY & FEEDBACK
+           ========================================================================== */
+        const DISCORD_HANDLE = "saadrukhkhan";
+
+        function setupDiscordCopy() {
+            const navBtn = document.getElementById('btn-discord-nav');
+            const cardBtn = document.getElementById('btn-discord-card');
+            const badge = document.getElementById('discord-copy-badge');
+
+            function copyAction(sourceElem) {
+                navigator.clipboard.writeText(DISCORD_HANDLE).then(() => {
+                    audio.playSuccess();
+
+                    // Visual feedback
+                    sourceElem.classList.add('copied');
+                    if (badge) {
+                        badge.innerHTML = `<span>COPIED ✓</span>`;
+                        badge.style.color = '#22c55e';
+                    }
+
+                    setTimeout(() => {
+                        sourceElem.classList.remove('copied');
+                        if (badge) {
+                            badge.innerHTML = `
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                <span>Copy Tag</span>
+                            `;
+                            badge.style.color = 'var(--accent-bright)';
+                        }
+                    }, 2500);
+                });
+            }
+
+            if (navBtn) navBtn.addEventListener('click', () => copyAction(navBtn));
+            if (cardBtn) cardBtn.addEventListener('click', () => copyAction(cardBtn));
+        }
+        setupDiscordCopy();
+
+        /* ==========================================================================
+           10. AUDIO TOGGLE BUTTON
+           ========================================================================== */
+        const btnSoundToggle = document.getElementById('btn-sound-toggle');
+        if (btnSoundToggle) {
+            btnSoundToggle.addEventListener('click', () => {
+                const muted = audio.toggleMute();
+                if (muted) {
+                    btnSoundToggle.classList.remove('active');
+                } else {
+                    btnSoundToggle.classList.add('active');
+                    audio.playHover();
+                }
+            });
+        }
+
+        /* ==========================================================================
+           11. INQUIRY FORM INTERACTION
+           ========================================================================== */
+        window.handleContactSubmit = function() {
+            audio.playSuccess();
+            const btnSubmit = document.getElementById('btn-submit-form');
+            if (btnSubmit) {
+                btnSubmit.innerHTML = `<span>TRANSMISSION SENT ✓</span>`;
+                btnSubmit.style.background = '#16a34a';
+
+                setTimeout(() => {
+                    document.getElementById('contact-form').reset();
+                    btnSubmit.innerHTML = `
+                        <span>Send Transmission</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    `;
+                    btnSubmit.style.background = 'var(--accent)';
+                }, 3000);
+            }
+        };
+
+        /* ==========================================================================
+           12. FOOTER PARTICLE FIELD CANVAS & CLOCK
+           ========================================================================== */
+        const footerCanvas = document.getElementById('footer-particle-canvas');
+        const footerCtx = footerCanvas ? footerCanvas.getContext('2d') : null;
+        const footerParticles = [];
+
+        function resizeFooterCanvas() {
+            if (!footerCanvas) return;
+            footerCanvas.width = footerCanvas.offsetWidth;
+            footerCanvas.height = footerCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeFooterCanvas);
+        resizeFooterCanvas();
+
+        function initFooterParticles() {
+            if (!footerCanvas) return;
+            footerParticles.length = 0;
+            const count = Math.floor(footerCanvas.width / 22);
+
+            for (let i = 0; i < count; i++) {
+                footerParticles.push({
+                    x: Math.random() * footerCanvas.width,
+                    y: Math.random() * footerCanvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: -(Math.random() * 0.6 + 0.2), // float upwards
+                    size: Math.random() * 2 + 1,
+                    alpha: Math.random() * 0.6 + 0.2
+                });
+            }
+        }
+        initFooterParticles();
+
+        function animateFooterParticles() {
+            requestAnimationFrame(animateFooterParticles);
+            if (!footerCtx || !footerCanvas) return;
+
+            footerCtx.clearRect(0, 0, footerCanvas.width, footerCanvas.height);
+
+            for (let p of footerParticles) {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.y < 0) {
+                    p.y = footerCanvas.height;
+                    p.x = Math.random() * footerCanvas.width;
+                }
+
+                footerCtx.beginPath();
+                footerCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                footerCtx.fillStyle = `rgba(220, 38, 38, ${p.alpha})`;
+                footerCtx.shadowColor = '#dc2626';
+                footerCtx.shadowBlur = 6;
+                footerCtx.fill();
+            }
+        }
+        animateFooterParticles();
+
+        // Live Footer UTC Clock
+        function updateFooterClock() {
+            const clockElem = document.getElementById('footer-clock');
+            if (!clockElem) return;
+            const now = new Date();
+            clockElem.innerText = now.toTimeString().split(' ')[0] + ' UTC';
+        }
+        setInterval(updateFooterClock, 1000);
+        updateFooterClock();
+
+        // Ascend to Top Button
+        const btnBackTop = document.getElementById('btn-back-top');
+        if (btnBackTop) {
+            btnBackTop.addEventListener('click', () => {
+                audio.playClick();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // GSAP ScrollTrigger Reveals for Sections
+        if (typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.utils.toArray('.section-header').forEach((header) => {
+                gsap.from(header, {
+                    scrollTrigger: {
+                        trigger: header,
+                        start: 'top 85%'
+                    },
+                    opacity: 0,
+                    y: 40,
+                    duration: 0.8,
+                    ease: 'power2.out'
+                });
+            });
+
+            gsap.utils.toArray('.timeline-item').forEach((item) => {
+                gsap.from(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 80%'
+                    },
+                    opacity: 0,
+                    x: -30,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+
+            gsap.from('.about-visual-frame', {
+                scrollTrigger: {
+                    trigger: '#about',
+                    start: 'top 75%'
+                },
+                opacity: 0,
+                scale: 0.9,
+                duration: 1,
+                ease: 'power3.out'
+            });
+        }
     </script>
 </body>
 </html>
