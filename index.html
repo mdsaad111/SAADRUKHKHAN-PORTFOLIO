@@ -2397,7 +2397,7 @@
         <div class="about-grid">
             <div class="about-visual-frame" id="about-frame">
                 <!-- Fallback procedural avatar or image -->
-                <img src="1.jpg" alt="Saad Rukh Khan" class="about-avatar-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'500\' viewBox=\'0 0 400 500\'><rect width=\'400\' height=\'500\' fill=\'%230b0b0e\'/><circle cx=\'200\' cy=\'200\' r=\'90\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><path d=\'M100 450 C 100 340, 300 340, 300 450 Z\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><text x=\'200\' y=\'205\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'>SRK</text><text x=\'200\' y=\'480\' font-family=\'monospace\' font-size=\'12\' fill=\'%23dc2626\' text-anchor=\'middle\'>// BIOMETRIC_ID: 99482-K</text></svg>'">
+                <img src="1.jpg" alt="Saad Rukh Khan" class="about-avatar-img" onerror="if(this.src.match(/\.jpe?g$/i)){this.onerror=function(){this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'500\' viewBox=\'0 0 400 500\'><rect width=\'400\' height=\'500\' fill=\'%230b0b0e\'/><circle cx=\'200\' cy=\'200\' r=\'90\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><path d=\'M100 450 C 100 340, 300 340, 300 450 Z\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><text x=\'200\' y=\'205\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'>SRK</text><text x=\'200\' y=\'480\' font-family=\'monospace\' font-size=\'12\' fill=\'%23dc2626\' text-anchor=\'middle\'>// BIOMETRIC_ID: 99482-K</text></svg>';};this.src='1.png';}else{this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'500\' viewBox=\'0 0 400 500\'><rect width=\'400\' height=\'500\' fill=\'%230b0b0e\'/><circle cx=\'200\' cy=\'200\' r=\'90\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><path d=\'M100 450 C 100 340, 300 340, 300 450 Z\' fill=\'%2314141c\' stroke=\'%23dc2626\' stroke-width=\'2\'/><text x=\'200\' y=\'205\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'>SRK</text><text x=\'200\' y=\'480\' font-family=\'monospace\' font-size=\'12\' fill=\'%23dc2626\' text-anchor=\'middle\'>// BIOMETRIC_ID: 99482-K</text></svg>';}">
                 <div class="about-hud-overlay">
                     <div style="display: flex; justify-content: space-between;">
                         <div class="about-hud-corner corner-tl"></div>
@@ -3408,8 +3408,23 @@
             "Blender • After Effects • Substance Painter"
         ];
 
-        // Fallback procedural artwork generator (SVG Cyberpunk Art)
+        // Fallback chain: .jpg → .png → .jpeg → SVG placeholder
         window.handleImgFallback = function(imgElement, index) {
+            const src = imgElement.src;
+            // Try .png if we just tried .jpg or .jpeg
+            if (src.match(/\.jpe?g(\?.*)?$/i)) {
+                imgElement.onerror = function() { window.handleImgFallback(this, index); };
+                imgElement.src = index + '.png';
+                return;
+            }
+            // Try .jpeg if we just tried .png
+            if (src.match(/\.png(\?.*)?$/i)) {
+                imgElement.onerror = function() { window.handleImgFallback(this, index); };
+                imgElement.src = index + '.jpeg';
+                return;
+            }
+            // All extensions failed — show SVG cyberpunk placeholder
+            imgElement.onerror = null;
             const hue = (index * 37) % 360;
             const seed = (index * 13) % 100;
             const svg = `
