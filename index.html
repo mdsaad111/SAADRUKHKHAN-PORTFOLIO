@@ -966,6 +966,98 @@
             color: #ffffff;
             text-transform: uppercase;
         }
+
+        /* ========== MOBILE OPTIMISATION ========== */
+        @media (max-width: 768px) {
+
+            /* Hide heavy desktop-only effects */
+            #custom-cursor, #cursor-canvas, .ambient { display: none !important; }
+            * { cursor: auto !important; }
+
+            /* Nav — compact pill row */
+            #main-nav {
+                padding: 0.75rem 1rem;
+                gap: 0;
+                justify-content: space-between;
+            }
+            .nav-links { gap: 1.2rem; }
+            .nav-link { font-size: 0.62rem; letter-spacing: 0.25em; }
+            .nav-actions { gap: 0.6rem; }
+            .btn-hire { padding: 7px 14px; font-size: 0.6rem; }
+            .sound-toggle { display: none; }
+
+            /* Hero */
+            .hero-title { font-size: clamp(2.4rem, 13vw, 5rem); line-height: 0.92; }
+            .hero-subtitle { font-size: 0.65rem; letter-spacing: 0.35em; }
+            .hero-cta-row { flex-direction: column; align-items: center; gap: 0.75rem; }
+            .hero-cta-row .btn-hire, .hero-cta-row a { width: 100%; text-align: center; justify-content: center; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+            .stat-number { font-size: 1.6rem; }
+
+            /* Sections */
+            .section-wrapper { padding: 3.5rem 1rem; }
+            .section-title { font-size: clamp(1.6rem, 8vw, 2.5rem); }
+            .section-desc { font-size: 0.82rem; }
+
+            /* Timeline */
+            .timeline-container { padding-left: 0; }
+            .timeline-container::before { left: 16px; }
+            .timeline-item { flex-direction: row; gap: 1rem; }
+            .timeline-node { width: 34px; height: 34px; font-size: 0.62rem; flex-shrink: 0; }
+            .timeline-card { padding: 1rem 1.1rem; }
+            .timeline-role { font-size: 0.85rem; }
+            .timeline-period { font-size: 0.65rem; }
+            .timeline-company { font-size: 0.72rem; }
+            .timeline-desc { font-size: 0.8rem; line-height: 1.55; }
+            .timeline-tags { gap: 0.35rem; }
+            .tech-pill { font-size: 0.6rem; padding: 3px 8px; }
+
+            /* About grid — stack */
+            .about-grid { grid-template-columns: 1fr !important; gap: 2rem; }
+            .about-visual-frame { height: 320px; }
+            .about-avatar-img { object-position: center top; }
+            .skills-grid { grid-template-columns: 1fr 1fr !important; }
+
+            /* Gallery grid */
+            .gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
+            .art-card { min-height: 180px; }
+            .card-title { font-size: 0.75rem; }
+
+            /* Marquee road — disable tilt on mobile */
+            .marquee-road-section { transform: none !important; perspective: none !important; }
+            .marquee-card { height: 120px; width: 100px; margin: 0 5px; border-radius: 10px; }
+
+            /* Contact grid */
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .social-tile { padding: 1rem; }
+            .social-tile-name { font-size: 0.85rem; }
+
+            /* Modal */
+            .art-modal-container { width: 95vw; max-height: 92vh; }
+            .modal-img-wrap { max-height: 45vh; }
+            .modal-meta-panel { padding: 1rem 1.2rem; }
+            .modal-art-title { font-size: 1.3rem; }
+            .modal-nav-btn { width: 36px; height: 36px; font-size: 0.7rem; }
+
+            /* Loader */
+            #loader-3d-canvas { width: 120px !important; height: 120px !important; }
+            .loader-title { font-size: clamp(1.4rem, 9vw, 3rem); }
+            .loader-progress-ring { width: 120px; height: 120px; }
+            .btn-initialize { padding: 12px 24px; font-size: 0.65rem; }
+
+            /* Footer */
+            .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+            #footer-particle-canvas { height: 80px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: clamp(2rem, 14vw, 3.5rem); }
+            .gallery-grid { grid-template-columns: 1fr !important; }
+            .art-card { min-height: 220px; }
+            .nav-links { display: none; } /* hide text links, keep CTA */
+            #main-nav { justify-content: space-between; }
+        }
+
     </style>
 </head>
 <body>
@@ -2268,6 +2360,98 @@
             background: rgba(220, 38, 38, 0.15);
             box-shadow: 0 0 15px var(--accent-glow);
         }
+
+        /* ========== MOBILE OPTIMISATION ========== */
+        @media (max-width: 768px) {
+
+            /* Hide heavy desktop-only effects */
+            #custom-cursor, #cursor-canvas, .ambient { display: none !important; }
+            * { cursor: auto !important; }
+
+            /* Nav — compact pill row */
+            #main-nav {
+                padding: 0.75rem 1rem;
+                gap: 0;
+                justify-content: space-between;
+            }
+            .nav-links { gap: 1.2rem; }
+            .nav-link { font-size: 0.62rem; letter-spacing: 0.25em; }
+            .nav-actions { gap: 0.6rem; }
+            .btn-hire { padding: 7px 14px; font-size: 0.6rem; }
+            .sound-toggle { display: none; }
+
+            /* Hero */
+            .hero-title { font-size: clamp(2.4rem, 13vw, 5rem); line-height: 0.92; }
+            .hero-subtitle { font-size: 0.65rem; letter-spacing: 0.35em; }
+            .hero-cta-row { flex-direction: column; align-items: center; gap: 0.75rem; }
+            .hero-cta-row .btn-hire, .hero-cta-row a { width: 100%; text-align: center; justify-content: center; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+            .stat-number { font-size: 1.6rem; }
+
+            /* Sections */
+            .section-wrapper { padding: 3.5rem 1rem; }
+            .section-title { font-size: clamp(1.6rem, 8vw, 2.5rem); }
+            .section-desc { font-size: 0.82rem; }
+
+            /* Timeline */
+            .timeline-container { padding-left: 0; }
+            .timeline-container::before { left: 16px; }
+            .timeline-item { flex-direction: row; gap: 1rem; }
+            .timeline-node { width: 34px; height: 34px; font-size: 0.62rem; flex-shrink: 0; }
+            .timeline-card { padding: 1rem 1.1rem; }
+            .timeline-role { font-size: 0.85rem; }
+            .timeline-period { font-size: 0.65rem; }
+            .timeline-company { font-size: 0.72rem; }
+            .timeline-desc { font-size: 0.8rem; line-height: 1.55; }
+            .timeline-tags { gap: 0.35rem; }
+            .tech-pill { font-size: 0.6rem; padding: 3px 8px; }
+
+            /* About grid — stack */
+            .about-grid { grid-template-columns: 1fr !important; gap: 2rem; }
+            .about-visual-frame { height: 320px; }
+            .about-avatar-img { object-position: center top; }
+            .skills-grid { grid-template-columns: 1fr 1fr !important; }
+
+            /* Gallery grid */
+            .gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
+            .art-card { min-height: 180px; }
+            .card-title { font-size: 0.75rem; }
+
+            /* Marquee road — disable tilt on mobile */
+            .marquee-road-section { transform: none !important; perspective: none !important; }
+            .marquee-card { height: 120px; width: 100px; margin: 0 5px; border-radius: 10px; }
+
+            /* Contact grid */
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .social-tile { padding: 1rem; }
+            .social-tile-name { font-size: 0.85rem; }
+
+            /* Modal */
+            .art-modal-container { width: 95vw; max-height: 92vh; }
+            .modal-img-wrap { max-height: 45vh; }
+            .modal-meta-panel { padding: 1rem 1.2rem; }
+            .modal-art-title { font-size: 1.3rem; }
+            .modal-nav-btn { width: 36px; height: 36px; font-size: 0.7rem; }
+
+            /* Loader */
+            #loader-3d-canvas { width: 120px !important; height: 120px !important; }
+            .loader-title { font-size: clamp(1.4rem, 9vw, 3rem); }
+            .loader-progress-ring { width: 120px; height: 120px; }
+            .btn-initialize { padding: 12px 24px; font-size: 0.65rem; }
+
+            /* Footer */
+            .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+            #footer-particle-canvas { height: 80px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: clamp(2rem, 14vw, 3.5rem); }
+            .gallery-grid { grid-template-columns: 1fr !important; }
+            .art-card { min-height: 220px; }
+            .nav-links { display: none; } /* hide text links, keep CTA */
+            #main-nav { justify-content: space-between; }
+        }
+
     </style>
 
     <!-- SECTION: WORK ARCHIVE (110 ARTIFACTS) -->
@@ -2312,17 +2496,13 @@
                 <div class="timeline-node">01</div>
                 <div class="timeline-card">
                     <div class="timeline-meta">
-                        <div class="timeline-role">Principal 3D Motion Director</div>
-                        <div class="timeline-period">2024 — Present</div>
+                        <div class="timeline-role">Designer</div>
+                        <div class="timeline-period">Indian Company</div>
                     </div>
-                    <div class="timeline-company">Vanguard Interactive Studio • Global Remote</div>
-                    <div class="timeline-desc">Architecting visual styleframes, high-octane 3D title sequences, and real-time WebGL cinematic experiences for AAA entertainment franchises and digital luxury brands. Leading technical motion pipelines and custom shader development.</div>
+                    <div class="timeline-desc">Worked as a Designer for an Indian company.</div>
                     <div class="timeline-tags">
-                        <span class="tech-pill">Cinema 4D</span>
-                        <span class="tech-pill">Unreal Engine 5</span>
-                        <span class="tech-pill">Three.js</span>
-                        <span class="tech-pill">Octane Render</span>
-                        <span class="tech-pill">Creative Direction</span>
+                        <span class="tech-pill">Photoshop</span>
+                        <span class="tech-pill">Design</span>
                     </div>
                 </div>
             </div>
@@ -2332,17 +2512,13 @@
                 <div class="timeline-node">02</div>
                 <div class="timeline-card">
                     <div class="timeline-meta">
-                        <div class="timeline-role">Lead 2D/3D Concept Artist</div>
-                        <div class="timeline-period">2022 — 2024</div>
+                        <div class="timeline-role">Animator</div>
+                        <div class="timeline-period">Start-up</div>
                     </div>
-                    <div class="timeline-company">Nexus Cybernetics • Tokyo / Berlin</div>
-                    <div class="timeline-desc">Pioneered worldbuilding designs, mecha blueprints, and sprawling sci-fi brutalist environments. Crafted key production art used in high-budget virtual cinema, narrative world bibles, and game pitch decks.</div>
+                    <div class="timeline-desc">Worked as an Animator for a start-up.</div>
                     <div class="timeline-tags">
-                        <span class="tech-pill">Blender</span>
-                        <span class="tech-pill">Photoshop</span>
-                        <span class="tech-pill">ZBrush</span>
-                        <span class="tech-pill">Environment Design</span>
-                        <span class="tech-pill">Hard Surface</span>
+                        <span class="tech-pill">After Effects</span>
+                        <span class="tech-pill">Animation</span>
                     </div>
                 </div>
             </div>
@@ -2352,35 +2528,32 @@
                 <div class="timeline-node">03</div>
                 <div class="timeline-card">
                     <div class="timeline-meta">
-                        <div class="timeline-role">Web3 Creative & Visual Architect</div>
-                        <div class="timeline-period">2020 — 2022</div>
+                        <div class="timeline-role">Moderator</div>
+                        <div class="timeline-period">Web3 Projects</div>
                     </div>
-                    <div class="timeline-company">Autonomous Art Collective • Metaverse</div>
-                    <div class="timeline-desc">Designed cohesive brand identities and generative 3D visual collections with over $2.5M+ primary volume. Directed high-profile virtual gallery exhibitions and interactive WebGL experiences.</div>
+                    <div class="timeline-desc">Worked as a Moderator in many Web3 projects.</div>
                     <div class="timeline-tags">
-                        <span class="tech-pill">Generative Art</span>
-                        <span class="tech-pill">3D Collectibles</span>
-                        <span class="tech-pill">Blender Python</span>
-                        <span class="tech-pill">Metaverse Curation</span>
+                        <span class="tech-pill">Web3</span>
+                        <span class="tech-pill">Community</span>
+                        <span class="tech-pill">Moderation</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Timeline Item 4 -->
+            <!-- Skills -->
             <div class="timeline-item">
-                <div class="timeline-node">04</div>
+                <div class="timeline-node">⚡</div>
                 <div class="timeline-card">
                     <div class="timeline-meta">
-                        <div class="timeline-role">Senior Motion Designer & Illustrator</div>
-                        <div class="timeline-period">2018 — 2020</div>
+                        <div class="timeline-role">Skills</div>
                     </div>
-                    <div class="timeline-company">Kinetics Media Agency • Los Angeles</div>
-                    <div class="timeline-desc">Produced commercial 3D broadcast packages, kinetic typography animations, and bespoke album artworks for chart-topping electronic musicians and international tech startups.</div>
-                    <div class="timeline-tags">
-                        <span class="tech-pill">After Effects</span>
-                        <span class="tech-pill">Cinema 4D</span>
-                        <span class="tech-pill">Motion Graphics</span>
-                        <span class="tech-pill">Audio-Visualizer</span>
+                    <div class="timeline-desc" style="margin-bottom:0.75rem;">
+                        <span style="color:var(--accent);font-weight:700;letter-spacing:0.08em;font-size:0.72rem;text-transform:uppercase;">Mastery</span><br>
+                        Photoshop / After Effects
+                    </div>
+                    <div class="timeline-desc">
+                        <span style="color:#71717a;font-weight:700;letter-spacing:0.08em;font-size:0.72rem;text-transform:uppercase;">Expanding</span><br>
+                        Blender &amp; Web Development
                     </div>
                 </div>
             </div>
@@ -2498,9 +2671,9 @@
                         <div class="social-tile-name">ArtStation</div>
                         <div class="social-tile-sub">Portfolio / 4K</div>
                     </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener" class="social-tile magnetic">
+                    <a href="https://x.com/SaadRukhKhan_" target="_blank" rel="noopener" class="social-tile magnetic">
                         <div class="social-tile-name">X (Twitter)</div>
-                        <div class="social-tile-sub">@saadrukhkhan</div>
+                        <div class="social-tile-sub">@SaadRukhKhan_</div>
                     </a>
                     <a href="https://instagram.com" target="_blank" rel="noopener" class="social-tile magnetic">
                         <div class="social-tile-name">Instagram</div>
@@ -3730,7 +3903,7 @@
            11. INQUIRY FORM — REAL SUBMISSION VIA FORMSPREE
            ========================================================================== */
         // ▶ Replace YOUR_FORM_ID below with the ID from formspree.io/new
-        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mqpplzvk';
 
         window.handleContactSubmit = function() {
             const btnSubmit  = document.getElementById('btn-submit-form');
