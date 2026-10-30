@@ -1059,6 +1059,83 @@
         }
 
     </style>
+<style>
+
+    /* Responsive repair: consistent media frames and phone-safe layout */
+    @media (max-width: 768px) {
+      html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+      .nav-wrapper { top: max(0.6rem, env(safe-area-inset-top)); padding-inline: 0.65rem; }
+      .navbar {
+        width: 100%; max-width: 100%; min-width: 0;
+        padding: 0.55rem 0.8rem; gap: 0.5rem; border-radius: 1.25rem;
+      }
+      .nav-brand { flex-shrink: 0; font-size: 0.95rem; }
+      .nav-links { gap: 0.65rem; }
+      .nav-link { font-size: 0.62rem; letter-spacing: 0.04em; }
+      .nav-actions { min-width: 0; gap: 0.4rem; }
+      .btn-discord-nav { max-width: 42vw; padding: 0.45rem 0.65rem; font-size: 0.68rem; }
+      .btn-discord-nav span:not(.tooltip) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .hero-section {
+        min-height: 100svh; min-height: 100dvh;
+        padding: 7rem 1rem 3rem; gap: 0;
+      }
+      .hero-status-pill { max-width: 100%; font-size: 0.62rem; letter-spacing: 0.08em; text-align: center; }
+      .hero-title-container { width: 100%; }
+      .hero-title { font-size: clamp(2rem, 10.5vw, 4.2rem); line-height: 1; gap: 0 0.35rem; }
+      .hero-subtitle-box { max-width: 100%; min-height: 2rem; margin-bottom: 1.6rem; }
+      .hero-subtitle { font-size: clamp(0.8rem, 3.2vw, 1.1rem); letter-spacing: 0.04em; text-align: center; }
+      .hero-cta-group { width: 100%; gap: 0.7rem; margin-bottom: 2rem; }
+      .hero-cta-group a { width: 100%; justify-content: center; padding: 0.9rem 1rem; font-size: 0.72rem; letter-spacing: 0.07em; }
+      .hero-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 0.5rem;
+        padding: 1.1rem 0.7rem; width: 100%;
+      }
+      .stat-item:not(:last-child)::after { display: none; }
+      .stat-number { font-size: clamp(1.35rem, 6vw, 1.8rem); }
+      .stat-label { font-size: 0.58rem; letter-spacing: 0.04em; }
+      .section-wrapper { padding: 3.5rem 1rem; }
+      .gallery-filter-bar { gap: 0.45rem; margin-bottom: 1.5rem; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.75rem; }
+      .filter-btn { flex: 0 0 auto; padding: 0.5rem 0.8rem; font-size: 0.65rem; }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 0.7rem !important; }
+      /* Keep every artwork frame the same shape; never stretch the source image. */
+      .art-card { height: auto !important; min-height: 0 !important; aspect-ratio: 4 / 5; }
+      .art-card-inner { position: absolute; inset: 0; }
+      .art-card-img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+      .card-title { font-size: clamp(0.65rem, 2.8vw, 0.82rem); }
+      .marquee-viewport { padding: 2rem 0; }
+      .marquee-road { transform: none !important; gap: 0.8rem; }
+      .marquee-track { gap: 0.65rem; }
+      .marquee-card { flex: 0 0 38vw; width: 38vw; height: auto; aspect-ratio: 5 / 3; margin: 0; }
+      .marquee-card img { object-fit: contain; background: #080808; }
+      .about-visual-frame { height: auto !important; aspect-ratio: 4 / 5; }
+      .about-avatar-img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+      .modal-overlay { padding: max(0.5rem, env(safe-area-inset-top)) 0.5rem max(0.5rem, env(safe-area-inset-bottom)); }
+      .modal-container { width: 100%; max-width: 100%; max-height: 94dvh; overflow-y: auto; grid-template-columns: minmax(0, 1fr); border-radius: 1rem; }
+      .modal-media-view { min-height: 0; height: min(48dvh, 420px); }
+      .modal-img { width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
+      .modal-info-panel { padding: 1.2rem; min-width: 0; }
+      .timeline-card, .social-tile { min-width: 0; overflow-wrap: anywhere; }
+      #loader { min-height: 100svh; min-height: 100dvh; }
+      .loader-hud-tl { top: max(1rem, env(safe-area-inset-top)); left: 1rem; font-size: 0.58rem; }
+      .loader-hud-br { bottom: max(1rem, env(safe-area-inset-bottom)); right: 1rem; font-size: 0.55rem; text-align: right; }
+      .loader-canvas-container { width: min(58vw, 220px); height: min(58vw, 220px); }
+      .loader-ring-svg { width: 94%; height: 94%; }
+      .loader-status-text { max-width: 90vw; text-align: center; font-size: 0.62rem; letter-spacing: 0.12em; }
+    }
+    @media (max-width: 480px) {
+      .nav-links { display: none !important; }
+      .btn-discord-nav { max-width: 55vw; }
+      .hero-title { font-size: clamp(1.85rem, 10vw, 3rem); }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .section-title { overflow-wrap: anywhere; }
+      .art-card { border-radius: 0.8rem; }
+      .marquee-card { flex-basis: 44vw; width: 44vw; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track, .marquee-track.reverse { animation-duration: 90s; }
+    }
+
+    </style>
 </head>
 <body>
     <!-- Noise & Vignette Overlays -->
@@ -3903,7 +3980,7 @@
            11. INQUIRY FORM — REAL SUBMISSION VIA FORMSPREE
            ========================================================================== */
         // ▶ Replace YOUR_FORM_ID below with the ID from formspree.io/new
-        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mqpplzvk';
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
         window.handleContactSubmit = function() {
             const btnSubmit  = document.getElementById('btn-submit-form');
