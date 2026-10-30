@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="is-loading">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#050505">
+    <meta name="color-scheme" content="dark">
     <title>Saad Rukh Khan — 2D Concepts • 3D Motion • Web3 Director</title>
     <meta name="description" content="Portfolio of Saad Rukh Khan — 2D Concept Artist, 3D Motion Designer, and Web3 Creator.">
 
@@ -290,8 +292,8 @@
             stroke: var(--accent);
             stroke-width: 3;
             stroke-linecap: round;
-            stroke-dasharray: 628;
-            stroke-dashoffset: 628;
+            stroke-dasharray: 597;
+            stroke-dashoffset: 597;
             transition: stroke-dashoffset 0.15s ease-out;
             filter: drop-shadow(0 0 10px var(--accent-bright));
         }
@@ -967,174 +969,6 @@
             text-transform: uppercase;
         }
 
-        /* ========== MOBILE OPTIMISATION ========== */
-        @media (max-width: 768px) {
-
-            /* Hide heavy desktop-only effects */
-            #custom-cursor, #cursor-canvas, .ambient { display: none !important; }
-            * { cursor: auto !important; }
-
-            /* Nav — compact pill row */
-            #main-nav {
-                padding: 0.75rem 1rem;
-                gap: 0;
-                justify-content: space-between;
-            }
-            .nav-links { gap: 1.2rem; }
-            .nav-link { font-size: 0.62rem; letter-spacing: 0.25em; }
-            .nav-actions { gap: 0.6rem; }
-            .btn-hire { padding: 7px 14px; font-size: 0.6rem; }
-            .sound-toggle { display: none; }
-
-            /* Hero */
-            .hero-title { font-size: clamp(2.4rem, 13vw, 5rem); line-height: 0.92; }
-            .hero-subtitle { font-size: 0.65rem; letter-spacing: 0.35em; }
-            .hero-cta-row { flex-direction: column; align-items: center; gap: 0.75rem; }
-            .hero-cta-row .btn-hire, .hero-cta-row a { width: 100%; text-align: center; justify-content: center; }
-            .hero-stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-            .stat-number { font-size: 1.6rem; }
-
-            /* Sections */
-            .section-wrapper { padding: 3.5rem 1rem; }
-            .section-title { font-size: clamp(1.6rem, 8vw, 2.5rem); }
-            .section-desc { font-size: 0.82rem; }
-
-            /* Timeline */
-            .timeline-container { padding-left: 0; }
-            .timeline-container::before { left: 16px; }
-            .timeline-item { flex-direction: row; gap: 1rem; }
-            .timeline-node { width: 34px; height: 34px; font-size: 0.62rem; flex-shrink: 0; }
-            .timeline-card { padding: 1rem 1.1rem; }
-            .timeline-role { font-size: 0.85rem; }
-            .timeline-period { font-size: 0.65rem; }
-            .timeline-company { font-size: 0.72rem; }
-            .timeline-desc { font-size: 0.8rem; line-height: 1.55; }
-            .timeline-tags { gap: 0.35rem; }
-            .tech-pill { font-size: 0.6rem; padding: 3px 8px; }
-
-            /* About grid — stack */
-            .about-grid { grid-template-columns: 1fr !important; gap: 2rem; }
-            .about-visual-frame { height: 320px; }
-            .about-avatar-img { object-position: center top; }
-            .skills-grid { grid-template-columns: 1fr 1fr !important; }
-
-            /* Gallery grid */
-            .gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
-            .art-card { min-height: 180px; }
-            .card-title { font-size: 0.75rem; }
-
-            /* Marquee road — disable tilt on mobile */
-            .marquee-road-section { transform: none !important; perspective: none !important; }
-            .marquee-card { height: 120px; width: 100px; margin: 0 5px; border-radius: 10px; }
-
-            /* Contact grid */
-            .contact-grid { grid-template-columns: 1fr !important; }
-            .social-tile { padding: 1rem; }
-            .social-tile-name { font-size: 0.85rem; }
-
-            /* Modal */
-            .art-modal-container { width: 95vw; max-height: 92vh; }
-            .modal-img-wrap { max-height: 45vh; }
-            .modal-meta-panel { padding: 1rem 1.2rem; }
-            .modal-art-title { font-size: 1.3rem; }
-            .modal-nav-btn { width: 36px; height: 36px; font-size: 0.7rem; }
-
-            /* Loader */
-            #loader-3d-canvas { width: 120px !important; height: 120px !important; }
-            .loader-title { font-size: clamp(1.4rem, 9vw, 3rem); }
-            .loader-progress-ring { width: 120px; height: 120px; }
-            .btn-initialize { padding: 12px 24px; font-size: 0.65rem; }
-
-            /* Footer */
-            .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
-            #footer-particle-canvas { height: 80px; }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title { font-size: clamp(2rem, 14vw, 3.5rem); }
-            .gallery-grid { grid-template-columns: 1fr !important; }
-            .art-card { min-height: 220px; }
-            .nav-links { display: none; } /* hide text links, keep CTA */
-            #main-nav { justify-content: space-between; }
-        }
-
-    </style>
-<style>
-
-    /* Responsive repair: consistent media frames and phone-safe layout */
-    @media (max-width: 768px) {
-      html, body { width: 100%; max-width: 100%; overflow-x: clip; }
-      .nav-wrapper { top: max(0.6rem, env(safe-area-inset-top)); padding-inline: 0.65rem; }
-      .navbar {
-        width: 100%; max-width: 100%; min-width: 0;
-        padding: 0.55rem 0.8rem; gap: 0.5rem; border-radius: 1.25rem;
-      }
-      .nav-brand { flex-shrink: 0; font-size: 0.95rem; }
-      .nav-links { gap: 0.65rem; }
-      .nav-link { font-size: 0.62rem; letter-spacing: 0.04em; }
-      .nav-actions { min-width: 0; gap: 0.4rem; }
-      .btn-discord-nav { max-width: 42vw; padding: 0.45rem 0.65rem; font-size: 0.68rem; }
-      .btn-discord-nav span:not(.tooltip) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .hero-section {
-        min-height: 100svh; min-height: 100dvh;
-        padding: 7rem 1rem 3rem; gap: 0;
-      }
-      .hero-status-pill { max-width: 100%; font-size: 0.62rem; letter-spacing: 0.08em; text-align: center; }
-      .hero-title-container { width: 100%; }
-      .hero-title { font-size: clamp(2rem, 10.5vw, 4.2rem); line-height: 1; gap: 0 0.35rem; }
-      .hero-subtitle-box { max-width: 100%; min-height: 2rem; margin-bottom: 1.6rem; }
-      .hero-subtitle { font-size: clamp(0.8rem, 3.2vw, 1.1rem); letter-spacing: 0.04em; text-align: center; }
-      .hero-cta-group { width: 100%; gap: 0.7rem; margin-bottom: 2rem; }
-      .hero-cta-group a { width: 100%; justify-content: center; padding: 0.9rem 1rem; font-size: 0.72rem; letter-spacing: 0.07em; }
-      .hero-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 0.5rem;
-        padding: 1.1rem 0.7rem; width: 100%;
-      }
-      .stat-item:not(:last-child)::after { display: none; }
-      .stat-number { font-size: clamp(1.35rem, 6vw, 1.8rem); }
-      .stat-label { font-size: 0.58rem; letter-spacing: 0.04em; }
-      .section-wrapper { padding: 3.5rem 1rem; }
-      .gallery-filter-bar { gap: 0.45rem; margin-bottom: 1.5rem; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.75rem; }
-      .filter-btn { flex: 0 0 auto; padding: 0.5rem 0.8rem; font-size: 0.65rem; }
-      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 0.7rem !important; }
-      /* Keep every artwork frame the same shape; never stretch the source image. */
-      .art-card { height: auto !important; min-height: 0 !important; aspect-ratio: 4 / 5; }
-      .art-card-inner { position: absolute; inset: 0; }
-      .art-card-img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-      .card-title { font-size: clamp(0.65rem, 2.8vw, 0.82rem); }
-      .marquee-viewport { padding: 2rem 0; }
-      .marquee-road { transform: none !important; gap: 0.8rem; }
-      .marquee-track { gap: 0.65rem; }
-      .marquee-card { flex: 0 0 38vw; width: 38vw; height: auto; aspect-ratio: 5 / 3; margin: 0; }
-      .marquee-card img { object-fit: contain; background: #080808; }
-      .about-visual-frame { height: auto !important; aspect-ratio: 4 / 5; }
-      .about-avatar-img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-      .modal-overlay { padding: max(0.5rem, env(safe-area-inset-top)) 0.5rem max(0.5rem, env(safe-area-inset-bottom)); }
-      .modal-container { width: 100%; max-width: 100%; max-height: 94dvh; overflow-y: auto; grid-template-columns: minmax(0, 1fr); border-radius: 1rem; }
-      .modal-media-view { min-height: 0; height: min(48dvh, 420px); }
-      .modal-img { width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
-      .modal-info-panel { padding: 1.2rem; min-width: 0; }
-      .timeline-card, .social-tile { min-width: 0; overflow-wrap: anywhere; }
-      #loader { min-height: 100svh; min-height: 100dvh; }
-      .loader-hud-tl { top: max(1rem, env(safe-area-inset-top)); left: 1rem; font-size: 0.58rem; }
-      .loader-hud-br { bottom: max(1rem, env(safe-area-inset-bottom)); right: 1rem; font-size: 0.55rem; text-align: right; }
-      .loader-canvas-container { width: min(58vw, 220px); height: min(58vw, 220px); }
-      .loader-ring-svg { width: 94%; height: 94%; }
-      .loader-status-text { max-width: 90vw; text-align: center; font-size: 0.62rem; letter-spacing: 0.12em; }
-    }
-    @media (max-width: 480px) {
-      .nav-links { display: none !important; }
-      .btn-discord-nav { max-width: 55vw; }
-      .hero-title { font-size: clamp(1.85rem, 10vw, 3rem); }
-      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-      .section-title { overflow-wrap: anywhere; }
-      .art-card { border-radius: 0.8rem; }
-      .marquee-card { flex-basis: 44vw; width: 44vw; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .marquee-track, .marquee-track.reverse { animation-duration: 90s; }
-    }
-
     </style>
 </head>
 <body>
@@ -1218,6 +1052,11 @@
                     </svg>
                     <span>saadrukhkhan</span>
                     <div class="tooltip" id="nav-discord-tooltip">Copied to Clipboard!</div>
+                </button>
+
+                <!-- Mobile menu toggle (hidden on desktop) -->
+                <button class="btn-menu" id="btn-menu" aria-label="Toggle menu" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>
                 </button>
             </div>
         </nav>
@@ -2438,95 +2277,312 @@
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        /* ========== MOBILE OPTIMISATION ========== */
-        @media (max-width: 768px) {
-
-            /* Hide heavy desktop-only effects */
-            #custom-cursor, #cursor-canvas, .ambient { display: none !important; }
-            * { cursor: auto !important; }
-
-            /* Nav — compact pill row */
-            #main-nav {
-                padding: 0.75rem 1rem;
-                gap: 0;
-                justify-content: space-between;
-            }
-            .nav-links { gap: 1.2rem; }
-            .nav-link { font-size: 0.62rem; letter-spacing: 0.25em; }
-            .nav-actions { gap: 0.6rem; }
-            .btn-hire { padding: 7px 14px; font-size: 0.6rem; }
-            .sound-toggle { display: none; }
-
-            /* Hero */
-            .hero-title { font-size: clamp(2.4rem, 13vw, 5rem); line-height: 0.92; }
-            .hero-subtitle { font-size: 0.65rem; letter-spacing: 0.35em; }
-            .hero-cta-row { flex-direction: column; align-items: center; gap: 0.75rem; }
-            .hero-cta-row .btn-hire, .hero-cta-row a { width: 100%; text-align: center; justify-content: center; }
-            .hero-stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-            .stat-number { font-size: 1.6rem; }
-
-            /* Sections */
-            .section-wrapper { padding: 3.5rem 1rem; }
-            .section-title { font-size: clamp(1.6rem, 8vw, 2.5rem); }
-            .section-desc { font-size: 0.82rem; }
-
-            /* Timeline */
-            .timeline-container { padding-left: 0; }
-            .timeline-container::before { left: 16px; }
-            .timeline-item { flex-direction: row; gap: 1rem; }
-            .timeline-node { width: 34px; height: 34px; font-size: 0.62rem; flex-shrink: 0; }
-            .timeline-card { padding: 1rem 1.1rem; }
-            .timeline-role { font-size: 0.85rem; }
-            .timeline-period { font-size: 0.65rem; }
-            .timeline-company { font-size: 0.72rem; }
-            .timeline-desc { font-size: 0.8rem; line-height: 1.55; }
-            .timeline-tags { gap: 0.35rem; }
-            .tech-pill { font-size: 0.6rem; padding: 3px 8px; }
-
-            /* About grid — stack */
-            .about-grid { grid-template-columns: 1fr !important; gap: 2rem; }
-            .about-visual-frame { height: 320px; }
-            .about-avatar-img { object-position: center top; }
-            .skills-grid { grid-template-columns: 1fr 1fr !important; }
-
-            /* Gallery grid */
-            .gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
-            .art-card { min-height: 180px; }
-            .card-title { font-size: 0.75rem; }
-
-            /* Marquee road — disable tilt on mobile */
-            .marquee-road-section { transform: none !important; perspective: none !important; }
-            .marquee-card { height: 120px; width: 100px; margin: 0 5px; border-radius: 10px; }
-
-            /* Contact grid */
-            .contact-grid { grid-template-columns: 1fr !important; }
-            .social-tile { padding: 1rem; }
-            .social-tile-name { font-size: 0.85rem; }
-
-            /* Modal */
-            .art-modal-container { width: 95vw; max-height: 92vh; }
-            .modal-img-wrap { max-height: 45vh; }
-            .modal-meta-panel { padding: 1rem 1.2rem; }
-            .modal-art-title { font-size: 1.3rem; }
-            .modal-nav-btn { width: 36px; height: 36px; font-size: 0.7rem; }
-
-            /* Loader */
-            #loader-3d-canvas { width: 120px !important; height: 120px !important; }
-            .loader-title { font-size: clamp(1.4rem, 9vw, 3rem); }
-            .loader-progress-ring { width: 120px; height: 120px; }
-            .btn-initialize { padding: 12px 24px; font-size: 0.65rem; }
-
-            /* Footer */
-            .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
-            #footer-particle-canvas { height: 80px; }
+        /* ==========================================================================
+           MOBILE & TOUCH OPTIMISATION  (must stay last so it wins the cascade)
+           ========================================================================== */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        @media (max-width: 480px) {
-            .hero-title { font-size: clamp(2rem, 14vw, 3.5rem); }
-            .gallery-grid { grid-template-columns: 1fr !important; }
-            .art-card { min-height: 220px; }
-            .nav-links { display: none; } /* hide text links, keep CTA */
-            #main-nav { justify-content: space-between; }
+        /* Lock scrolling while the loader or the art modal is open */
+        html.is-loading, html.is-loading body,
+        html.modal-open, html.modal-open body { overflow: hidden; }
+
+        /* Fixed layers follow the *visible* viewport (fixes iOS toolbar gaps) */
+        #loader, .modal-overlay, .noise-overlay, .vignette-overlay, .scanlines { width: auto; height: auto; }
+        #webgl-bg { width: 100%; height: 100%; }
+        #loader { touch-action: none; overscroll-behavior: none; }
+        .hero-section { min-height: 100vh; min-height: 100svh; }
+        .section-wrapper { scroll-margin-top: 4.5rem; }
+
+        button, a, .art-card, .marquee-card, .discord-copy-action { touch-action: manipulation; }
+
+        .btn-menu { display: none; }
+        .kbd-hint { opacity: 0.55; }
+
+        /* No sticky :hover states on touch screens */
+        @media (hover: none) {
+            .btn-primary:hover, .btn-secondary:hover, .btn-submit:hover,
+            .marquee-card:hover, .skill-box:hover, .social-tile:hover,
+            .timeline-card:hover, .discord-featured-card:hover { transform: none; }
+            .art-card:hover .art-card-img, .marquee-card:hover img { transform: none; }
+            .art-card-overlay { transform: none; }
+            .card-specular { display: none; }
+            .hero-title .letter:hover { color: inherit; text-shadow: none; }
+        }
+
+        @media (max-width: 768px) {
+            :root { --radius: 1rem; --radius-lg: 1.4rem; --glass-blur: blur(14px); }
+
+            .scanlines { opacity: 0.28; }
+
+            /* ---------- Loader ---------- */
+            .loader-hud-tl {
+                top: calc(env(safe-area-inset-top, 0px) + 1.25rem);
+                left: 1.25rem;
+                font-size: 0.62rem;
+                letter-spacing: 0.14em;
+            }
+            .loader-hud-br {
+                left: 0; right: 0;
+                bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+                text-align: center;
+                font-size: 0.58rem;
+                letter-spacing: 0.12em;
+            }
+            .loader-status-text {
+                font-size: 0.64rem;
+                letter-spacing: 0.16em;
+                max-width: 88vw;
+                text-align: center;
+                margin-top: 1.25rem;
+            }
+            .btn-initialize { padding: 0.85rem 1.8rem; font-size: 0.74rem; letter-spacing: 0.18em; }
+
+            /* ---------- Navbar ---------- */
+            .nav-wrapper { top: calc(env(safe-area-inset-top, 0px) + 0.6rem); padding: 0 0.75rem; }
+            .navbar {
+                position: relative;
+                width: 100%;
+                max-width: 520px;
+                justify-content: space-between;
+                gap: 0.5rem;
+                padding: 0.45rem 0.55rem 0.45rem 1rem;
+            }
+            .nav-brand { font-size: 0.95rem; }
+            .nav-actions { gap: 0.45rem; }
+            .btn-sound, .btn-menu { width: 38px; height: 38px; }
+            .btn-menu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid var(--border);
+                background: rgba(255, 255, 255, 0.03);
+                color: #ffffff;
+            }
+            .btn-menu svg { width: 16px; height: 16px; }
+            .btn-discord-nav { padding: 0.45rem 0.8rem; font-size: 0.72rem; min-height: 38px; }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0; right: 0;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 0.4rem 0.6rem;
+                background: rgba(12, 12, 15, 0.95);
+                -webkit-backdrop-filter: var(--glass-blur);
+                backdrop-filter: var(--glass-blur);
+                border: 1px solid var(--border);
+                border-radius: 1.25rem;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            }
+            .navbar.open .nav-links { display: flex; }
+            .nav-link { display: block; padding: 0.95rem 0.6rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
+            .nav-link::after { display: none; }
+            .nav-links li:last-child .nav-link { border-bottom: 0; }
+
+            /* ---------- Hero ---------- */
+            .hero-section { padding: calc(env(safe-area-inset-top, 0px) + 6rem) 1.25rem 3rem; }
+            .hero-status-pill {
+                font-size: 0.6rem;
+                letter-spacing: 0.12em;
+                padding: 0.5rem 0.9rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+                text-align: center;
+                border-radius: 1rem;
+            }
+            .hero-title-container { margin-bottom: 1rem; max-width: 100%; }
+            .hero-title {
+                flex-direction: column;
+                flex-wrap: nowrap;
+                align-items: center;
+                gap: 0;
+                font-size: clamp(3.2rem, 21vw, 6.5rem);
+                line-height: 0.92;
+            }
+            .glitch-wrapper::before, .glitch-wrapper::after { display: none; }
+            .hero-subtitle-box { min-height: 3.4rem; margin-bottom: 1.8rem; gap: 0.35rem; }
+            .hero-subtitle { font-size: 1rem; letter-spacing: 0.04em; text-align: center; }
+
+            .hero-cta-group { flex-direction: column; width: 100%; gap: 0.8rem; margin-bottom: 2.2rem; }
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                max-width: 380px;
+                justify-content: center;
+                padding: 1rem 1.2rem;
+                font-size: 0.78rem;
+                letter-spacing: 0.12em;
+                gap: 0.6rem;
+            }
+            .btn-primary { text-align: center; }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.4rem 1rem;
+                padding: 1.3rem 1.1rem;
+                max-width: 420px;
+            }
+            .stat-item:not(:last-child)::after { display: none; }
+            .stat-item:nth-child(odd)::after { display: block; right: -0.5rem; }
+            .stat-item:nth-child(n+3) { padding-top: 1.1rem; border-top: 1px solid var(--border); }
+            .stat-number { font-size: 1.9rem; }
+            .stat-label { font-size: 0.6rem; letter-spacing: 0.08em; line-height: 1.35; }
+
+            /* ---------- Showcase marquee: flat, frames keep each artwork's own ratio ---------- */
+            .marquee-viewport {
+                padding: 2rem 0 3rem;
+                perspective: none;
+                -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+                mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+            }
+            .marquee-road, .marquee-road:hover { transform: none; gap: 0.8rem; will-change: auto; }
+            .marquee-track { gap: 0.8rem; animation-duration: 42s; }
+            .marquee-track.reverse { animation-duration: 48s; }
+            .marquee-card {
+                --mq-h: 176px;
+                width: auto;
+                min-width: 96px;
+                height: var(--mq-h);
+                border-radius: 0.9rem;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            }
+            .marquee-card img {
+                width: auto;
+                height: var(--mq-h);
+                max-width: none;
+                aspect-ratio: auto 4 / 5;
+                object-fit: cover;
+                filter: none;
+            }
+            .marquee-card-badge { left: 0.5rem; bottom: 0.5rem; font-size: 0.54rem; padding: 0.22rem 0.5rem; letter-spacing: 0.06em; }
+
+            /* ---------- Sections ---------- */
+            .section-wrapper { padding: 4rem 1.25rem; }
+            .section-header { margin-bottom: 2rem; }
+            .section-tag { font-size: 0.68rem; }
+            .section-title { font-size: clamp(2rem, 10vw, 2.8rem); }
+            .section-desc { font-size: 0.92rem; }
+
+            /* ---------- Gallery: 2-column masonry, natural aspect ratio ---------- */
+            .gallery-filter-bar {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                margin: 0 -1.25rem 1.5rem;
+                padding: 0 1.25rem 1rem;
+                gap: 0.5rem;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+            }
+            .gallery-filter-bar::-webkit-scrollbar { display: none; }
+            .filter-btn { flex: 0 0 auto; padding: 0.6rem 1.1rem; font-size: 0.72rem; white-space: nowrap; scroll-snap-align: start; }
+
+            .gallery-grid { display: flex; gap: 0.6rem; align-items: flex-start; perspective: none; }
+            .gallery-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+            .art-card {
+                height: auto;
+                min-height: 0;
+                transform-style: flat;
+                will-change: auto;
+                border-radius: 0.9rem;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+            }
+            .art-card-inner { height: auto; }
+            .art-card-img {
+                width: 100%;
+                height: auto;
+                aspect-ratio: auto 4 / 5;
+                object-fit: cover;
+                filter: none;
+                background: #0b0b0e;
+            }
+            .art-card-overlay { padding: 1.6rem 0.6rem 0.55rem; gap: 0.2rem; }
+            .card-meta-row { flex-wrap: wrap; gap: 0.25rem; }
+            .card-id-tag { font-size: 0.6rem; letter-spacing: 0.12em; }
+            .card-category-pill { font-size: 0.52rem; padding: 0.15rem 0.5rem; letter-spacing: 0.05em; }
+            .card-title, .card-view-prompt, .card-corner { display: none; }
+            .gallery-pagination { margin-top: 2rem; }
+            .btn-load-more { width: 100%; max-width: 380px; padding: 0.9rem 1.5rem; font-size: 0.75rem; }
+
+            /* ---------- Timeline ---------- */
+            .timeline-container { gap: 1.2rem; margin-top: 1.5rem; }
+            .timeline-container::before { left: 19px; }
+            .timeline-item { gap: 0.9rem; perspective: none; transform-style: flat; }
+            .timeline-node { width: 40px; height: 40px; font-size: 0.72rem; }
+            .timeline-card { padding: 1.1rem; }
+            .timeline-role { font-size: 1.15rem; }
+            .timeline-period { font-size: 0.62rem; padding: 0.25rem 0.65rem; }
+            .timeline-desc { font-size: 0.9rem; margin-bottom: 1rem; }
+            .tech-pill { font-size: 0.66rem; }
+
+            /* ---------- About ---------- */
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; margin-top: 1.5rem; }
+            .about-visual-frame { height: auto; aspect-ratio: 4 / 5; width: 100%; max-width: 340px; margin: 0 auto; }
+            .about-lead { font-size: 1.25rem; }
+            .about-body { font-size: 0.95rem; }
+
+            /* ---------- Contact ---------- */
+            .contact-grid { gap: 2rem; margin-top: 1.5rem; }
+            .discord-featured-card { padding: 1.3rem; }
+            .discord-card-title { font-size: 1.1rem; }
+            .discord-handle { font-size: 1rem; }
+            .contact-form-panel { padding: 1.3rem; }
+            /* 16px stops iOS Safari zooming the page when a field gets focus */
+            .form-input, .form-textarea, .form-select { font-size: 16px; padding: 0.9rem 1rem; }
+            .social-tile { padding: 0.9rem; }
+
+            /* ---------- Footer ---------- */
+            .footer-section { padding: 3.5rem 1.25rem calc(2rem + env(safe-area-inset-bottom, 0px)); }
+            .footer-content { gap: 2rem; }
+            .footer-top-row { flex-direction: column; gap: 1.5rem; }
+            .footer-bottom-row { flex-direction: column; align-items: flex-start; padding-top: 1.25rem; font-size: 0.74rem; }
+            .footer-sys-hud { font-size: 0.64rem; letter-spacing: 0.1em; }
+
+            /* ---------- Art modal: full-width sheet, image never cropped ---------- */
+            .modal-overlay {
+                padding: calc(env(safe-area-inset-top, 0px) + 0.6rem) 0.6rem calc(env(safe-area-inset-bottom, 0px) + 0.6rem);
+                -webkit-backdrop-filter: blur(10px) brightness(0.4);
+                backdrop-filter: blur(10px) brightness(0.4);
+            }
+            .modal-container {
+                display: flex;
+                flex-direction: column;
+                max-height: 100%;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                border-radius: 1.2rem;
+            }
+            .modal-media-view { min-height: 0; flex-shrink: 0; }
+            .modal-img { width: 100%; height: auto; max-height: 58vh; max-height: 58dvh; object-fit: contain; }
+            .modal-info-panel { padding: 1.1rem 1.1rem 1.25rem; }
+            .modal-header-meta { margin-bottom: 0.5rem; }
+            .modal-title { font-size: 1.35rem; }
+            .modal-specs-list { gap: 0.6rem; margin: 1rem 0; padding: 1rem 0; }
+            .modal-spec-row { gap: 1rem; }
+            .modal-spec-val { text-align: right; }
+            .modal-nav-bar { margin-top: 0.5rem; }
+            .modal-nav-btn { flex: 1; justify-content: center; padding: 0.8rem; font-size: 0.72rem; }
+            .kbd-hint { display: none; }
+            .btn-modal-close {
+                top: 0.7rem; right: 0.7rem;
+                width: 42px; height: 42px;
+                background: rgba(0, 0, 0, 0.65);
+                -webkit-backdrop-filter: blur(8px);
+                backdrop-filter: blur(8px);
+            }
+        }
+
+        /* Very small phones: keep the navbar on one row */
+        @media (max-width: 390px) {
+            .btn-discord-nav span { display: none; }
+            .btn-discord-nav { width: 38px; padding: 0; justify-content: center; }
         }
 
     </style>
@@ -2880,10 +2936,10 @@
                 <div class="modal-nav-bar">
                     <button class="modal-nav-btn magnetic" id="btn-modal-prev">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-                        <span>Previous [←]</span>
+                        <span>Previous <span class="kbd-hint">[←]</span></span>
                     </button>
                     <button class="modal-nav-btn magnetic" id="btn-modal-next">
-                        <span>Next [→]</span>
+                        <span>Next <span class="kbd-hint">[→]</span></span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </button>
                 </div>
@@ -3062,6 +3118,8 @@
         }
 
         const audio = new CyberAudioEngine();
+        const IS_TOUCH = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+        const NARROW_MQ = window.matchMedia('(max-width: 768px)');
 
         // Initialize audio context on first user interaction
         window.addEventListener('click', () => audio.init(), { once: true });
@@ -3182,7 +3240,7 @@
 
             requestAnimationFrame(updateCursor);
         }
-        updateCursor();
+        if (!IS_TOUCH) updateCursor();
 
         /* ==========================================================================
            3. FULL-SCREEN THREE.JS BACKGROUND UNIVERSE
@@ -3207,15 +3265,15 @@
             // Renderer
             bgRenderer = new THREE.WebGLRenderer({
                 canvas: bgCanvas,
-                antialias: true,
+                antialias: !IS_TOUCH,
                 alpha: true,
                 powerPreference: 'high-performance'
             });
-            bgRenderer.setSize(window.innerWidth, window.innerHeight);
-            bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            bgRenderer.setSize(window.innerWidth, window.innerHeight, false);
+            bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_TOUCH ? 1.5 : 2));
 
             // 1. STAR & DUST PARTICLES (3,500+)
-            const particleCount = 3500;
+            const particleCount = NARROW_MQ.matches ? 1400 : 3500;
             const particleGeo = new THREE.BufferGeometry();
             const positions = new Float32Array(particleCount * 3);
             const colors = new Float32Array(particleCount * 3);
@@ -3291,19 +3349,40 @@
             gridHelper.material.opacity = 0.45;
             bgScene.add(gridHelper);
 
-            // Track mouse parallax
-            window.addEventListener('mousemove', (e) => {
-                targetMouseX = (e.clientX - window.innerWidth / 2) * 0.35;
-                targetMouseY = (e.clientY - window.innerHeight / 2) * 0.35;
-            });
+            // Track mouse parallax (desktop only)
+            if (!IS_TOUCH) {
+                window.addEventListener('mousemove', (e) => {
+                    targetMouseX = (e.clientX - window.innerWidth / 2) * 0.35;
+                    targetMouseY = (e.clientY - window.innerHeight / 2) * 0.35;
+                });
+            }
 
-            // Window Resize
+            // Window Resize — on phones the URL bar collapsing fires resize on every
+            // scroll; only react when the width really changes (rotation / split view)
+            let lastBgW = window.innerWidth;
             window.addEventListener('resize', () => {
                 if (!bgCamera || !bgRenderer) return;
+                if (IS_TOUCH && window.innerWidth === lastBgW) return;
+                lastBgW = window.innerWidth;
                 bgCamera.aspect = window.innerWidth / window.innerHeight;
                 bgCamera.updateProjectionMatrix();
-                bgRenderer.setSize(window.innerWidth, window.innerHeight);
+                bgRenderer.setSize(window.innerWidth, window.innerHeight, false);
+                layoutThreeForViewport();
             });
+
+            layoutThreeForViewport();
+        }
+
+        // Keep the hero torus knot on-screen in portrait (phone) viewports
+        function layoutThreeForViewport() {
+            if (!torusKnotMesh || !torusInnerPoints) return;
+            const portrait = window.innerWidth / window.innerHeight < 0.9;
+            const x = portrait ? 60 : 280;
+            const sc = portrait ? 0.75 : 1;
+            torusKnotMesh.position.x = x;
+            torusInnerPoints.position.x = x;
+            torusKnotMesh.scale.setScalar(sc);
+            torusInnerPoints.scale.setScalar(sc);
         }
 
         // Animation Loop for Three.js
@@ -3377,7 +3456,7 @@
                 alpha: true,
                 antialias: true
             });
-            loaderRenderer.setSize(240, 240);
+            loaderRenderer.setSize(240, 240, false); // CSS controls the on-screen size, so the sphere stays centred in the ring
             loaderRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
             // Geometric Icosahedron with red wireframe
@@ -3420,7 +3499,7 @@
         ];
 
         let loadProgress = 0;
-        const totalCircumference = 628; // 2 * PI * 95 ≈ 596.9 -> clamped in SVG
+        const totalCircumference = 597; // 2 * PI * 95 ≈ 596.9
 
         const loadInterval = setInterval(() => {
             loadProgress += Math.floor(Math.random() * 8) + 4;
@@ -3450,6 +3529,8 @@
 
         // Enter Portfolio Sequence
         function triggerPortfolioEntrance() {
+            document.documentElement.classList.remove('is-loading');
+            window.scrollTo(0, 0);
             audio.init();
             audio.playInitialize();
 
@@ -3536,7 +3617,7 @@
         const heroTitleContainer = document.getElementById('hero-title-container');
         const heroTitle = document.getElementById('hero-title');
 
-        if (heroTitleContainer && heroTitle) {
+        if (heroTitleContainer && heroTitle && !IS_TOUCH) {
             window.addEventListener('mousemove', (e) => {
                 const rect = heroTitleContainer.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
@@ -3602,7 +3683,7 @@
             const row2 = document.getElementById('marquee-row-2');
             if (!row1 || !row2) return;
 
-            const marqueeCount = 14;
+            const marqueeCount = NARROW_MQ.matches ? 8 : 14;
             let htmlRow1 = '';
             let htmlRow2 = '';
 
@@ -3610,7 +3691,7 @@
                 const tag = i % 2 === 0 ? '3D MOTION' : '2D CONCEPT';
                 const cardHtml = `
                     <div class="marquee-card" onclick="window.openModal(${i})">
-                        <img src="${i}.jpg" alt="Artwork ${i}" onerror="window.handleImgFallback(this, ${i})">
+                        <img src="${i}.jpg" alt="Artwork ${i}" decoding="async" onerror="window.handleImgFallback(this, ${i})">
                         <span class="marquee-card-badge">${tag} // #${i}</span>
                     </div>
                 `;
@@ -3621,7 +3702,7 @@
                 const tag = i % 3 === 0 ? 'WEB3' : 'MECHA WORLD';
                 const cardHtml = `
                     <div class="marquee-card" onclick="window.openModal(${i})">
-                        <img src="${i}.jpg" alt="Artwork ${i}" onerror="window.handleImgFallback(this, ${i})">
+                        <img src="${i}.jpg" alt="Artwork ${i}" decoding="async" onerror="window.handleImgFallback(this, ${i})">
                         <span class="marquee-card-badge">${tag} // #${i}</span>
                     </div>
                 `;
@@ -3724,7 +3805,7 @@
             const grid = document.getElementById('gallery-grid');
             if (!grid) return;
 
-            let html = '';
+            const cardsHtml = [];
             let renderedThisBatch = 0;
 
             for (let i = 1; i <= TOTAL_ARTWORKS; i++) {
@@ -3738,10 +3819,10 @@
                 renderedThisBatch++;
                 if (renderedThisBatch > displayedCount) break;
 
-                html += `
+                cardsHtml.push(`
                     <div class="art-card magnetic" data-id="${data.id}" onclick="window.triggerCardClick(this, ${data.id})">
                         <div class="art-card-inner">
-                            <img src="${data.imgSrc}" alt="${data.title}" class="art-card-img" loading="lazy" onerror="window.handleImgFallback(this, ${data.id})">
+                            <img src="${data.imgSrc}" alt="${data.title}" class="art-card-img" loading="lazy" decoding="async" onerror="window.handleImgFallback(this, ${data.id})">
                             <div class="card-specular"></div>
                             
                             <!-- Corner Cyberpunk Brackets -->
@@ -3764,14 +3845,24 @@
                             </div>
                         </div>
                     </div>
-                `;
+                `);
             }
 
-            grid.innerHTML = html;
+            if (NARROW_MQ.matches) {
+                // Phones: 2-column masonry so every frame keeps the artwork's own ratio
+                const COLS = 2;
+                const buckets = Array.from({ length: COLS }, () => '');
+                cardsHtml.forEach((c, i) => { buckets[i % COLS] += c; });
+                grid.innerHTML = buckets.map((b) => `<div class="gallery-col">${b}</div>`).join('');
+            } else {
+                grid.innerHTML = cardsHtml.join('');
+            }
 
-            // Attach 3D Tilt & Specular Light Handlers
-            setupCard3DTilt();
-            setupMagneticElements();
+            // Attach 3D Tilt & Specular Light Handlers (mouse devices only)
+            if (!IS_TOUCH) {
+                setupCard3DTilt();
+                setupMagneticElements();
+            }
 
             // Handle Load More Button Visibility
             const btnLoadMore = document.getElementById('btn-load-more');
@@ -3854,6 +3945,8 @@
         }
 
         renderGallery();
+        // Re-flow the gallery when crossing the phone breakpoint (rotation, resize)
+        NARROW_MQ.addEventListener('change', () => renderGallery());
 
         /* ==========================================================================
            8. 3D ENTRANCE HIGH-RES MODAL SYSTEM
@@ -3884,12 +3977,14 @@
             };
 
             modalOverlay.classList.add('active');
+            document.documentElement.classList.add('modal-open');
             audio.playWhoosh();
         };
 
         function closeModal() {
             audio.playClick();
             modalOverlay.classList.remove('active');
+            document.documentElement.classList.remove('modal-open');
         }
 
         function showPrevModal() {
@@ -3912,6 +4007,24 @@
                 if (e.target === modalOverlay) closeModal();
             });
         }
+
+        // Swipe left / right on the artwork to browse (touch screens)
+        (function () {
+            const media = document.querySelector('.modal-media-view');
+            if (!media) return;
+            let sx = 0, sy = 0;
+            media.addEventListener('touchstart', (e) => {
+                sx = e.changedTouches[0].clientX;
+                sy = e.changedTouches[0].clientY;
+            }, { passive: true });
+            media.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - sx;
+                const dy = e.changedTouches[0].clientY - sy;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                    if (dx < 0) showNextModal(); else showPrevModal();
+                }
+            }, { passive: true });
+        })();
 
         // Keyboard Navigation (ESC, Left, Right)
         window.addEventListener('keydown', (e) => {
@@ -3959,6 +4072,25 @@
             if (cardBtn) cardBtn.addEventListener('click', () => copyAction(cardBtn));
         }
         setupDiscordCopy();
+
+        // Mobile nav dropdown
+        (function () {
+            const nav = document.getElementById('navbar');
+            const btn = document.getElementById('btn-menu');
+            if (!nav || !btn) return;
+            const setOpen = (open) => {
+                nav.classList.toggle('open', open);
+                btn.setAttribute('aria-expanded', String(open));
+            };
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                audio.playClick();
+                setOpen(!nav.classList.contains('open'));
+            });
+            nav.querySelectorAll('.nav-link').forEach((l) => l.addEventListener('click', () => setOpen(false)));
+            document.addEventListener('click', (e) => { if (!nav.contains(e.target)) setOpen(false); });
+            window.addEventListener('scroll', () => setOpen(false), { passive: true });
+        })();
 
         /* ==========================================================================
            10. AUDIO TOGGLE BUTTON
