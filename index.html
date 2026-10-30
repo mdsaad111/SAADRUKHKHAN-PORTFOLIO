@@ -75,7 +75,7 @@
         }
 
         body {
-            background: var(--bg);
+            background: transparent;
             color: var(--text);
             font-family: var(--font-body);
             overflow-x: hidden;
@@ -3306,7 +3306,7 @@
             particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
             const particleMat = new THREE.PointsMaterial({
-                size: 2.8,
+                size: IS_TOUCH ? 4 : 2.8,
                 vertexColors: true,
                 transparent: true,
                 opacity: 0.82,
@@ -3323,7 +3323,7 @@
                 color: 0xdc2626,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.32,
+                opacity: IS_TOUCH ? 0.55 : 0.32,
                 blending: THREE.AdditiveBlending
             });
             torusKnotMesh = new THREE.Mesh(torusGeo, torusMat);
@@ -3377,10 +3377,7 @@
         function layoutThreeForViewport() {
             if (!torusKnotMesh || !torusInnerPoints) return;
             const portrait = window.innerWidth / window.innerHeight < 0.9;
-            const x = portrait ? 60 : 280;
-            const sc = portrait ? 0.75 : 1;
-            torusKnotMesh.position.x = x;
-            torusInnerPoints.position.x = x;
+            const sc = portrait ? 0.9 : 1;
             torusKnotMesh.scale.setScalar(sc);
             torusInnerPoints.scale.setScalar(sc);
         }
@@ -3415,8 +3412,16 @@
 
                 torusInnerPoints.rotation.copy(torusKnotMesh.rotation);
 
-                // Move Torus dynamically with scroll
-                torusKnotMesh.position.y = 40 - scrollFactor * 0.5;
+                // Roam across the whole viewport, and keep following the page as it scrolls
+                const halfH = 800 * Math.tan(Math.PI / 6);          // visible half-height at the torus depth
+                const halfW = halfH * (bgCamera ? bgCamera.aspect : 1);
+                const rad = 160 * torusKnotMesh.scale.x;
+                const ampX = Math.max(40, halfW - rad * 0.5);
+                const ampY = halfH * 0.7;
+                const phase = elapsed * 0.22 + scrollY * 0.0012;
+                torusKnotMesh.position.x = Math.sin(phase) * ampX * 0.9 + Math.sin(phase * 2.3 + 1) * ampX * 0.1;
+                torusKnotMesh.position.y = -scrollFactor * 0.4 + Math.cos(phase * 0.77 + 0.5) * ampY;
+                torusInnerPoints.position.x = torusKnotMesh.position.x;
                 torusInnerPoints.position.y = torusKnotMesh.position.y;
             }
 
@@ -3688,22 +3693,18 @@
             let htmlRow2 = '';
 
             for (let i = 1; i <= marqueeCount; i++) {
-                const tag = i % 2 === 0 ? '3D MOTION' : '2D CONCEPT';
                 const cardHtml = `
                     <div class="marquee-card" onclick="window.openModal(${i})">
                         <img src="${i}.jpg" alt="Artwork ${i}" decoding="async" onerror="window.handleImgFallback(this, ${i})">
-                        <span class="marquee-card-badge">${tag} // #${i}</span>
                     </div>
                 `;
                 htmlRow1 += cardHtml;
             }
 
             for (let i = 15; i <= marqueeCount + 14; i++) {
-                const tag = i % 3 === 0 ? 'WEB3' : 'MECHA WORLD';
                 const cardHtml = `
                     <div class="marquee-card" onclick="window.openModal(${i})">
                         <img src="${i}.jpg" alt="Artwork ${i}" decoding="async" onerror="window.handleImgFallback(this, ${i})">
-                        <span class="marquee-card-badge">${tag} // #${i}</span>
                     </div>
                 `;
                 htmlRow2 += cardHtml;
